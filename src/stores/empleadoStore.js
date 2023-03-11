@@ -1,0 +1,66 @@
+import { defineStore } from 'pinia'
+import axios from 'axios'
+import { ref } from 'vue'
+
+export const useEmpleadoStore = defineStore('empleado', () => {
+    const apiURL = 'https://dummyjson.com/users'
+    
+    const empleados = ref([])
+    const empleado = ref({})
+
+    const getEmpleados = async () => {
+        try {
+            const response = await axios.get(apiURL)
+            //response.data = an array of objects, so response.data.data = the objects
+            empleados.value = response.data.users
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
+    const getEmpleado = async (id) => {
+        try {
+            const response = await axios.get(`http://localhost:8080/api/v1/empleados/${id}`)
+            empleado.value = response.data
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
+    const addEmpleado = async (newEmpleado) => {
+        try {
+            await axios.post('http://localhost:8080/api/v1/empleados', newEmpleado)
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
+    const updateEmpleado = async (updatedEmpleado) => {
+        try {
+            await axios.put(
+                `http://localhost:8080/api/v1/empleados/${updatedEmpleado.id}`,
+                updatedEmpleado
+            )
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
+    const deleteEmpleado = async (id) => {
+        try {
+            await axios.delete(`http://localhost:8080/api/v1/empleados/${id}`)
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
+    return {
+        empleados,
+        empleado,
+        getEmpleados,
+        getEmpleado,
+        addEmpleado,
+        updateEmpleado,
+        deleteEmpleado
+    }
+})
