@@ -1,4 +1,5 @@
 <template>
+  <body class="light container-fluid d-block px-0">
   <nav class="navbar navbar-expand-md navbar-light bg-light px-3">
     <RouterLink to="/">
       <img class="me-3" src="./assets/icon.png" height="40" alt="ITO Logo" loading="lazy" />
@@ -27,7 +28,8 @@
             ><b>C</b>onsultar</a
           >
           <div class="dropdown-menu">
-            <RouterLink to="/verEmpleados" class="dropdown-item">Empleados</RouterLink>
+            <RouterLink to="/empleados" class="dropdown-item">Empleados</RouterLink>
+            <RouterLink to="/editar-empleado" class="dropdown-item">Editar Empleado</RouterLink>
             <li><hr class="dropdown-divider role-mod" /></li>
             <RouterLink to="/verDepartamentos" class="dropdown-item">Departamentos</RouterLink>
             <li><hr class="dropdown-divider role-mod" /></li>
@@ -78,7 +80,7 @@
       </div>
     </div>
   </nav>
-  <div class="col container-fluid ms-3 d-block">
+  
     <router-view />
-  </div>
+  </body>
 </template>

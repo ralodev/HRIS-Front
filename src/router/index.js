@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import VerEmpleados from '../views/VerEmpleados.vue'
+import empleados from '../views/empleados/empleados.vue'
+import editarEmpleados from '../views/empleados/editar-empleado.vue'
 import VerDepartamentos from '../views/VerDepartamentos.vue'
 import VerPlazas from '../views/VerPlazas.vue'
 
@@ -21,9 +22,14 @@ const router = createRouter({
       component: () => import('../views/AboutView.vue')
     },
     {
-      path: '/verEmpleados',
-      name: 'verEmpleados',
-      component: VerEmpleados
+      path: '/empleados',
+      name: 'empleados',
+      component: empleados
+    },
+    {
+      path: '/editar-empleados',
+      name: 'editarEmpleados',
+      component: editarEmpleados
     },
     {
       path: '/verDepartamentos',
