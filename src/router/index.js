@@ -27,8 +27,8 @@ const router = createRouter({
       component: empleados
     },
     {
-      path: '/editar-empleados',
-      name: 'editarEmpleados',
+      path: '/editar-empleado/:id',
+      name: 'editar-empleado',
       component: editarEmpleados
     },
     {

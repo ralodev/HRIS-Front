@@ -20,8 +20,9 @@ export const useEmpleadoStore = defineStore('empleado', () => {
 
     const getEmpleado = async (id) => {
         try {
-            const response = await axios.get(`http://localhost:8080/api/v1/empleados/${id}`)
-            empleado.value = response.data
+            const response = await axios.get(`http://localhost:8080/api/v1/empleados/id/${id}`)
+            console.log(response.data.data)
+            empleado.value = response.data.data
         } catch (error) {
             console.error(error)
         }
