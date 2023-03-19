@@ -1,116 +1,125 @@
 <template>
-    <div class="container table-responsive card-light py-3 mt-4">
-        <table class="table table-striped display text-nowrap" id="tablaEmpleados">
-            <thead>
-                <tr>
-                    <th>No. Tarjeta</th>
-                    <th>Nombre</th>
-                    <th>RFC</th>
-                    <th>Edad</th>
-                    <th>Departamento</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="empleado in empleados" :key="empleado.id">
-                    <td>{{ empleado.numeroTarjeta }}</td>
-                    <td>{{ empleado.nombre }}</td>
-                    <td>{{ empleado.rfc }}</td>
-                    <td>{{ empleado.nivelAcademico }}</td>
-                    <td>{{ empleado.departamento.nombre }}</td>
-                    <td>
-                        <RouterLink class="btn btn-primary" v-bind="{ to: '/editar-empleado/' + empleado.id }">Editar
-                        </RouterLink>
-                        <button class="btn btn-danger" v-on:click="eliminarEmpleado(empleado.id)">Eliminar</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+  <DataTable :columns="columns" :data="data" class="display cell-border" width="100%" :options="options" />
 </template>
 
-  
 <script>
-import { defineComponent, onMounted, ref, watch, nextTick } from "vue";
-import { useEmpleadoStore } from '@/stores/empleadoStore'
-import Swal from 'sweetalert2'
-import $ from "jquery";
-import DataTable from "datatables.net-vue3";
-import DataTablesLib from "datatables.net-bs5";
-import Buttons from "datatables.net-buttons-bs5";
-import ButtonsHtml5 from "datatables.net-buttons/js/buttons.html5";
-import print from "datatables.net-buttons/js/buttons.print";
-import pdfmake from "pdfmake";
-import vfsFonts from "pdfmake/build/vfs_fonts";
-import JsZip from "jszip";
-//import {useEmpleadoService} from "./services/empleadoService";
-window.JsZip = JsZip;
+import { defineComponent, ref, nextTick, onMounted } from 'vue';
+import DataTable from 'datatables.net-vue3';
+import DataTablesLib from 'datatables.net-bs5';
+import Buttons from 'datatables.net-buttons-bs5';
+import ButtonsHtml5 from 'datatables.net-buttons/js/buttons.html5';
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
+import JsZip from 'jszip';
+import print from 'datatables.net-buttons/js/buttons.print';
+import { useEmpleadoStore } from '@/stores/empleadoStore';
+import { useRouter } from 'vue-router';
+import { useAlerts } from '@/components/useAlerts';
 
-DataTable.use({
-    DataTablesLib,
-    Buttons,
-    ButtonsHtml5,
-    print,
-    pdfmake,
-    vfsFonts,
-});
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
+DataTablesLib.Buttons.jszip(JsZip);
+DataTable.use(DataTablesLib, Buttons, ButtonsHtml5, pdfMake, pdfFonts, JsZip, print);
 
-export default {
-    mounted() {
-        this.getEmpleados();
-    },
-    data() {
-        return {
-            empleados: ref([]),
-        }
-    },
-    methods: {
-        getEmpleados() {
-            const empleadoStore = useEmpleadoStore()
-            empleadoStore.getEmpleados().then(() => {
-                this.empleados = empleadoStore.empleados;
-                //if datatable is already initialized, redraw it
-                if ($.fn.DataTable.isDataTable("#tablaEmpleados")) {
-                    $("#tablaEmpleados").DataTable().destroy();
-                }
-            });
+export default defineComponent({
+  name: 'TablaEmpleados',
+  components: { DataTable },
+  setup() {
+    const store = useEmpleadoStore();
+    const alertas = useAlerts();
+    const router = useRouter();
+    const data = ref([]);
+    const options = {
+      responsive: true,
+      autoWidth: true,
+      dom: 'ptr',
+      paging: true,
+      pagingType: 'numbers',
+      initComplete: function () {
+        this.on('draw.dt', function () {
+          nextTick(() => {
+            addButtEvList();
+          });
+        });
+      },
+    };
+    const columns = [
+      { data: 'id', title: 'ID' },
+      { data: 'name', title: 'Name', width: '40%', className: 'dt-body-left', },
+      { data: 'email', title: 'Email' },
+      {
+        data: null, title: 'Action', wrap: true, render: function () {
+          let buttons =
+            '<a https="#" class="edit btn btn-warning btn-xs btn-flat"><i class="fas fa-edit"></i></a> ';
+          buttons +=
+            '<a https="#" class="delete btn btn-danger btn-xs btn-flat"><i class="fas fa-trash-alt"></i></a>';
+          return buttons;
         },
-        initDataTable() {
-            nextTick(() => {
-                $("#tablaEmpleados").DataTable({
-                    dom: "Bfrtip",
+      },
+    ];
+
+    const getUsers = async () => {
+      alertas.showLoading('Cargando cambios');
+      await store.getEmpleados().then(() => {
+        data.value = store.empleados;
+        alertas.closeLoading();
+      });
+    };
+
+    const editItem = (index) => {
+      router.push({ name: 'editar-empleado', params: { id: index } });
+    };
+
+    const deleteItem = (id) => {
+      alertas
+        .showConfirmAlert(
+          '¿Estas seguro de eliminar este registro?',
+          'Esta acción no se puede revertir',
+          'Sí, eliminar',
+          'Cancelar'
+        )
+        .then((isConfirmed) => {
+          if (isConfirmed) {
+            store.deleteEmpleado(id).then(() => {
+                alertas.showSuccessAlert('Registro eliminado').then((isConfirmed) => {
+                  getUsers();
                 });
-            });
-        },
-        eliminarEmpleado(id) {
-            Swal.fire({
-                title: '¿Estás seguro?',
-                text: "Esta acción es irreversible. Se eliminará el empleado y todas sus plazas.",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: '¡Sí, bórralo!',
-                cancelButtonText: 'Cancelar'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    const empleadoStore = useEmpleadoStore()
-                    empleadoStore.eliminarEmpleado(id).then(() => {
-                        this.getEmpleados();
-                        Swal.fire(
-                            '¡Eliminado!',
-                            'El empleado ha sido eliminado.',
-                            'success'
-                        )
-                    });
-                }
-            })
-        },
-    }
-}
+              }).catch((error) => {
+                alertas.showErrorAlert('Error', `No se pudo eliminar el registro. ${error}`);
+              });
+          } else {
+            alertas.showInfoAlert('Cancelado', 'El registro no fue eliminado');
+          }
+        });
+    };
+
+    const addButtEvList = () => {
+      const editButts = document.querySelectorAll('.edit');
+      const deleteButts = document.querySelectorAll('.delete');
+      editButts.forEach((butt) => {
+        butt.addEventListener('click', () => {
+          editItem(butt.closest('tr').cells[0].innerHTML);
+        });
+      });
+      deleteButts.forEach((butt) => {
+        butt.addEventListener('click', () => {
+          deleteItem(butt.closest('tr').cells[0].innerHTML);
+        });
+      });
+    };
+
+    onMounted(() => {
+      getUsers();
+    });
+
+    return {
+      data,
+      options,
+      columns,
+    };
+  },
+});
 </script>
-  
-<style scoped>
-@import "datatables.net-bs5";
+
+<style>
+@import './../../assets/main.css';
 </style>
-  

@@ -4,15 +4,15 @@ import { ref } from 'vue'
 
 export const useEmpleadoStore = defineStore('empleado', () => {
     const apiURL = 'http://localhost:8080/api/v1/empleados/'
-    
+
     const empleados = ref([])
     const empleado = ref({})
 
     const getEmpleados = async () => {
         try {
-            const response = await axios.get(apiURL)
+            const response = await axios.get('https://jsonplaceholder.typicode.com/comments')
             //response.data = an array of objects, so response.data.data = the objects
-            empleados.value = response.data.data
+            empleados.value = response.data
         } catch (error) {
             console.error(error)
         }
@@ -48,11 +48,11 @@ export const useEmpleadoStore = defineStore('empleado', () => {
     }
 
     const deleteEmpleado = async (id) => {
-        try {
-            await axios.delete(`http://localhost:8080/api/v1/empleados/id/${id}`)
-        } catch (error) {
-            console.error("Ha habido un error:", error)
-        }
+        // try {
+            await axios.delete(`https://jsonplaceholder.typicode.com/posts/${id}`)
+        // } catch (error) {
+        //     console.error("Ha habido un error:", error)
+        // }
     }
 
     return {
