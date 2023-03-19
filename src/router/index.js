@@ -11,27 +11,47 @@ const router = createRouter({
     {
       path: '/',
       name: 'Home',
-      component: Home
+      component: Home,
+      meta: {
+        breadcrumb: 'Principal'
+      }
     },
     {
       path: '/empleados',
       name: 'empleados',
-      component: empleados
+      component: empleados,
+      meta: {
+        breadcrumb: 'Empleados'
+      }
     },
     {
-      path: '/editar-empleado/:id',
+      path: '/empleados/editar/:id',
       name: 'editar-empleado',
-      component: editarEmpleados
+      component: editarEmpleados,
+      meta: {
+        breadcrumb: 'Editar Empleado'
+      }
     },
     {
       path: '/verDepartamentos',
       name: 'verDepartamentos',
-      component: VerDepartamentos
+      component: VerDepartamentos,
+      meta: {
+        breadcrumb: 'Departamentos'
+      }
     },
     {
       path: '/verPlazas',
       name: 'verPlazas',
-      component: VerPlazas
+      component: VerPlazas,
+      meta: {
+        breadcrumb: 'Plazas'
+      }
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'not-found',
+      redirect: '/'
     }
   ]
 })

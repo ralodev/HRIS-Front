@@ -49,16 +49,16 @@ export default defineComponent({
       {
         data: null, title: 'Action', wrap: true, render: function () {
           let buttons =
-            '<a https="#" class="edit btn btn-warning btn-xs btn-flat"><i class="fas fa-edit"></i></a> ';
+            '<a https="#" class="edit btn btn-warning btn-xs btn-flat"><i class="bi bi-pencil-fill"></i></a> ';
           buttons +=
-            '<a https="#" class="delete btn btn-danger btn-xs btn-flat"><i class="fas fa-trash-alt"></i></a>';
+            '<a https="#" class="delete btn btn-danger btn-xs btn-flat"><i class="bi bi-trash3-fill"></i></a>';
           return buttons;
         },
       },
     ];
 
     const getUsers = async () => {
-      alertas.showLoading('Cargando cambios');
+      alertas.showLoading('Cargando datos');
       await store.getEmpleados().then(() => {
         data.value = store.empleados;
         alertas.closeLoading();
