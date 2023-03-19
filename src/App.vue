@@ -20,7 +20,7 @@
             ><b>A</b>dministrador</a
           >
           <div class="dropdown-menu">
-            <RouterLink to="/" class="dropdown-item">Crear Usuario</RouterLink>
+            <RouterLink to="/empleados" class="dropdown-item">Crear Usuario</RouterLink>
           </div>
         </div>
         <div class="nav-item dropdown">
@@ -29,7 +29,6 @@
           >
           <div class="dropdown-menu">
             <RouterLink to="/empleados" class="dropdown-item">Empleados</RouterLink>
-            <RouterLink to="/editar-empleado" class="dropdown-item">Editar Empleado</RouterLink>
             <li><hr class="dropdown-divider role-mod" /></li>
             <RouterLink to="/verDepartamentos" class="dropdown-item">Departamentos</RouterLink>
             <li><hr class="dropdown-divider role-mod" /></li>
@@ -80,7 +79,11 @@
       </div>
     </div>
   </nav>
-  
+
+  <div class="container container-xl card-light mt-4 py-3 rounded">
+
     <router-view />
+  </div>
   </body>
 </template>
+
