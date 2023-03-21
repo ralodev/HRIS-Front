@@ -1355,3 +1355,7 @@ td.dtr-control::before {
   display: block;
   height: 28px;
 }
+
+div.dropdown-menu, .dropdown-menu {
+  margin: 0px !important;
+}
