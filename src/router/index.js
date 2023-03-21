@@ -1,8 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import empleados from '../views/empleados/empleados.vue'
-import editarEmpleados from '../views/empleados/editar-empleado.vue'
-import VerDepartamentos from '../views/VerDepartamentos.vue'
-import VerPlazas from '../views/VerPlazas.vue'
+import editarEmpleado from '../views/empleados/editarEmpleado.vue'
+//import departamentos from '../views/departamentos/departamentos.vue'
+//import editarDepartamento from '../views/departamentos/editarDepartamento.vue'
+import puestos from '../views/puestos/puestos.vue'
+import editarPuesto from '../views/puestos/editarPuesto.vue'
 import Home from '../views/Home.vue'
 
 const router = createRouter({
@@ -26,26 +28,26 @@ const router = createRouter({
     },
     {
       path: '/empleados/editar/:id',
-      name: 'editar-empleado',
-      component: editarEmpleados,
+      name: 'editarEmpleado',
+      component: editarEmpleado,
       meta: {
         breadcrumb: 'Editar Empleado'
       }
     },
     {
-      path: '/verDepartamentos',
-      name: 'verDepartamentos',
-      component: VerDepartamentos,
+      path: '/puestos',
+      name: 'puestos',
+      component: puestos,
       meta: {
-        breadcrumb: 'Departamentos'
+        breadcrumb: 'Puestos'
       }
     },
     {
-      path: '/verPlazas',
-      name: 'verPlazas',
-      component: VerPlazas,
+      path: '/puestos/editar/:id',
+      name: 'editarPuesto',
+      component: editarPuesto,
       meta: {
-        breadcrumb: 'Plazas'
+        breadcrumb: 'Editar Empleado'
       }
     },
     {

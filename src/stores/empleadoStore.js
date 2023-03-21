@@ -10,9 +10,8 @@ export const useEmpleadoStore = defineStore('empleado', () => {
 
     const getEmpleados = async () => {
         try {
-            const response = await axios.get('https://jsonplaceholder.typicode.com/comments')
-            //response.data = an array of objects, so response.data.data = the objects
-            empleados.value = response.data
+            const response = await axios.get(apiURL)
+            empleados.value = response.data.data
         } catch (error) {
             console.error(error)
         }
@@ -20,7 +19,7 @@ export const useEmpleadoStore = defineStore('empleado', () => {
 
     const getEmpleado = async (id) => {
         try {
-            const response = await axios.get(`http://localhost:8080/api/v1/empleados/id/${id}`)
+            const response = await axios.get(`${apiURL}tarjeta/${id}`)
             console.log(response.data.data)
             empleado.value = response.data.data
         } catch (error) {
@@ -30,7 +29,7 @@ export const useEmpleadoStore = defineStore('empleado', () => {
 
     const addEmpleado = async (newEmpleado) => {
         try {
-            await axios.post('http://localhost:8080/api/v1/empleados', newEmpleado)
+            await axios.post(apiURL, newEmpleado)
         } catch (error) {
             console.error(error)
         }
@@ -39,7 +38,7 @@ export const useEmpleadoStore = defineStore('empleado', () => {
     const updateEmpleado = async (updatedEmpleado) => {
         try {
             await axios.put(
-                `http://localhost:8080/api/v1/empleados/${updatedEmpleado.id}`,
+                `${apiURL}${updatedEmpleado.id}`,
                 updatedEmpleado
             )
         } catch (error) {
@@ -48,11 +47,8 @@ export const useEmpleadoStore = defineStore('empleado', () => {
     }
 
     const deleteEmpleado = async (id) => {
-        // try {
-            await axios.delete(`https://jsonplaceholder.typicode.com/posts/${id}`)
-        // } catch (error) {
-        //     console.error("Ha habido un error:", error)
-        // }
+        apiURL+'id/'+id
+            await axios.delete(`${apiURL}tarjeta/${id}`)
     }
 
     return {

@@ -1,5 +1,7 @@
 <template>
+    <div class="container-lg table-responsive card-light p-3 mt-4">
   <DataTable :columns="columns" :data="data" class="display cell-border" width="100%" :options="options" />
+  </div>
 </template>
 
 <script>
@@ -43,9 +45,11 @@ export default defineComponent({
       },
     };
     const columns = [
-      { data: 'id', title: 'ID' },
-      { data: 'name', title: 'Name', width: '40%', className: 'dt-body-left', },
-      { data: 'email', title: 'Email' },
+      { data: 'numeroTarjeta', title: 'ID' },
+      { data: 'rfc', title: 'RFC' },
+      { data: 'curp', title: 'CURP' },
+      { data: 'nombre', title: 'Nombre' },
+      { data: 'departamento.nombre', title: 'Departamento' },
       {
         data: null, title: 'Action', wrap: true, render: function () {
           let buttons =
@@ -66,7 +70,7 @@ export default defineComponent({
     };
 
     const editItem = (index) => {
-      router.push({ name: 'editar-empleado', params: { id: index } });
+      router.push({ name: 'editarEmpleado', params: { id: index } });
     };
 
     const deleteItem = (id) => {
@@ -84,7 +88,8 @@ export default defineComponent({
                   getUsers();
                 });
               }).catch((error) => {
-                alertas.showErrorAlert('Error', `No se pudo eliminar el registro. ${error}`);
+                console.log(error.response.data.message)
+                alertas.showErrorAlert('Error',error.response.data.message);
               });
           } else {
             alertas.showInfoAlert('Cancelado', 'El registro no fue eliminado');

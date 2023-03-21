@@ -107,13 +107,14 @@
                     class="form-control" id="departamento" />
                 <div class="invalid-feedback">Por favor introduzca un departamento válido.</div>
             </div>
+
+            <!-- Select tipo de movimiento with "BASE" "INTERINO" & "PREJUBILACION" -->
             <div class="col-md-6 my-2">
                 <label for="inputTipoMovimiento" class="form-label">Tipo de movimiento<b class="text-danger">*</b></label>
-                <!-- Select tipo de movimiento with "BASE" "INTERINO" & "PREJUBILACION" -->
                 <select v-model="data.tipoMovimiento" class="form-select" id="tipoMovimiento" required>
                     <option value="" selected disabled hidden>...</option>
                     <option value="BASE">Base</option>
-                    <option value="INTERINO">Interino</option>
+                    <option value="INTERINATO">Interinato</option>
                     <option value="PREJUBILACION">Prejubilación</option>
                 </select>
                 <div class="invalid-feedback">Por favor seleccione un tipo de movimiento.</div>
