@@ -1,11 +1,11 @@
 <template>
   <div class="container-lg pt-3">
     <h1>
-    <i class="bi bi-people-fill"></i> Empleados
-  </h1>
+      <i class="bi bi-people-fill"></i> Empleados
+    </h1>
   </div>
-    <div class="container-lg table-responsive card-light p-3 mt-4">
-  <DataTable :columns="columns" :data="data" class="display cell-border" width="100%" :options="options" />
+  <div class="container-lg table-responsive card-light p-3 mt-4">
+    <DataTable :columns="columns" :data="data" class="display cell-border" width="100%" :options="options" />
   </div>
 </template>
 
@@ -54,7 +54,16 @@ export default defineComponent({
       { data: 'rfc', title: 'RFC' },
       { data: 'curp', title: 'CURP' },
       { data: 'nombre', title: 'Nombre' },
-      { data: 'departamento.nombre', title: 'Departamento' },
+      {
+        data: 'departamento.nombre', title: 'Departamento',
+        render: function (data, type, row) {
+          if (data == null) {
+            return 'Sin departamento';
+          } else {
+            return data;
+          }
+        }
+      },
       {
         data: null, title: 'Action', wrap: true, render: function () {
           let buttons =
@@ -89,13 +98,13 @@ export default defineComponent({
         .then((isConfirmed) => {
           if (isConfirmed) {
             store.deleteEmpleado(id).then(() => {
-                alertas.showSuccessAlert('Registro eliminado').then((isConfirmed) => {
-                  getUsers();
-                });
-              }).catch((error) => {
-                console.log(error.response.data.message)
-                alertas.showErrorAlert('Error',error.response.data.message);
+              alertas.showSuccessAlert('Registro eliminado').then((isConfirmed) => {
+                getUsers();
               });
+            }).catch((error) => {
+              console.log(error.response.data.message)
+              alertas.showErrorAlert('Error', error.response.data.message);
+            });
           } else {
             alertas.showInfoAlert('Cancelado', 'El registro no fue eliminado');
           }

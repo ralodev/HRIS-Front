@@ -128,7 +128,7 @@ export const useDataStore = defineStore('empleado', () => {
     }
 
     const deleteDepartamento = async (id) => {
-        await axios.delete(`${apiURL}departamentos/clave/${id}`)
+        await axios.delete(`${apiURL}departamentos/${id}`)
     }
 
 
