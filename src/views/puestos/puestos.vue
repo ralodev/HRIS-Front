@@ -1,4 +1,10 @@
 <template>
+  <!-- Puestos -->
+  <div class="container-lg pt-3">
+    <h1>
+      <i class="bi bi-briefcase-fill"></i> Plazas
+  </h1>
+  </div>
   <div class="container-lg table-responsive card-light p-3 mt-4">
     <DataTable :columns="columns" :data="data" class="table display text-nowrap" width="100%" :options="options" />
   </div>

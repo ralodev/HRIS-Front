@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import empleados from '../views/empleados/empleados.vue'
 import editarEmpleado from '../views/empleados/editarEmpleado.vue'
-//import departamentos from '../views/departamentos/departamentos.vue'
-//import editarDepartamento from '../views/departamentos/editarDepartamento.vue'
+import departamentos from '../views/departamentos/departamentos.vue'
+import editarDepartamento from '../views/departamentos/editarDepartamento.vue'
 import puestos from '../views/puestos/puestos.vue'
 import editarPuesto from '../views/puestos/editarPuesto.vue'
 import Home from '../views/Home.vue'
@@ -48,6 +48,22 @@ const router = createRouter({
       component: editarPuesto,
       meta: {
         breadcrumb: 'Editar Empleado'
+      }
+    },
+    {
+      path: '/departamentos',
+      name: 'departamentos',
+      component: departamentos,
+      meta: {
+        breadcrumb: 'Departamentos'
+      }
+    },
+    {
+      path: '/departamentos/editar/:id',
+      name: 'editarDepartamento',
+      component: editarDepartamento,
+      meta: {
+        breadcrumb: 'Editar Departamento'
       }
     },
     {

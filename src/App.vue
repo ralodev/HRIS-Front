@@ -44,7 +44,7 @@
           <div class="nav-item dropdown">
             <span role="button" class="nav-link dropdown-toggle fw-semibold" data-bs-toggle="dropdown" >Departamentos</span>
             <div class="dropdown-menu">
-              <RouterLink to="/empleados" class="dropdown-item">Ver departamentos</RouterLink>
+              <RouterLink to="/departamentos" class="dropdown-item">Ver departamentos</RouterLink>
               <RouterLink to="/" class="dropdown-item">Registrar departamento</RouterLink>
             </div>
           </div>
