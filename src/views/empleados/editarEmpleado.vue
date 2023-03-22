@@ -153,7 +153,7 @@
 
 <script>
 import { defineComponent, onMounted, ref, watch, nextTick } from "vue";
-import { useEmpleadoStore } from '@/stores/empleadoStore'
+import { useDataStore } from '@/stores/dataStore'
 import Swal from 'sweetalert2'
 import { useRoute } from "vue-router";
 import $ from "jquery";

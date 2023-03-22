@@ -1,4 +1,9 @@
 <template>
+  <div class="container-lg pt-3">
+    <h1>
+    <i class="bi bi-people-fill"></i> Empleados
+  </h1>
+  </div>
     <div class="container-lg table-responsive card-light p-3 mt-4">
   <DataTable :columns="columns" :data="data" class="display cell-border" width="100%" :options="options" />
   </div>
@@ -14,7 +19,7 @@ import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 import JsZip from 'jszip';
 import print from 'datatables.net-buttons/js/buttons.print';
-import { useEmpleadoStore } from '@/stores/empleadoStore';
+import { useDataStore } from '@/stores/dataStore';
 import { useRouter } from 'vue-router';
 import { useAlerts } from '@/components/useAlerts';
 
@@ -26,7 +31,7 @@ export default defineComponent({
   name: 'TablaEmpleados',
   components: { DataTable },
   setup() {
-    const store = useEmpleadoStore();
+    const store = useDataStore();
     const alertas = useAlerts();
     const router = useRouter();
     const data = ref([]);

@@ -51,12 +51,12 @@ export const useDataStore = defineStore('empleado', () => {
     }
 
     const deleteEmpleado = async (id) => {
-            await axios.delete(`${apiURL}empleados/tarjeta/${id}`)
+        await axios.delete(`${apiURL}empleados/tarjeta/${id}`)
     }
 
     const getPuestos = async () => {
-            const response = await axios.get(`${apiURL}puestos/`)
-            puestos.value = response.data.data
+        const response = await axios.get(`${apiURL}puestos/`)
+        puestos.value = response.data.data
     }
 
     const getPuesto = async (id) => {
@@ -89,8 +89,49 @@ export const useDataStore = defineStore('empleado', () => {
     }
 
     const deletePuesto = async (id) => {
-            await axios.delete(`${apiURL}puestos/clave/${id}`)
+        await axios.delete(`${apiURL}puestos/clave/${id}`)
     }
+
+    const getDepartamentos = async () => {
+        const response = await axios.get(`${apiURL}departamentos/`)
+        departamentos.value = response.data.data
+    }
+
+    const getDepartamento = async (id) => {
+        try {
+            const response = await axios.get(`${apiURL}departamentos/clave/${id}`)
+            console.log(response.data.data)
+            departamento.value = response.data.data
+        } catch (error) {
+            console.error(error)
+        }
+
+    }
+
+    const addDepartamento = async (newDepartamento) => {
+        try {
+            await axios.post(`${apiURL}departamentos/`, newDepartamento)
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
+    const updateDepartamento = async (updatedDepartamento) => {
+        try {
+            await axios.put(
+                `${apiURL}departamentos/${updatedDepartamento.id}`,
+                updatedDepartamento
+            )
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
+    const deleteDepartamento = async (id) => {
+        await axios.delete(`${apiURL}departamentos/clave/${id}`)
+    }
+
+
 
     return {
         message,
@@ -108,6 +149,12 @@ export const useDataStore = defineStore('empleado', () => {
         addPuesto,
         updatePuesto,
         deletePuesto,
-
+        departamentos,
+        departamento,
+        getDepartamentos,
+        getDepartamento,
+        addDepartamento,
+        updateDepartamento,
+        deleteDepartamento
     }
 })
