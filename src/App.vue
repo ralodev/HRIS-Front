@@ -1,82 +1,41 @@
 <template>
   <body class="light container-fluid d-block px-0 pb-4">
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-md navbar-light bg-light px-3">
-      <RouterLink to="/">
-        <img class="me-3" src="./assets/icon.png" height="40" alt="ITO Logo" loading="lazy" />
+    <nav class="navbar navbar-collapse navbar-light bg-light px-3">
+      <RouterLink to="/" style="text-decoration: none; color: #000;">
+        <img class="me-3" src="./assets/icon.png" height="50" alt="ITO Logo" loading="lazy" />
       </RouterLink>
-      <a id="nav-toggle-button" role="button" class="btn navbar-toggler">
-        <span class="navbar-toggler-icon"></span>
-      </a>
-      <div id="navbarCollapse" class="navbar-collapse justify-content-start collapse">
-        <div class="navbar-nav">
-          <!-- Dropdown Administrador -->
-          <div class="nav-item dropdown">
-            <span role="button" class="nav-link dropdown-toggle fw-semibold" data-bs-toggle="dropdown" >Administrador</span>
-            <div class="dropdown-menu">
-              <RouterLink to="/" class="dropdown-item">Ver usuarios</RouterLink>
-              <RouterLink to="/" class="dropdown-item">Registrar usuario</RouterLink>
-              <RouterLink to="/" class="dropdown-item">Centro de respaldos</RouterLink>
-            </div>
+      <!-- User dropdown -->
+      <div class="navbar-nav ms-auto">
+        <span class="user-info-container" type="button" label="Toggle" @click="toggle" aria-haspopup="true" aria-controls="overlay_menu">
+          <div class="user-info-container me-2">
+            <span class="user-info user-info-item fw-semibold text-end"
+            >Raúl López</span>
+            <span class="user-info user-info-item small text-muted text-end" >Administrador del sitio</span>
           </div>
-          <!-- Dropdown Empleados -->
-          <div class="nav-item dropdown">
-            <span role="button" class="nav-link dropdown-toggle fw-semibold" data-bs-toggle="dropdown" >Empleados</span>
-            <div class="dropdown-menu">
-              <RouterLink to="/empleados" class="dropdown-item">Ver empleados</RouterLink>
-              <RouterLink to="/" class="dropdown-item">Registrar empleado</RouterLink>
-              <li>
-                <hr class="dropdown-divider" />
-              </li>
-              <RouterLink to="/" class="dropdown-item">Reporte de empleados</RouterLink>
-            </div>
-          </div>
-          <!-- Dropdown Plazas -->
-          <div class="nav-item dropdown">
-            <span role="button" class="nav-link dropdown-toggle fw-semibold" data-bs-toggle="dropdown" >Plazas</span>
-            <div class="dropdown-menu">
-              <RouterLink to="/puestos" class="dropdown-item">Ver plazas</RouterLink>
-              <RouterLink to="/" class="dropdown-item">Registrar plaza</RouterLink>
-              <RouterLink to="/" class="dropdown-item">Reporte de plazas</RouterLink>
-            </div>
-          </div>
-          <!-- Dropdown Departamentos -->
-          <div class="nav-item dropdown">
-            <span role="button" class="nav-link dropdown-toggle fw-semibold" data-bs-toggle="dropdown" >Departamentos</span>
-            <div class="dropdown-menu">
-              <RouterLink to="/departamentos" class="dropdown-item">Ver departamentos</RouterLink>
-              <RouterLink to="/" class="dropdown-item">Registrar departamento</RouterLink>
-            </div>
-          </div>
-          <!-- Dropdown Información -->
-          <div class="nav-item dropdown">
-            <span role="button" class="nav-link dropdown-toggle fw-semibold" data-bs-toggle="dropdown" >Información</span>
-            <div class="dropdown-menu">
-              <RouterLink to="/" class="dropdown-item">Dashboard</RouterLink>
-              <RouterLink to="/" class="dropdown-item">Reporte 9.11</RouterLink>
-            </div>
-          </div>
-        </div>
-        <!-- Right side of navbar -->
-        <div class="navbar-nav ms-auto">
-          <!-- User dropdown -->
-          <div class="nav-item dropdown">
-            <a data-bs-toggle="dropdown" class="nav-link dropdown-toggle user-action">
-              <i class="bi bi-person-circle"></i>&nbsp;&nbsp;<strong id="nombreUsuario"></strong>&nbsp;
-            </a>
-            <div class="dropdown-menu dropdown-menu-end">
-              <a href="../usuario/configuracion.html" class="dropdown-item"><i class="bi bi-wrench-adjustable"></i>
-                Configuración</a>
-              <div class="dropdown-divider"></div>
-              <a type="button" class="dropdown-item" id="logout"><i class="bi bi-door-open"></i> Cerrar sesión</a>
-            </div>
-          </div>
-        </div>
+          <Avatar icon="pi pi-user" class="me-2" shape="circle" />
+        </span>
+        <Menu ref="menu" id="overlay_menu" :model="userMenu" :popup="true" />
+        <Toast />
       </div>
     </nav>
     <!-- End Navbar -->
 
-      <router-view />
+    <!-- Sidenav button -->
+    <button name="sidebar-toggle" class="btn rounded-pill btn-primary" id="nav-toggle-button" @click="visible = true">
+        <i class="pi pi-angle-double-right"></i> Mostrar menú
+    </button>
+
+    <Sidebar v-model:visible="visible" close-icon="pi pi-angle-double-left">
+      <template #header>
+        <img class="sidebarlogo" src="./assets/icon.png" height="70" alt="ITO Logo" loading="lazy" />
+      </template>
+      <template #default="{ visible }">
+        <PanelMenu :model="items" />
+      </template>
+    </Sidebar>
+
+    <router-view />
 
   </body>
 </template>
@@ -90,6 +49,116 @@ export default {
     $('#nav-toggle-button').click(function () {
       $('#navbarCollapse').toggleClass('collapse')
     })
+    this.$router.afterEach(() => {
+     this.visible = false
+    })
+  },
+  data() {
+    return {
+      visible: false,
+      home: { icon: 'pi pi-home', to: '/' },
+      breadcrumbs: [],
+      items: [
+        { label: 'Página principal', icon: 'pi pi-fw pi-home', to: '/' },
+        {
+          label: 'Administrador', icon: 'pi pi-fw pi-shield', items:
+            [
+              { label: 'Ver usuarios', icon: 'pi pi-fw pi-users', to: '/usuarios' },
+              { label: 'Registrar usuario', icon: 'pi pi-fw pi-user-plus', to: '/usuarios/registrar' },
+              { label: 'Centro de respaldos', icon: 'pi pi-fw pi-cloud-upload', to: '/respaldos' },
+            ]
+        },
+        {
+          label: 'Empleados', icon: 'pi pi-fw pi-user', items:
+            [
+              { label: 'Ver empleados', icon: 'pi pi-fw pi-users', to: '/empleados' },
+              { label: 'Registrar empleado', icon: 'pi pi-fw pi-user-plus', to: '/empleados/registrar' },
+            ]
+        },
+        {
+          label: 'Plazas', icon: 'pi pi-fw pi-briefcase', items:
+            [
+              { label: 'Ver plazas', icon: 'pi pi-fw pi-users', to: '/puestos' },
+              { label: 'Registrar plaza', icon: 'pi pi-fw pi-user-plus', to: '/puestos/registrar' },
+              { label: 'Reporte de plazas', icon: 'pi pi-fw pi-file', to: '/puestos/reporte' },
+            ]
+        },
+        {
+          label: 'Departamentos', icon: 'pi pi-fw pi-building', items:
+            [
+              { label: 'Ver departamentos', icon: 'pi pi-fw pi-users', to: '/departamentos' },
+              { label: 'Registrar departamento', icon: 'pi pi-fw pi-user-plus', to: '/departamentos/registrar' },
+            ]
+        },
+        {
+          label: 'Información', icon: 'pi pi-fw pi-search', items:
+            [
+              { label: 'Dashboard', icon: 'pi pi-fw pi-chart-bar', to: '/dashboard' },
+              { label: 'Reporte 9.11', icon: 'pi pi-fw pi-file', to: '/reporte' },
+            ]
+        },
+      ],
+      userMenu: [
+        {
+          label: 'Perfil',
+          icon: 'pi pi-fw pi-user',
+          to: '/'
+        },
+        {
+          label: 'Opciones',
+          icon: 'pi pi-fw pi-cog',
+          to: '/'
+        },
+        {
+          label: 'Cerrar sesión',
+          icon: 'pi pi-fw pi-sign-out',
+          command: () => {
+            this.logout()
+          }
+        }
+      ]
+    }
+  },
+  methods: {
+    logout() {
+      localStorage.removeItem('token')
+      this.$router.push('/login')
+    },
+    toggle(event) {
+      this.$refs.menu.toggle(event)
+    }
   }
 }
 </script>
+
+<style>
+
+div.user-info-container {
+  display: flex;
+  flex-direction: column;
+}
+
+span.user-info-container {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+}
+
+.user-info-item {
+  margin-right: 2px;
+}
+
+.sidebarlogo {
+  position: relative;
+  right: 100%;
+  align-self: center;
+}
+
+#nav-toggle-button {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  margin: 1rem;
+  z-index: 1000;
+}
+</style>
