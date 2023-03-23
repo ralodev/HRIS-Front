@@ -1,11 +1,13 @@
 <template>
-  <div class="container-lg pt-3">
-    <h1>
-      <i class="bi bi-people-fill"></i> Empleados
-    </h1>
-  </div>
-  <div class="container-lg table-responsive card-light p-3 mt-4">
-    <DataTable :columns="columns" :data="data" class="display cell-border" width="100%" :options="options" />
+  <div class="container-lg pt-4">
+    <div class="card">
+      <div class="card-header h4">
+        <i class="bi bi-people-fill"></i> Empleados
+      </div>
+      <div class="card-body table-responsive">
+        <DataTable :columns="columns" :data="data" class="display cell-border" width="100%" :options="options" />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -38,7 +40,7 @@ export default defineComponent({
     const options = {
       responsive: true,
       autoWidth: true,
-      dom: 'ptr',
+      dom: 'tr',
       paging: true,
       pagingType: 'numbers',
       initComplete: function () {
