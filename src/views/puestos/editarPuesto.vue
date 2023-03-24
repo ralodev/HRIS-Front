@@ -22,16 +22,15 @@
                         <div class="col-md-6 my-2">
                             <label for="inputNombre" class="form-label">Nombre del empleado
                                 <abbr class="initialism"
-                                    title="Se completa al introducir un RFC que pertenezca a un empleado registrado"><i
+                                    title="Se completa automáticamente al buscar"><i
                                         class="bi bi-question-circle-fill"></i></abbr>
                             </label>
                             <input v-model="data.empleado.nombre" type="text" placeholder="Introduzca su nombre" class="form-control"
                                 id="nombre" required disabled/>
-                            <div class="invalid-feedback">Por favor introduzca un nombre válido.</div>
+                            <div class="valid-feedback">El empleado existe.</div>
                         </div>
                         <hr class="border border-2 border-dark mt-3" />
                         <p class="text-muted h5">Datos del puesto</p>
-
                         <!-- Input clavePresupuestal-->
                         <div class="col-md-6 my-2">
                             <label for="inputNombre" class="form-label">Clave Presupuestal<b class="text-danger">*</b></label>

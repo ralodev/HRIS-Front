@@ -14,7 +14,6 @@
                                 class="form-control" id="nombre" required />
                             <div class="invalid-feedback">Por favor introduzca el nombre.</div>
                         </div>
-
                         <!-- Input RFC -->
                         <div class="col-md-4 my-2">
                             <label for="inputRFC" class="form-label">RFC con homoclave<b class="text-danger">*</b></label>

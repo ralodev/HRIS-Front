@@ -71,6 +71,8 @@ export default defineComponent({
 
         onMounted(() => {
             if (route.params.id) {
+
+                console.log(route.params.id)
                 isEdit.value = true;
                 id.value = route.params.id;
                 store.getEmpleado(id.value).then(() => {
