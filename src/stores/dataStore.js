@@ -2,7 +2,8 @@ import { defineStore } from 'pinia'
 import axios from 'axios'
 import { ref } from 'vue'
 
-export const useDataStore = defineStore('empleado', () => {
+export const useDataStore = defineStore('datax', () => {
+    //const apiURL = 'http://localhost:8080/api/v1/'
     const apiURL = 'http://localhost:8080/api/v1/'
     const message = ref('')
     const empleados = ref([])
@@ -16,6 +17,7 @@ export const useDataStore = defineStore('empleado', () => {
         try {
             const response = await axios.get(`${apiURL}empleados/`)
             empleados.value = response.data.data
+            console.log(response)
         } catch (error) {
             console.error(error)
         }
@@ -24,7 +26,6 @@ export const useDataStore = defineStore('empleado', () => {
     const getEmpleado = async (id) => {
         try {
             const response = await axios.get(`${apiURL}empleados/tarjeta/${id}`)
-            console.log(response.data.data)
             empleado.value = response.data.data
         } catch (error) {
             console.error(error)
@@ -33,20 +34,24 @@ export const useDataStore = defineStore('empleado', () => {
 
     const addEmpleado = async (newEmpleado) => {
         try {
-            await axios.post(`${apiURL}empleados/`, newEmpleado)
+            const response = await axios.post(`${apiURL}empleados/`, newEmpleado)
+                return response
         } catch (error) {
             console.error(error)
+            return error;
         }
     }
 
-    const updateEmpleado = async (updatedEmpleado) => {
+    const updateEmpleado = async (updatedEmpleado, id) => {
         try {
-            await axios.put(
-                `${apiURL}empleados/${updatedEmpleado.id}`,
+            const response = await axios.put(
+                `${apiURL}empleados/id/${id}`,
                 updatedEmpleado
             )
+                return response
         } catch (error) {
             console.error(error)
+            return error;
         }
     }
 
@@ -62,7 +67,6 @@ export const useDataStore = defineStore('empleado', () => {
     const getPuesto = async (id) => {
         try {
             const response = await axios.get(`${apiURL}puestos/clave/${id}`)
-            console.log(response.data.data)
             puesto.value = response.data.data
         } catch (error) {
             console.error(error)
@@ -77,10 +81,10 @@ export const useDataStore = defineStore('empleado', () => {
         }
     }
 
-    const updatePuesto = async (updatedPuesto) => {
+    const updatePuesto = async (updatedPuesto,id) => {
         try {
             await axios.put(
-                `${apiURL}puestos/${updatedPuesto.id}`,
+                `${apiURL}puestos/id/${id}`,
                 updatedPuesto
             )
         } catch (error) {
