@@ -2,11 +2,12 @@ import Swal from 'sweetalert2';
 
 export const useAlerts = () => {
 
-    const showConfirmAlert = (title, text, confirmButtonText, cancelButtonText) => {
+    const showConfirmAlert = (title, text, icon, confirmButtonText, cancelButtonText) => {
         return Swal.fire({
             title: title,
             text: text,
-            icon: 'warning',
+            icon: icon,
+            allowOutsideClick: true,
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
@@ -94,7 +95,7 @@ export const useAlerts = () => {
 
         Toast.fire({
             icon: 'success',
-            title: 'Ha iniciado sesión correctamente'
+            title: 'Bienvenid@, no olvides cerrar sesión al salir'
         })
     }
 
@@ -113,7 +114,7 @@ export const useAlerts = () => {
 
         Toast.fire({
             icon: 'error',
-            title: 'Ha habido un error al iniciar sesión'
+            title: 'Verifique sus datos de acceso'
         })
     }
 
@@ -132,9 +133,55 @@ export const useAlerts = () => {
 
         Toast.fire({
             icon: 'success',
-            title: 'Ha cerrado sesión correctamente'
+            title: 'Adiós, vuelve pronto 👋'
         })
     }
+
+
+    const showToast = (icon, title, position, miliseconds, bg) => {
+        if(miliseconds === undefined || miliseconds === null){
+            miliseconds = 3000;
+        }
+        if(position === undefined || position === null){
+            position = 'top-end';
+        }
+        const Toast = Swal.mixin({
+            toast: true,
+            position: position,
+            showConfirmButton: false,
+            background: bg,
+            timer: miliseconds,
+            timerProgressBar: true,
+            grow: 'row',
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        })
+
+        Toast.fire({
+            icon: icon,
+            title: title
+        })
+    }
+
+    const showLoadingToast = (title) => {
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'center',
+            showConfirmButton: false,
+            grow: 'false',
+            timerProgressBar: true,
+        })
+
+        Toast.fire({
+            title: title,
+            didOpen: () => {
+                Swal.showLoading()
+            }
+        })
+    }
+
 
     return {
         showConfirmAlert,
@@ -146,6 +193,8 @@ export const useAlerts = () => {
         closeLoading,
         showLoginSuccessToast,
         showLoginErrorToast,
-        showLogoutSuccessToast
+        showLogoutSuccessToast,
+        showToast,
+        showLoadingToast
     }
 }
