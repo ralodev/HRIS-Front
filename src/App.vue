@@ -1,137 +1,226 @@
 <template>
-  <body class="light container-fluid d-block px-0 pb-4">
-    <!-- Navbar -->
-    <nav class="navbar navbar-collapse navbar-light bg-light px-3">
-      <RouterLink to="/" style="text-decoration: none; color: #000;">
-        <img class="me-3" src="./assets/icon.png" height="50" alt="ITO Logo" loading="lazy" />
-      </RouterLink>
-      <!-- User dropdown -->
-      <div class="navbar-nav ms-auto">
-        <span class="user-info-container" type="button" label="Toggle" @click="toggle" aria-haspopup="true" aria-controls="overlay_menu">
-          <div class="user-info-container me-2">
-            <span class="user-info user-info-item fw-semibold text-end"
-            >Raúl López</span>
-            <span class="user-info user-info-item small text-muted text-end" >Administrador del sitio</span>
-          </div>
-          <Avatar icon="pi pi-user" class="me-2" shape="circle" />
-        </span>
-        <Menu ref="menu" id="overlay_menu" :model="userMenu" :popup="true" />
-        <Toast />
+  <div class="container-fluid px-0 " id="app-content">
+
+    <div id="scroll-container">
+
+      <div v-if="!showNavbar" class="nav-tec">
+        <ul>
+          <li><a href=""></a></li>
+        </ul>
       </div>
-    </nav>
-    <!-- End Navbar -->
 
-    <!-- Sidenav button -->
-    <button name="sidebar-toggle" class="btn rounded-pill btn-primary" id="nav-toggle-button" @click="visible = true">
-        <i class="pi pi-angle-double-right"></i> Mostrar menú
-    </button>
+      <div v-if="!showNavbar" class="surface-0 text-color text-center fs-3">
+        <img src="./assets/icon.jpg" alt="logo" height="150" class="d-inline-block align-text-top" />
+      </div>
 
-    <Sidebar v-model:visible="visible" close-icon="pi pi-angle-double-left">
-      <template #header>
-        <img class="sidebarlogo" src="./assets/icon.png" height="70" alt="ITO Logo" loading="lazy" />
-      </template>
-      <template #default="{ visible }">
-        <PanelMenu :model="items" />
-      </template>
-    </Sidebar>
+      <Menubar :model="items" class="surface-card shadow-2" v-show="showNavbar">
+        <template #start>
+          <img alt="logo" src="./assets/icon_orig.png" height="50" />
+        </template>
+        <template #end>
+          <span class="py-2 user-info-container border-round-2xl hover:bg-gray-200" type="button" label="Toggle" @click="toggle" aria-haspopup="true"
+            aria-controls="overlay_menu">
+            <div class="ps-2 me-2 text-nowrap">
+              <span class="user-info user-info-item fw-semibold text-end">{{ nombre_usuario }}</span>
+            </div>
+            <Avatar class="me-2 bg-primary-600 hover:bg-orange-600 transition-colors transition-duration-500 text-0" shape="circle" :label="inicial_usuario" />
+          </span>
+          <Menu ref="menuRef" class="text-nowrap" id="overlay_menu" :model="userMenu" :popup="true" />
+          <Toast />
+        </template>
+      </Menubar>
 
-    <router-view />
+      <div v-if="!showNavbar" class="nav-tec">
+        <ul>
+          <li>
+            <RouterLink to="/" :class="{ active: route.path === '/' }"><i class="pi pi-home"></i> Inicio</RouterLink>
+          </li>
+          <li>
+            <RouterLink to="/inicio"><i class="pi pi-book"></i> Consultar expediente</RouterLink>
+          </li>
+          <li>
+            <RouterLink to="/registro"><i class="pi pi-user-plus"></i> Registrarme</RouterLink>
+          </li>
+          <li v-if="isLoggedIn" style="float:right">
+            <RouterLink to="/inicio" class="blink"><i class="pi pi-lock-open
+"></i> Ingresar (sesión activa)</RouterLink>
+          </li>
+          <li v-else style="float:right">
+            <RouterLink to="/login" :class="{ active: route.path === '/login' }"><i class="pi pi-lock"></i> Iniciar sesión</RouterLink>
+          </li>
+        </ul>
+      </div>
 
-  </body>
+
+      <router-view />
+
+    </div>
+
+
+  </div>
 </template>
 
 <script>
-import $ from 'jquery'
+import { ref, onMounted } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { useStore as authStore } from '@/stores/authStore';
+import Cookies from 'js-cookie';
+import { useAlerts } from '@/components/useAlerts';
+
+
 
 export default {
   name: 'App',
-  mounted() {
-    $('#nav-toggle-button').click(function () {
-      $('#navbarCollapse').toggleClass('collapse')
-    })
-    this.$router.afterEach(() => {
-     this.visible = false
-    })
-  },
-  data() {
-    return {
-      visible: false,
-      home: { icon: 'pi pi-home', to: '/' },
-      breadcrumbs: [],
-      items: [
-        { label: 'Página principal', icon: 'pi pi-fw pi-home', to: '/' },
-        {
-          label: 'Administrador', icon: 'pi pi-fw pi-shield', items:
-            [
-              { label: 'Ver usuarios', icon: 'pi pi-fw pi-users', to: '/usuarios' },
-              { label: 'Registrar usuario', icon: 'pi pi-fw pi-user-plus', to: '/usuarios/registrar' },
-              { label: 'Centro de respaldos', icon: 'pi pi-fw pi-cloud-upload', to: '/respaldos' },
-            ]
-        },
-        {
-          label: 'Empleados', icon: 'pi pi-fw pi-user', items:
-            [
-              { label: 'Ver empleados', icon: 'pi pi-fw pi-users', to: '/empleados' },
-              { label: 'Registrar empleado', icon: 'pi pi-fw pi-user-plus', to: '/empleados/registrar' },
-            ]
-        },
-        {
-          label: 'Plazas', icon: 'pi pi-fw pi-briefcase', items:
-            [
-              { label: 'Ver plazas', icon: 'pi pi-fw pi-users', to: '/puestos' },
-              { label: 'Registrar plaza', icon: 'pi pi-fw pi-user-plus', to: '/puestos/registrar' },
-              { label: 'Reporte de plazas', icon: 'pi pi-fw pi-file', to: '/puestos/reporte' },
-            ]
-        },
-        {
-          label: 'Departamentos', icon: 'pi pi-fw pi-building', items:
-            [
-              { label: 'Ver departamentos', icon: 'pi pi-fw pi-users', to: '/departamentos' },
-              { label: 'Registrar departamento', icon: 'pi pi-fw pi-user-plus', to: '/departamentos/registrar' },
-            ]
-        },
-        {
-          label: 'Información', icon: 'pi pi-fw pi-search', items:
-            [
-              { label: 'Dashboard', icon: 'pi pi-fw pi-chart-bar', to: '/dashboard' },
-              { label: 'Reporte 9.11', icon: 'pi pi-fw pi-file', to: '/reporte' },
-            ]
-        },
-      ],
-      userMenu: [
-        {
-          label: 'Perfil',
-          icon: 'pi pi-fw pi-user',
-          to: '/'
-        },
-        {
-          label: 'Opciones',
-          icon: 'pi pi-fw pi-cog',
-          to: '/'
-        },
-        {
-          label: 'Cerrar sesión',
-          icon: 'pi pi-fw pi-sign-out',
-          command: () => {
-            this.logout()
+  setup() {
+    const AuthStore = authStore();
+    const route = useRoute();
+    const router = useRouter();
+    const showNavbar = ref(!route.path.includes('login'));
+    const breadcrumbs = [];
+    const alerts = useAlerts();
+
+    const nombre_usuario = ref('');
+    const inicial_usuario = ref('');
+    const rol_usuario = ref('');
+    const isLoggedIn = ref('');
+
+    router.beforeEach((to, from, next) => {
+      isLoggedIn.value = AuthStore.isLoggedIn();
+
+      if (isLoggedIn.value) {
+        let nombre = Cookies.get('nombre');
+        let apellidos = Cookies.get('apellidos').split(' ')[0];
+        let nombreCompleto = nombre + ' ' + apellidos;
+
+        if (nombreCompleto.length > 20) {
+          nombreCompleto = nombreCompleto.split(' ');
+          if (nombreCompleto[0].length+nombreCompleto[1].length > 20) {
+            nombreCompleto = nombreCompleto[0] + ' ' + nombreCompleto[1].charAt(0) + '.';
           }
         }
-      ]
+
+        nombre_usuario.value = nombreCompleto;
+        inicial_usuario.value = Cookies.get('nombre').charAt(0);
+        rol_usuario.value = Cookies.get('rol');
+      }
+
+      showNavbar.value = to.matched.some(record => record.meta.requiresAuth) && isLoggedIn.value;
+      //Si está logueado y quiere ir a login, redirigir a inicio
+      if (to.path === '/login' && isLoggedIn.value) {
+        alerts.showToast('info', 'Ya has iniciado sesión', "bottom-end", 3000);
+        showNavbar.value = true;
+        router.push('/inicio');
+      }
+      //Si no está logueado y quiere ir a una ruta protegida, redirigir a login
+      if (to.matched.some(record => record.meta.requiresAuth && !isLoggedIn.value)) {
+        next({
+          path: '/login',
+          query: { redirect: to.fullPath },
+        });
+        alerts.showToast('error', 'Necesitas iniciar sesión', "bottom-end", 3000);
+        //showNavbar.value = false;
+      } else {
+        next();
+      }
+    });
+
+    const items = [
+      { label: 'Inicio', icon: 'pi pi-fw pi-home', to: '/inicio' },
+      {
+        label: 'Administrador',
+        icon: 'pi pi-spin pi-cog',
+        items: [
+          { label: 'Usuarios', icon: 'pi pi-fw pi-users', to: '/usuarios' },
+          { label: 'Respaldos', icon: 'pi pi-fw pi-cloud-download', to: '/respaldos' },
+        ],
+      },
+      {
+        label: 'Datos',
+        icon: 'pi pi-fw pi-database',
+        items: [
+          { label: 'Empleados', icon: 'pi pi-fw pi-users', to: '/empleados' },
+          { label: 'Plazas', icon: 'pi pi-fw pi-briefcase', to: '/plazas' },
+          { label: 'Departamentos', icon: 'pi pi-fw pi-building', to: '/departamentos' },
+          { separator: true },
+          { label: 'Búsqueda avanzada', icon: 'pi pi-fw pi-search', to: '/consulta' },
+        ],
+      },
+      {
+        label: 'Estadística',
+        icon: 'pi pi-fw pi-chart-bar',
+        items: [
+          { label: 'Dashboard', icon: 'pi pi-fw pi-chart-pie', to: '/dashboard' },
+          { label: 'Reportes', icon: 'pi pi-fw pi-book', to: '/reportes' },
+        ],
+      },
+    ];
+
+    const userMenu = [
+      {
+        label: 'Cambiar contraseña',
+        icon: 'pi pi-fw pi-key',
+        to: '/opciones',
+      },
+      {
+        label: 'Cerrar sesión',
+        icon: 'pi pi-fw pi-power-off',
+        command: logout,
+      },
+    ];
+
+    const items_landing = [
+      { label: 'Inicio', icon: 'pi pi-fw pi-home', to: '/landing' },
+      { separator: true },
+      { label: 'Iniciar sesión', icon: 'pi pi-fw pi-lock', to: '/login' },
+      { label: 'Registrarme', icon: 'pi pi-fw pi-user-plus', to: '/registro' },
+      { label: 'Consultar mis datos', icon: 'pi pi-fw pi-search', to: '/consulta' },
+    ];
+
+    function logout() {
+      AuthStore.logout();
+      alerts.showLogoutSuccessToast();
+      router.push('/');
     }
+
+    onMounted(() => {
+      setTimeout(()=>{
+        document.getElementById('app-content').classList.add('application-background')
+      },1000)
+    });
+
+    const menuRef = ref(null);
+
+    function toggle(event) {
+      if (menuRef.value) {
+        menuRef.value.toggle(event);
+      }
+    }
+
+    return {
+      isLoggedIn,
+      nombre_usuario,
+      inicial_usuario,
+      rol_usuario,
+      items_landing,
+      route,
+      showNavbar,
+      breadcrumbs,
+      items,
+      userMenu,
+      logout,
+      toggle,
+      menuRef
+    };
   },
-  methods: {
-    logout() {
-      localStorage.removeItem('token')
-      this.$router.push('/login')
-    },
-    toggle(event) {
-      this.$refs.menu.toggle(event)
-    }
-  }
-}
+};
+
 </script>
 
 <style>
+#scroll-container {
+  overflow-y: scroll;
+  height: 100vh;
+}
 
 div.user-info-container {
   display: flex;
@@ -154,11 +243,176 @@ span.user-info-container {
   align-self: center;
 }
 
-#nav-toggle-button {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  margin: 1rem;
-  z-index: 1000;
+ul>li.paginate_button.page-item.active {
+  background-color: var(--primary-color) !important;
+
+}
+
+ul>li.paginate_button.page-item.active>a {
+  background-color: var(--primary-color) !important;
+}
+
+ul>li.paginate_button.page-item.active>a:focus {
+  box-shadow: none !important;
+}
+
+#app-content {
+  min-height: 100vh;
+}
+
+div.p-panel-content {
+  background-color: rgba(255, 255, 255, 0.8) !important;
+}
+
+div.p-menubar {
+  background-color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.thicker-glass {
+  background-color: rgba(255, 255, 255, 0.9) !important;
+}
+
+ul.p-submenu-list {
+  background-color: rgba(255, 255, 255, 0.98) !important;
+  z-index: 5000 !important;
+}
+
+div.card {
+  background-color: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(5px) !important;
+  z-index: 2 !important;
+}
+
+
+
+.application-background {
+  height: 100%;
+  width: 100%;
+  background-image: url('@/assets/svg/waves0.svg');
+  background-size:cover;
+  background-repeat: repeat-y;
+  background-position: 0 -700px;
+  background-color: #FFF;
+}
+
+li .dtr-title {
+  font-weight: bold !important;
+}
+
+td.dtr-control::before {
+  background-color: #5472d4 !important;
+}
+
+tr.dt-hasChild td.dt-control:before {
+  background-color: #ecb500 !important;
+}
+
+html {
+  height: 100%;
+}
+
+div.slider {
+  display: none;
+}
+
+td.child {
+  padding: 0 !important;
+}
+
+td.child table {
+  background-color: #f8f8f8;
+  border: #dadada 1px solid;
+  width: 100%;
+}
+
+input:read-only {
+  background-color: #f3f3f3;
+  cursor: not-allowed;
+}
+
+.swal2-checkbox input {
+  cursor: pointer !important;
+}
+
+footer {
+  background-color: #1B396A;
+  color: #FFF;
+
+}
+
+.nav-tec {
+  background-color: #1B396A;
+  color: #FFF;
+}
+
+.nav-tec ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #1B396A;
+  max-width: 1600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.nav-tec li {
+  float: left;
+}
+
+.nav-tec li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+.nav-tec li a:hover:not(.active) {
+  background-color: #112342;
+  box-shadow: inset 0 0 10px #254e91;
+}
+
+.nav-tec li a.blink i{
+  animation: trembling 3s ease-in-out infinite;
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 80%;
+  }
+}
+
+@keyframes trembling {
+  35% {
+    transform: translate(0px, 0px) rotate(0deg);
+  }
+
+  40% {
+    transform: translate(-2px, 0px) rotate(-5deg);
+  }
+
+  45% {
+    transform: translate(2px, 0px) rotate(5deg);
+  }
+
+  50% {
+    transform: translate(-2px, 0px) rotate(-5deg);
+  }
+
+  55% {
+    transform: translate(2px, 0px) rotate(5deg);
+  }
+
+  60% {
+    transform: translate(0px, 0px) rotate(0deg);
+  }
+}
+
+
+
+
+.nav-tec .active {
+  background-color: #e4771f;
 }
 </style>
