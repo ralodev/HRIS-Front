@@ -1,75 +1,208 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import empleados from '../views/empleados/empleados.vue'
-import editarEmpleado from '../views/empleados/editarEmpleado.vue'
-import departamentos from '../views/departamentos/departamentos.vue'
-import editarDepartamento from '../views/departamentos/editarDepartamento.vue'
-import puestos from '../views/puestos/puestos.vue'
-import editarPuesto from '../views/puestos/editarPuesto.vue'
-import Home from '../views/Home.vue'
+import consulta from '../views/consulta/consulta.vue'
+import dashboard from '../views/consulta/dashboard.vue'
+import reportes from '../views/consulta/reportes.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
-      name: 'Home',
-      component: Home,
+      name: 'landing',
+      component: () => import('../views/landing.vue'),
       meta: {
-        breadcrumb: 'Principal'
+        breadcrumb: 'Principal',
+        requiresAuth: false
       }
     },
     {
       path: '/empleados',
       name: 'empleados',
-      component: empleados,
+      component: () => import('../views/empleados/empleados_lista.vue'),
       meta: {
-        breadcrumb: 'Empleados'
+        breadcrumb: 'Empleados',
+        requiresAuth: true
       }
     },
     {
       path: '/empleados/editar/:id',
-      name: 'editarEmpleado',
-      component: editarEmpleado,
+      name: 'empleados_editar',
+      component: () => import('../views/empleados/empleados_editar.vue'),
       meta: {
-        breadcrumb: 'Editar Empleado'
+        breadcrumb: 'Editar Empleado',
+        requiresAuth: true
       }
     },
     {
-      path: '/puestos',
-      name: 'puestos',
-      component: puestos,
+      path: '/empleados/registrar/',
+      name: 'empleados_registrar',
+      component: () => import('../views/empleados/empleados_registrar.vue'),
       meta: {
-        breadcrumb: 'Puestos'
+        breadcrumb: 'Editar Empleado',
+        requiresAuth: true
       }
     },
     {
-      path: '/puestos/editar/:id',
-      name: 'editarPuesto',
-      component: editarPuesto,
+      path: '/empleados/empleados_historial/:id',
+      name: 'empleados_historial',
+      component: () => import('../views/empleados/empleados_historial.vue'),
       meta: {
-        breadcrumb: 'Editar Empleado'
+        breadcrumb: 'Editar Empleado',
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/plazas',
+      name: 'plazas',
+      component: () => import('../views/plazas/plazas_lista.vue'),
+      meta: {
+        breadcrumb: 'Puestos',
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/plazas/editar/:id',
+      name: 'plazas_editar',
+      component: () => import('../views/plazas/plazas_editar.vue'),
+      meta: {
+        breadcrumb: 'Editar Empleado',
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/plazas/seleccionar-empleado/',
+      name: 'seleccionar_empleado',
+      component: () => import('../views/plazas/plazas_seleccionar_empleado.vue'),
+      meta: {
+        breadcrumb: 'Editar Empleado',
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/plazas/registrar/:id',
+      name: 'plazas_registrar',
+      component: () => import('../views/plazas/plazas_registrar.vue'),
+      meta: {
+        breadcrumb: 'Editar Empleado',
+        requiresAuth: true
       }
     },
     {
       path: '/departamentos',
       name: 'departamentos',
-      component: departamentos,
+      component: () => import('../views/departamentos/departamentos_lista.vue'),
       meta: {
-        breadcrumb: 'Departamentos'
+        breadcrumb: 'Departamentos',
+        requiresAuth: true
       }
     },
     {
       path: '/departamentos/editar/:id',
-      name: 'editarDepartamento',
-      component: editarDepartamento,
+      name: 'departamentos_editar',
+      component: () => import('../views/departamentos/departamentos_editar.vue'),
       meta: {
-        breadcrumb: 'Editar Departamento'
+        breadcrumb: 'Editar Departamento',
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/consulta',
+      name: 'consulta',
+      component: consulta,
+      meta: {
+        breadcrumb: 'Consulta',
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/dashboard',
+      name: 'dashboard',
+      component: dashboard,
+      meta: {
+        breadcrumb: 'Dashboard',
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/reportes',
+      name: 'reportes',
+      component: reportes,
+      meta: {
+        breadcrumb: 'Reportes',
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/usuarios',
+      name: 'usuarios',
+      component: () => import('../views/admin/usuarios_lista.vue'),
+      meta: {
+        breadcrumb: 'Usuarios',
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/usuarios/registrar/',
+      name: 'usuarios_registrar',
+      component: () => import('../views/admin/usuarios_registrar.vue'),
+      meta: {
+        breadcrumb: 'Usuarios',
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/usuarios/editar/:id',
+      name: 'usuarios_editar',
+      component: () => import('../views/admin/usuarios_editar.vue'),
+      meta: {
+        breadcrumb: 'Usuarios',
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/respaldos',
+      name: 'respaldos',
+      component: () => import('../views/admin/respaldo.vue'),
+      meta: {
+        breadcrumb: 'Respaldos',
+        requiresAuth: true
       }
     },
     {
       path: '/:pathMatch(.*)*',
       name: 'not-found',
-      redirect: '/'
+      component: () => import('../views/404.vue'),
+      meta: {
+        breadcrumb: '404',
+        requiresAuth: false
+      }
+    },
+    {
+      path: '/login',
+      name: 'Iniciar sesión',
+      component: () => import('../views/auth/login.vue'),
+      meta: {
+        breadcrumb: 'Iniciar sesión',
+        requiresAuth: false
+      }
+    },
+    {
+      path: '/inicio',
+      name: 'inicio',
+      component: () => import('../views/home.vue'),
+      meta: {
+        breadcrumb: 'Inicio',
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/opciones',
+      name: 'opciones',
+      component: () => import('../views/usuarios/opciones.vue'),
+      meta: {
+        breadcrumb: 'Opciones',
+        requiresAuth: true
+      }
     }
   ]
 })
