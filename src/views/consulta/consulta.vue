@@ -87,8 +87,8 @@ import 'datatables.net-buttons/js/buttons.html5';
 import 'datatables.net-buttons/js/dataTables.buttons.js';
 import 'datatables.net-buttons';
 import jszip from 'jszip';
-import pdfmake from 'pdfmake';
-import pdfFonts from 'pdfmake/build/vfs_fonts';
+import pdfmake from 'pdfmake/build/pdfmake';
+import 'pdfmake/build/vfs_fonts';
 import Responsive from 'datatables.net-responsive';
 import { useStore } from '@/stores/consultaStore';
 import { useRouter } from 'vue-router';
@@ -100,8 +100,8 @@ import 'datatables.net-buttons/js/buttons.flash.js';
 import 'datatables.net-buttons/js/buttons.print.js';
 import 'datatables.net-select';
 import { optionsSexo, optionsEdad, optionsNivelAcademico, optionsEstado } from '@/assets/js/options.js';
-pdfMake.vfs = pdfFonts.pdfMake.vfs;
 DataTablesCore.Buttons.jszip(jszip);
+pdfMake.vfs = 'pdfMake/build/vfs_fonts.js';
 
 DataTable.use(DataTablesCore, Buttons, /*pdfMake, JsZip, print,*/neutralise, Responsive);
 
