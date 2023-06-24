@@ -2,7 +2,7 @@
   <!-- Puestos -->
   <div class="container-fluid pt-4">
     <!-- Title -->
-    <Panel :collapsed="true" class="text-xl" header="Panel de búsqueda avanzada" toggleable>
+    <Panel :collapsed="false" class="text-xl" header="Panel de búsqueda avanzada" toggleable>
 
       <div class="grid text-sm" id="searchFields">
         <div class="col-6 md:col-4 lg:col-3 mb-3">
@@ -88,7 +88,7 @@ import 'datatables.net-buttons/js/dataTables.buttons.js';
 import 'datatables.net-buttons';
 import jszip from 'jszip';
 import pdfmake from 'pdfmake/build/pdfmake';
-import 'pdfmake/build/vfs_fonts';
+//import pdfFonts from 'pdfmake/build/vfs_fonts';
 import Responsive from 'datatables.net-responsive';
 import { useStore } from '@/stores/consultaStore';
 import { useRouter } from 'vue-router';
@@ -100,13 +100,14 @@ import 'datatables.net-buttons/js/buttons.flash.js';
 import 'datatables.net-buttons/js/buttons.print.js';
 import 'datatables.net-select';
 import { optionsSexo, optionsEdad, optionsNivelAcademico, optionsEstado } from '@/assets/js/options.js';
-DataTablesCore.Buttons.jszip(jszip);
-pdfMake.vfs = 'pdfMake/build/vfs_fonts.js';
 
+//pdfmake.vfs =  pdfFonts.pdfMake.vfs;
 DataTable.use(DataTablesCore, Buttons, /*pdfMake, JsZip, print,*/neutralise, Responsive);
 
 DataTablesCore.Buttons.jszip(jszip);
-DataTablesCore.Buttons.pdfMake(pdfmake);
+DataTablesCore.Buttons.pdfMake(pdfmake)
+
+//DataTablesCore.Buttons.pdfMake(pdfmake);
 
 export default defineComponent({
   name: 'TablaEmpleados',
@@ -132,7 +133,7 @@ export default defineComponent({
     const data = ref([]);
     const temporalData = ref([]);
     const options = {
-      dom: 'Brtip',
+      dom: 'lBrtip',
       responsive: false,
       select: false,
       autoWidth: true,
@@ -140,23 +141,23 @@ export default defineComponent({
       buttons: [
         {
           extend: 'excel',
-          text: 'Excel',
+          text: '<i class="bi bi-file-earmark-excel"></i> Excel',
+          className: 'float-end border-round-xl mb-2',
           exportOptions: {
             columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
           },
         },
         {
-          extend: 'pdf',
-          text: 'PDF',
-          orientation: 'landscape',
-          exportOptions: {
-            columns: [0, 1, 3, 7, 12, 9, 10],
-
-          },
+          extend: 'copy',
+          className: 'float-end border-round-xl mx-1',
+          text: '<i class="bi bi-clipboard"></i> Copiar',
         },
-        'copy',
-        'csv',
-        'colvis'
+        {
+          extend: 'csv',
+          className: 'float-end border-round-xl',
+          text: '<i class="bi bi-filetype-csv"></i> CSV',
+        },
+        'lengthChange',
       ],
       pagingType: 'numbers',
       language: spanish,
@@ -180,14 +181,16 @@ export default defineComponent({
       { data: 'curp', title: 'CURP' },
       { data: 'nombre', title: 'Nombre' },
       { data: 'nivelAcademico', title: 'Nivel académico' },
-      { data: 'activo', title: 'Estado',
+      {
+        data: 'activo', title: 'Estado',
         render: function (data, type, row) {
           if (data == false) {
             return 'INACTIVO';
           } else {
             return "ACTIVO";
           }
-        } },
+        }
+      },
       { data: 'sexo', title: 'Sexo' },
       { data: 'edad', title: 'Edad' },
       { data: 'lenguas', title: 'Hablante de lenguas' },
