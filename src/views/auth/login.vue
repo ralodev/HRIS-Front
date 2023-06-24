@@ -10,11 +10,14 @@
       <div>
         <form id="login" @submit.prevent="onSubmit" class="px-5">
           <label for="email1" class="block text-900 fs-5 font-medium mb-2">Correo electrónico</label>
-          <InputText id="email1" v-model="data.email" type="text" class="w-full mb-3 " autocomplete="email" required />
+          <InputText id="email1" v-model="data.email" type="text" class="w-full mb-3 " autocomplete="email" required
+          :class="{'border-red-600 border-2 border-round-lg': wrongCredentials}"
+          />
 
           <label for="password1" class="block text-900 fs-5 font-medium mb-2">Contraseña</label>
-          <Password id="password1" v-model="data.password" class="w-full mb-3" autocomplete="current-password" required
-            :feedback="false" toggleMask />
+          <Password id="password1" v-model="data.password" class="w-full mb-3" autocomplete="current-password" required :feedback="false" toggleMask
+          :class="{'border-red-600 border-2 border-round-lg': wrongCredentials}"
+          />
 
           <div class="flex align-items-center justify-content-between mb-6">
             <div class="flex align-items-center">
@@ -24,10 +27,11 @@
             <a class="font-medium no-underline ml-2 text-primary-700 hover:text-primary-600 text-right cursor-pointer ">Olvidé
               mi
               contraseña</a>
-          </div>
+            </div>
+            <span class="text-center block font-medium text-red-600 mb-1" v-if="wrongCredentials">Credenciales incorrectas</span>
 
-          <Button type="submit" label="Iniciar sesión" icon="pi pi-user"
-            class="w-full hover:shadow-3 bg-primary-700 hover:bg-primary-600"></Button>
+          <Button type="submit" :label="!loading?'Iniciar sesión':null" icon="pi pi-user"
+            class="w-full hover:shadow-3 bg-primary-700 hover:bg-primary-600" :loading="loading"></Button>
         </form>
       </div>
     </div>
@@ -97,6 +101,8 @@ export default {
     const store = useStore();
     const router = useRouter();
     const alertas = useAlerts();
+    const loading = ref(false);
+    const wrongCredentials = ref(false);
 
     const data = ref({
       email: '',
@@ -118,32 +124,38 @@ export default {
     });
 
     const onSubmit = () => {
+      loading.value = true;
+      wrongCredentials.value = false;
       if (rememberMe.value) {
         localStorage.setItem('username', data.value.email);
       } else {
         localStorage.removeItem('username');
       }
-      alertas.showLoading("Iniciando sesión...");
+      setTimeout(() => {
+
       store.login(data.value).then((r) => {
-        alertas.closeLoading();
+        loading.value = false;
         if (r.status === 200) {
           router.push({ path: '/inicio' });
-          alertas.showLoginSuccessToast();
-
           setAuthorizationHeader(r.data.access_token);
+          alertas.closeLoading();
         } else {
+          wrongCredentials.value = true;
           alertas.showLoginErrorToast();
         }
       }).catch((e) => {
         alertas.closeLoading();
-        alertas.showLoginErrorToast();
+        alertas.showErrorAlert(e);
       });
+      }, 1000);
     }
 
     return {
       rememberMe,
       onSubmit,
-      data
+      data,
+      loading,
+      wrongCredentials
     }
   }
 }
