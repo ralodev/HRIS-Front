@@ -16,7 +16,7 @@
     <div class="container-lg p-4 d-none d-md-block" id="911Content" style="height:6658px;">
       <!-- Title -->
       <div class="d-block">
-        <Button type="button" label="Exportar" icon="pi pi-download" @click="exportar" class="float-end" raised
+        <Button type="button" :label="exportando ? '' :'Descargar en PDF'" icon="pi pi-download" @click="exportar" class="float-end px-3" raised
           :loading="exportando" />
       </div>
       <div class="pb-3 toExport">
@@ -1483,8 +1483,11 @@ export default defineComponent({
     };
 
     onMounted(() => {
+      exportando.value = true;
+      let requestSuccess = true;
+      alertas.showLoading('Cargando datos...');
       store.getAll().then((r) => {
-
+        if (r.status == 200){
         data.value = store.data;
 
 
@@ -2062,8 +2065,19 @@ export default defineComponent({
           'habla_lengua': data.value.filter((e) => e.habla_lengua_indigena === 'SI' && e.edad >= 65 && (e.funcion === 'INVESTIGADOR' || e.funcion === 'AUXILIAR DE INVESTIGADOR' || e.funcion === 'DOCENTE INVESTIGADOR O DOCENTE AUXILIAR DE INVESTIGADOR')).length,
         }
 
+      }else{
+        requestSuccess = false;
+        alertas.closeLoading();
+        alertas.showErrorAlert('Error al obtener los datos','Intente nuevamente en unos segundos, si el error persiste contacte al administrador');
+      }
       }).then(() => {
-        data.value = tables_data;
+        if (requestSuccess){
+          data.value = tables_data;
+          setTimeout(() => {
+            alertas.closeLoading();
+            exportando.value = false;
+          }, 2000);
+        }
       });
 
 
@@ -2072,19 +2086,14 @@ export default defineComponent({
         pdf.value = new jsPDF();
       });
 
-      alertas.showLoadingToast('Cargando datos...');
-
-      let randtime = 1000 + Math.random() * (3000);
-      console.log("🚀 ~ file: reportes.vue:200 ~ onMounted ~ randtime:", randtime)
-      setTimeout(() => {
-        alertas.closeLoading();
+      /*
         document.querySelectorAll('.opacity-0').forEach((el) => {
           el.classList.remove('opacity-0');
         });
         document.querySelectorAll('.p-skeleton').forEach((el) => {
           el.classList.remove('p-skeleton');
         });
-      }, randtime);
+      */
 
     });
 
