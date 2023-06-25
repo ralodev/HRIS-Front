@@ -1,10 +1,10 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHashHistory, createWebHistory } from 'vue-router'
 import consulta from '../views/consulta/consulta.vue'
 import dashboard from '../views/consulta/dashboard.vue'
 import reportes from '../views/consulta/reportes.vue'
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHashHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
@@ -12,7 +12,7 @@ const router = createRouter({
       component: () => import('../views/landing.vue'),
       meta: {
         breadcrumb: 'Principal',
-        requiresAuth: false
+        requiresAuth: false,
       }
     },
     {
@@ -183,6 +183,15 @@ const router = createRouter({
       component: () => import('../views/auth/login.vue'),
       meta: {
         breadcrumb: 'Iniciar sesión',
+        requiresAuth: false
+      }
+    },
+    {
+      path: '/restablecer-contrasena',
+      name: 'Restablecer contraseña',
+      component: () => import('../views/auth/reset.vue'),
+      meta: {
+        breadcrumb: 'Restablecer contraseña',
         requiresAuth: false
       }
     },
