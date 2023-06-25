@@ -21,7 +21,8 @@ const router = createRouter({
       component: () => import('../views/empleados/empleados_lista.vue'),
       meta: {
         breadcrumb: 'Empleados',
-        requiresAuth: true
+        requiresAuth: true,
+        authLevel: 2
       }
     },
     {
@@ -30,7 +31,8 @@ const router = createRouter({
       component: () => import('../views/empleados/empleados_editar.vue'),
       meta: {
         breadcrumb: 'Editar Empleado',
-        requiresAuth: true
+        requiresAuth: true,
+        authLevel: 2
       }
     },
     {
@@ -38,8 +40,9 @@ const router = createRouter({
       name: 'empleados_registrar',
       component: () => import('../views/empleados/empleados_registrar.vue'),
       meta: {
-        breadcrumb: 'Editar Empleado',
-        requiresAuth: true
+        breadcrumb: 'Registrar Empleado',
+        requiresAuth: true,
+        authLevel: 2
       }
     },
     {
@@ -48,7 +51,8 @@ const router = createRouter({
       component: () => import('../views/empleados/empleados_historial.vue'),
       meta: {
         breadcrumb: 'Editar Empleado',
-        requiresAuth: true
+        requiresAuth: true,
+        authLevel: 2
       }
     },
     {
@@ -57,7 +61,8 @@ const router = createRouter({
       component: () => import('../views/plazas/plazas_lista.vue'),
       meta: {
         breadcrumb: 'Puestos',
-        requiresAuth: true
+        requiresAuth: true,
+        authLevel: 2
       }
     },
     {
@@ -66,7 +71,8 @@ const router = createRouter({
       component: () => import('../views/plazas/plazas_editar.vue'),
       meta: {
         breadcrumb: 'Editar Empleado',
-        requiresAuth: true
+        requiresAuth: true,
+        authLevel: 2
       }
     },
     {
@@ -75,7 +81,8 @@ const router = createRouter({
       component: () => import('../views/plazas/plazas_seleccionar_empleado.vue'),
       meta: {
         breadcrumb: 'Editar Empleado',
-        requiresAuth: true
+        requiresAuth: true,
+        authLevel: 2
       }
     },
     {
@@ -84,7 +91,8 @@ const router = createRouter({
       component: () => import('../views/plazas/plazas_registrar.vue'),
       meta: {
         breadcrumb: 'Editar Empleado',
-        requiresAuth: true
+        requiresAuth: true,
+        authLevel: 2
       }
     },
     {
@@ -93,7 +101,8 @@ const router = createRouter({
       component: () => import('../views/departamentos/departamentos_lista.vue'),
       meta: {
         breadcrumb: 'Departamentos',
-        requiresAuth: true
+        requiresAuth: true,
+        authLevel: 3
       }
     },
     {
@@ -102,7 +111,8 @@ const router = createRouter({
       component: () => import('../views/departamentos/departamentos_editar.vue'),
       meta: {
         breadcrumb: 'Editar Departamento',
-        requiresAuth: true
+        requiresAuth: true,
+        authLevel: 3
       }
     },
     {
@@ -111,7 +121,8 @@ const router = createRouter({
       component: consulta,
       meta: {
         breadcrumb: 'Consulta',
-        requiresAuth: true
+        requiresAuth: true,
+        authLevel: 3
       }
     },
     {
@@ -120,7 +131,8 @@ const router = createRouter({
       component: dashboard,
       meta: {
         breadcrumb: 'Dashboard',
-        requiresAuth: true
+        requiresAuth: true,
+        authLevel: 3
       }
     },
     {
@@ -129,7 +141,8 @@ const router = createRouter({
       component: reportes,
       meta: {
         breadcrumb: 'Reportes',
-        requiresAuth: true
+        requiresAuth: true,
+        authLevel: 3
       }
     },
     {
@@ -138,7 +151,8 @@ const router = createRouter({
       component: () => import('../views/admin/usuarios_lista.vue'),
       meta: {
         breadcrumb: 'Usuarios',
-        requiresAuth: true
+        requiresAuth: true,
+        authLevel: 4
       }
     },
     {
@@ -147,7 +161,8 @@ const router = createRouter({
       component: () => import('../views/admin/usuarios_historial.vue'),
       meta: {
         breadcrumb: 'Historial',
-        requiresAuth: true
+        requiresAuth: true,
+        authLevel: 4
       }
     },
     {
@@ -156,7 +171,8 @@ const router = createRouter({
       component: () => import('../views/admin/usuarios_registrar.vue'),
       meta: {
         breadcrumb: 'Usuarios',
-        requiresAuth: true
+        requiresAuth: true,
+        authLevel: 4
       }
     },
     {
@@ -165,7 +181,8 @@ const router = createRouter({
       component: () => import('../views/admin/usuarios_editar.vue'),
       meta: {
         breadcrumb: 'Usuarios',
-        requiresAuth: true
+        requiresAuth: true,
+        authLevel: 4
       }
     },
     {
@@ -174,7 +191,8 @@ const router = createRouter({
       component: () => import('../views/admin/respaldo.vue'),
       meta: {
         breadcrumb: 'Respaldos',
-        requiresAuth: true
+        requiresAuth: true,
+        authLevel: 4
       }
     },
     {
@@ -188,7 +206,7 @@ const router = createRouter({
     },
     {
       path: '/login',
-      name: 'Iniciar sesión',
+      name: 'login',
       component: () => import('../views/auth/login.vue'),
       meta: {
         breadcrumb: 'Iniciar sesión',
@@ -196,8 +214,17 @@ const router = createRouter({
       }
     },
     {
+      path: '/registro',
+      name: 'registro',
+      component: () => import('../views/auth/register.vue'),
+      meta: {
+        breadcrumb: 'Registro',
+        requiresAuth: false
+      }
+    },
+    {
       path: '/restablecer-contrasena',
-      name: 'Restablecer contraseña',
+      name: 'restablecer-contrasena',
       component: () => import('../views/auth/reset.vue'),
       meta: {
         breadcrumb: 'Restablecer contraseña',
@@ -210,7 +237,8 @@ const router = createRouter({
       component: () => import('../views/home.vue'),
       meta: {
         breadcrumb: 'Inicio',
-        requiresAuth: true
+        requiresAuth: true,
+        authLevel: 1
       }
     },
     {
@@ -219,7 +247,8 @@ const router = createRouter({
       component: () => import('../views/usuarios/opciones.vue'),
       meta: {
         breadcrumb: 'Opciones',
-        requiresAuth: true
+        requiresAuth: true,
+        authLevel: 1
       }
     }
   ]

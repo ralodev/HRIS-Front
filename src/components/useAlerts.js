@@ -85,7 +85,7 @@ export const useAlerts = () => {
             toast: true,
             position: 'bottom-end',
             showConfirmButton: false,
-            timer: 1000,
+            timer: 2000,
             timerProgressBar: true,
             didOpen: (toast) => {
                 toast.addEventListener('mouseenter', Swal.stopTimer)
@@ -99,12 +99,50 @@ export const useAlerts = () => {
         })
     }
 
+    const showSuccessToast = (title) => {
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'bottom-end',
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        })
+
+        Toast.fire({
+            icon: 'success',
+            title: title
+        })
+    }
+
+    const showErrorToast = (title) => {
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'bottom-end',
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        })
+
+        Toast.fire({
+            icon: 'error',
+            title: title
+        })
+    }
+
     const showLoginErrorToast = () => {
         const Toast = Swal.mixin({
             toast: true,
             position: 'bottom-end',
             showConfirmButton: false,
-            timer: 1000,
+            timer: 2000,
             timerProgressBar: true,
             didOpen: (toast) => {
                 toast.addEventListener('mouseenter', Swal.stopTimer)
@@ -123,7 +161,7 @@ export const useAlerts = () => {
             toast: true,
             position: 'bottom-end',
             showConfirmButton: false,
-            timer: 1000,
+            timer: 2000,
             timerProgressBar: true,
             didOpen: (toast) => {
                 toast.addEventListener('mouseenter', Swal.stopTimer)
@@ -215,6 +253,8 @@ export const useAlerts = () => {
         showLogoutSuccessToast,
         showToast,
         showLoadingToast,
-        loadingToast_EB
+        loadingToast_EB,
+        showSuccessToast,
+        showErrorToast
     }
 }

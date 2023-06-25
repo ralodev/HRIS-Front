@@ -4,37 +4,27 @@
     <div class="surface-card w-full md:w-8 lg:w-6 mx-auto v-center"
       style="max-width: 500px; padding-top: 3rem; padding-bottom: 8rem;">
       <div class="text-center mb-2">
-        <div class="text-900 text-4xl pb-5 font-medium">Ingresa tus datos</div>
+        <div class="text-900 text-4xl pb-5 font-medium">Regístrate</div>
       </div>
 
       <div>
         <form id="login" @submit.prevent="onSubmit" class="px-5">
-          <label for="email1" class="block text-900 fs-5 font-medium mb-2">Correo electrónico</label>
-          <InputText id="email1" v-model="data.email" type="text" class="w-full mb-3 " autocomplete="email" required
-          :class="{'border-red-600 border-2 border-round-lg': wrongCredentials}"
-          />
 
-          <label for="password1" class="block text-900 fs-5 font-medium mb-2">Contraseña</label>
-          <Password id="password1" v-model="data.password" class="w-full mb-3" autocomplete="current-password" required :feedback="false" toggleMask
-          :class="{'border-red-600 border-2 border-round-lg': wrongCredentials}"
-          />
+          <label for="email" class="block text-900 text-lg font-medium mb-2">Correo electrónico institucional</label>
+          <div class="p-inputgroup">
+              <InputText placeholder="Introduce tu correo electrónico" id="searchInput" @keyup.enter="verifyEmail" v-model="data.email" autocomplete="email" required @keypress="found_to_null"/>
+              <Button class="transition-all transition-duration-500" icon="pi pi-search" :label="see?'Verificar':null" severity="primary" @click="verifyEmail" @mouseover="seeTrue" @mouseout="seeFalse"/>
+          </div>
 
-          <div class="flex align-items-center justify-content-between mb-6">
-            <div class="flex align-items-center">
-              <Checkbox id="rememberme1" :binary="true" v-model="rememberMe" class="mr-2"></Checkbox>
-              <label for="rememberme1">Recordarme</label>
-            </div>
+          <span class="block text-justify text-color mb-3">Introduce tu correo institucional y verifica que se encuentre en la base de datos.</span>
 
-            <RouterLink to="/restablecer-contrasena" class="no-underline">
-              <a class="font-medium no-underline ml-2 text-primary-700 hover:text-primary-600 text-right cursor-pointer ">Olvidé
-                mi
-                contraseña</a>
-            </RouterLink>
-            </div>
-            <span class="text-center block font-medium text-red-600 mb-1" v-if="wrongCredentials">Credenciales incorrectas</span>
+          <span class="block text-justify text-danger mb-3" v-if="found==false">No hubo coincidencias. Si ese es tu correo institucional y eres trabajador del instituto, debes acudir al departamento de Recursos Humanos para actualizar el que se tiene en tu registro.</span>
 
-          <Button type="submit" :label="!loading?'Iniciar sesión':null" icon="pi pi-user"
-            class="w-full hover:shadow-3 bg-primary-700 hover:bg-primary-600" :loading="loading"></Button>
+          <span class="block text-justify text-success mb-3" v-if="found==true">Haz click en el botón de abajo para registrarte y en unos minutos recibirás un correo electrónico con instrucciones.</span>
+
+          <Button type="submit" :label="!loading?'Registrarme':null" :icon="found?'pi pi-check':'pi pi-times'"
+          :class="found?'bg-primary-700':'bg-gray-700 border-gray-700'"
+            class="w-full hover:shadow-3 hover:bg-primary-600" :loading="loading" :disabled="!found"></Button>
         </form>
       </div>
     </div>
@@ -91,7 +81,7 @@
 
 <script>
 import { ref, onMounted, computed } from 'vue';
-import { useStore } from '@/stores/authStore';
+import { useStore } from '@/stores/usuarioStore';
 import { useRouter } from 'vue-router';
 import { useAlerts } from '@/components/useAlerts';
 import { setAuthorizationHeader } from '@/assets/js/axiosConfig';
@@ -100,65 +90,99 @@ import Cookies from 'js-cookie';
 export default {
   name: 'Login',
   setup() {
-    const rememberMe = ref(null);
     const store = useStore();
     const router = useRouter();
     const alertas = useAlerts();
     const loading = ref(false);
     const wrongCredentials = ref(false);
+    const see = ref(false);
+    const found = ref(null);
 
     const data = ref({
       email: '',
-      password: ''
+      nombre: '',
+      apellidos: '',
+      rol: 'EMPLEADO',
     });
 
     onMounted(() => {
-      document.querySelector('input[type="text"]').focus();
-      let pwdInput = document.querySelector('input[type="password"]');
-      pwdInput.classList.add('w-100');
-      pwdInput.setAttribute('autocomplete', 'current-password');
-
-      const storedUsername = localStorage.getItem('username');
-      if (storedUsername) {
-        data.value.email = storedUsername;
-        rememberMe.value = true;
-        pwdInput.focus();
-      }
+      document.querySelector('input').focus();
     });
 
     const onSubmit = () => {
       loading.value = true;
       wrongCredentials.value = false;
-      if (rememberMe.value) {
-        localStorage.setItem('username', data.value.email);
-      } else {
-        localStorage.removeItem('username');
-      }
-      setTimeout(() => {
 
-      store.login(data.value).then((r) => {
+      //Regex para validar el correo con el dominio @itoaxaca.edu.mx o @oaxaca.tecnm.mx
+      const regex = new RegExp('^[a-zA-Z0-9._%+-]+@(itoaxaca.edu.mx|oaxaca.tecnm.mx)$');
+      if (!regex.test(data.value.email)) {
+        alertas.showWarningToast('Correo no válido');
+        loading.value = false;
+        return;
+      }
+
+      alertas.showLoading();
+
+      store.registrar(data.value.email).then((r) => {
+        alertas.closeLoading();
         loading.value = false;
         if (r.status === 200) {
-          router.push({ path: '/inicio' });
-          setAuthorizationHeader(r.data.access_token);
-          alertas.closeLoading();
+          alertas.showSuccessAlert('Registro exitoso', 'Se ha enviado un correo de confirmación a tu correo electrónico');
+          found.value = null;
         } else {
           wrongCredentials.value = true;
-          alertas.showLoginErrorToast();
+          alertas.showErrorToast("No se pudo registrar el usuario");
         }
       }).catch((e) => {
         alertas.closeLoading();
         alertas.showErrorAlert(e);
       });
-      }, 1000);
+    }
+
+    const verifyEmail = () => {
+      const regex = new RegExp('^[a-zA-Z0-9._%+-]+@(itoaxaca.edu.mx|oaxaca.tecnm.mx)$');
+      if (!regex.test(data.value.email)) {
+        alertas.showErrorToast('Correo no válido');
+        loading.value = false;
+        return;
+      }
+      store.verificarCorreo(data.value.email).then((r) => {
+        if (r.status === 200) {
+          if (r.data == "Existe") {
+            found.value = true;
+            alertas.showSuccessToast('Correo encontrado');
+          } else {
+            found.value = false;
+            alertas.showErrorToast('Correo no encontrado');
+          }
+        } else {
+          found.value = null;
+          alertas.showErrorToast('No se pudo verificar el correo');
+        }
+      }).catch((e) => {
+        found.value = null;
+        alertas.showErrorToast('Ocurrió un error al verificar el correo');
+      });
     }
 
     return {
-      rememberMe,
       onSubmit,
       data,
       loading,
-      wrongCredentials
+      wrongCredentials,
+      see,
+      verifyEmail,
+      found,
+      found_to_null() {
+        found.value = null;
+      },
+      seeTrue() {
+        see.value = true;
+      },
+      seeFalse() {
+        see.value = false;
+      },
+
     }
   }
 }
