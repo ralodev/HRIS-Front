@@ -13,7 +13,9 @@
         <div class="card-body">
           <div class="grid">
             <div class="col-12">
-              <Button v-if="isEdit" icon="pi pi-book" class="float-end border-none" @click="verHistorial" label="ver actividad" severity="help" />
+              <Button v-if="isEdit" icon="bi bi-bootstrap-reboot" class="float-end border-none" @click="verHistorial" v-tooltip.top="'Restablecer contraseña'" label="Restablecer" severity="secondary" />
+              <Button v-if="isEdit" icon="pi pi-book" class="float-end border-none me-2" @click="verHistorial" label="Actividad" v-tooltip.top="'Ver historial'" severity="secondary" />
+              <Button v-if="isEdit" :icon="isLocked? 'pi-lock-open':'pi pi-lock'" class="float-end border-none me-2" @click="verHistorial" :label="isLocked.value?'Desbloquear':'Bloquear'" v-tooltip.top="'Ver historial'" :severity="isLocked.value? 'primary':'warning'" />
             </div>
             <!-- Input correo -->
             <div class="col-12 md:col-offset-3 md:col-6">
@@ -140,6 +142,7 @@
       const error = ref({});
       const data = ref({});
       const id = ref(null);
+      const isLocked = ref(false);
       const { showToast, showSuccessAlert, showConfirmAlert, showErrorAlert, showLoading, closeLoading } = useAlerts();
       const roles = [
         { nombre: 'ADMINISTRADOR', value: 'ROLE_ADMIN' },
@@ -250,7 +253,7 @@
                 .then((response) => {
                   if (response.status == 200) {
                     //If the employee is added, show a success alert and redirect to the employees list
-                    showSuccessAlert('¡Éxito!', 'El usuario se ha registrado correctamente, recibirá un correo en unos minutos.', 'success', 'Aceptar').then(() => {
+                    showSuccessAlert('¡Registro exitoso!', 'El usuario recibirá un correo en unos minutos, revise su bandeja de entrada y su bandeja de spam', 'success', 'Aceptar').then(() => {
                       router.push({ name: 'usuarios' });
                     });
                   } else {
@@ -295,19 +298,23 @@
           },
         }).then((result) => {
           if (result.value) {
-            store
-              .deleteUsuario(data.value.email)
-              .then(() => {
-                Swal.fire({
+            console.log(data.value.id);
+            store.eliminarUsuario(data.value.id)
+              .then((code) => {
+                if (code == 200){
+                  Swal.fire({
                   icon: 'success',
                   title: '¡Éxito!',
                   text: 'El usuario ha sido eliminado de forma permanente',
                 }).then(() => {
                   router.push({ name: 'usuarios' });
                 });
+                } else {
+                  showErrorAlert('Error', 'Ocurrió un error al eliminar el usuario', 'error', 'Aceptar');
+                }
               })
               .catch((error) => {
-                showToast('error', 'Ocurrió un error al eliminar el usuarios');
+                showToast('error', 'Ocurrió un error al eliminar el usuario');
               });
           }
         });
@@ -323,6 +330,7 @@
         isEdit,
         eliminar,
         roles,
+        isLocked,
         goBack: () => router.go(-1),
         verHistorial: () => router.push({ name: 'usuarios_historial', params: { id: data.value.id } }),
       };
