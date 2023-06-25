@@ -18,8 +18,7 @@
           <img alt="logo" src="./assets/icon_orig.png" height="50" />
         </template>
         <template #end>
-          <span class="py-2 user-info-container border-round-2xl hover:bg-gray-200" type="button" label="Toggle" @click="toggle" aria-haspopup="true"
-            aria-controls="overlay_menu">
+          <span class="py-2 user-info-container border-round-2xl hover:bg-gray-200" type="button" label="Toggle" @click="toggle" aria-haspopup="true" aria-controls="overlay_menu">
             <div class="ps-2 me-2 text-nowrap">
               <span class="user-info user-info-item fw-semibold text-end">{{ nombre_usuario }}</span>
             </div>
@@ -42,8 +41,7 @@
             <RouterLink to="/registro"><i class="pi pi-user-plus"></i> Registrarme</RouterLink>
           </li>
           <li v-if="isLoggedIn" style="float:right">
-            <RouterLink to="/inicio" class="blink"><i class="pi pi-lock-open
-"></i> Ingresar (sesión activa)</RouterLink>
+            <RouterLink to="/inicio" class="blink"><i class="pi pi-lock-open"></i> Ingresar (sesión activa)</RouterLink>
           </li>
           <li v-else style="float:right">
             <RouterLink to="/login" :class="{ active: route.path === '/login' }"><i class="pi pi-lock"></i> Iniciar sesión</RouterLink>
@@ -52,7 +50,7 @@
       </div>
 
 
-      <router-view />
+      <RouterView/>
 
     </div>
 
@@ -67,8 +65,6 @@ import { useStore as authStore } from '@/stores/authStore';
 import Cookies from 'js-cookie';
 import { useAlerts } from '@/components/useAlerts';
 
-
-
 export default {
   name: 'App',
   setup() {
@@ -78,6 +74,7 @@ export default {
     const showNavbar = ref(!route.path.includes('login'));
     const breadcrumbs = [];
     const alerts = useAlerts();
+    const appContainer = ref(null);
 
     const nombre_usuario = ref('');
     const inicial_usuario = ref('');
@@ -94,7 +91,7 @@ export default {
 
         if (nombreCompleto.length > 20) {
           nombreCompleto = nombreCompleto.split(' ');
-          if (nombreCompleto[0].length+nombreCompleto[1].length > 20) {
+          if (nombreCompleto[0].length + nombreCompleto[1].length > 20) {
             nombreCompleto = nombreCompleto[0] + ' ' + nombreCompleto[1].charAt(0) + '.';
           }
         }
@@ -168,14 +165,6 @@ export default {
       },
     ];
 
-    const items_landing = [
-      { label: 'Inicio', icon: 'pi pi-fw pi-home', to: '/landing' },
-      { separator: true },
-      { label: 'Iniciar sesión', icon: 'pi pi-fw pi-lock', to: '/login' },
-      { label: 'Registrarme', icon: 'pi pi-fw pi-user-plus', to: '/registro' },
-      { label: 'Consultar mis datos', icon: 'pi pi-fw pi-search', to: '/consulta' },
-    ];
-
     function logout() {
       AuthStore.logout();
       alerts.showLogoutSuccessToast();
@@ -183,9 +172,9 @@ export default {
     }
 
     onMounted(() => {
-      setTimeout(()=>{
+      setTimeout(() => {
         document.getElementById('app-content').classList.add('application-background')
-      },1000)
+      }, 1000)
     });
 
     const menuRef = ref(null);
@@ -201,7 +190,6 @@ export default {
       nombre_usuario,
       inicial_usuario,
       rol_usuario,
-      items_landing,
       route,
       showNavbar,
       breadcrumbs,
@@ -209,7 +197,8 @@ export default {
       userMenu,
       logout,
       toggle,
-      menuRef
+      menuRef,
+      appContainer,
     };
   },
 };
@@ -217,6 +206,42 @@ export default {
 </script>
 
 <style>
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+  padding: 0 0 !important;
+}
+
+.paginate_button.page-item, .paginate_button.page-item:hover, .paginate_button.page-item.active:focus, .paginate_button.page-item.active:active  {
+  border: none !important;
+  background: none !important;
+}
+
+.paginate_button.page-item.active:hover a:hover{
+  cursor: default !important;
+}
+
+.pagination:hover {
+  display: inline-block !important;
+}
+
+.pagination {
+  display: inline-block !important;
+  margin-left: 1px !important;
+  margin-right: 1px !important;
+  margin-bottom: 0 !important;
+}
+
+ul>li.paginate_button.page-item.active {
+  background-color: var(--primary-color) !important;
+}
+
+ul>li.paginate_button.page-item.active>a {
+  background-color: var(--primary-color) !important;
+}
+
+ul>li.paginate_button.page-item.active>a:focus {
+  box-shadow: none !important;
+}
+
 #scroll-container {
   overflow-y: scroll;
   height: 100vh;
@@ -243,17 +268,18 @@ span.user-info-container {
   align-self: center;
 }
 
-ul>li.paginate_button.page-item.active {
-  background-color: var(--primary-color) !important;
-
+label select.form-select {
+  min-width: 80px;
 }
 
-ul>li.paginate_button.page-item.active>a {
-  background-color: var(--primary-color) !important;
+div.dt-buttons.btn-group {
+  position: relative;
+  display: flex;
 }
-
-ul>li.paginate_button.page-item.active>a:focus {
-  box-shadow: none !important;
+@media (min-width: 768px) {
+  div.dt-buttons.btn-group {
+    display: block;
+  }
 }
 
 #app-content {
@@ -261,7 +287,7 @@ ul>li.paginate_button.page-item.active>a:focus {
 }
 
 div.p-panel-content {
-  background-color: rgba(255, 255, 255, 0.8) !important;
+  background-color: rgba(255, 255, 255, 0.9) !important;
 }
 
 div.p-menubar {
@@ -289,7 +315,7 @@ div.card {
   height: 100%;
   width: 100%;
   background-image: url('@/assets/svg/waves0.svg');
-  background-size:cover;
+  background-size: cover;
   background-repeat: repeat-y;
   background-position: 0 -700px;
   background-color: #FFF;
@@ -373,14 +399,8 @@ footer {
   box-shadow: inset 0 0 10px #254e91;
 }
 
-.nav-tec li a.blink i{
+.nav-tec li a.blink i {
   animation: trembling 3s ease-in-out infinite;
-}
-
-@keyframes blinker {
-  50% {
-    opacity: 80%;
-  }
 }
 
 @keyframes trembling {
@@ -408,9 +428,6 @@ footer {
     transform: translate(0px, 0px) rotate(0deg);
   }
 }
-
-
-
 
 .nav-tec .active {
   background-color: #e4771f;
