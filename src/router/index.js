@@ -142,6 +142,15 @@ const router = createRouter({
       }
     },
     {
+      path: '/usuarios/historial/',
+      name: 'usuarios_historial',
+      component: () => import('../views/admin/usuarios_historial.vue'),
+      meta: {
+        breadcrumb: 'Historial',
+        requiresAuth: true
+      }
+    },
+    {
       path: '/usuarios/registrar/',
       name: 'usuarios_registrar',
       component: () => import('../views/admin/usuarios_registrar.vue'),

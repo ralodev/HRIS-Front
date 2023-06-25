@@ -15,15 +15,17 @@
       <div class="card-body table-responsive">
         <!-- Buttons -->
         <div class="grid mb-2">
-          <div class="col-12 lg:col-6 md:col-8">
+          <div class="col-12 lg:col-6 md:col-6">
             <div class="p-inputgroup">
               <InputText placeholder="Buscar usuario" id="searchInput" @keyup.enter="search" v-model="searchText"
                 type="search" autocomplete="none" />
               <Button icon="pi pi-search" severity="primary" @click="search" />
             </div>
           </div>
-          <div class="col-12 lg:col-6 md:col-4">
+          <div class="col-12 lg:col-6 md:col-6">
             <Button type="button" label="Registrar usuario" icon="pi pi-user-plus" @click="registrar" class="float-end"
+              raised />
+            <Button type="button" label="Historial" icon="pi pi-history" @click="historial" class="float-end me-2" severity="secondary"
               raised />
           </div>
         </div>
@@ -105,7 +107,7 @@ export default defineComponent({
     */
     const columns = [
       {
-        data: null, title: 'Nombre', class: 'min-tablet-l', width: '20%', render: function (data) {
+        data: null, title: 'Nombre', class: 'all', width: '20%', render: function (data) {
           let tag;
           if (data.estado == 'ACTIVO') {
             tag = "<span class='float-end p-tag p-component p-tag-success' title='Este usuario está habilitado' style='cursor: help !important;'>H<span class='d-lg-block d-none'>abilitado</span></span>"
@@ -125,7 +127,7 @@ export default defineComponent({
         }
       },
       {
-        data: 'email', title: 'Correo electrónico', class: 'all no-wrap text-nowrap email-col', width: '10%'
+        data: 'email', title: 'Correo electrónico', class: 'min-tablet-l no-wrap text-nowrap email-col', width: '10%'
       },
       {
         data: null, class: 'text-nowrap  acciones justify-content-center all ', width: '10%', title: 'Acciones', orderable: false, wrap: true, render: function (data) {
@@ -273,6 +275,9 @@ export default defineComponent({
       options,
       registrar: () => {
         router.push({ name: 'usuarios_registrar' });
+      },
+      historial: () => {
+        router.push({ name: 'usuarios_historial' });
       },
       search,
       searchText,

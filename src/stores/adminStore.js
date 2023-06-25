@@ -114,6 +114,32 @@ export const useStore = defineStore('admin', {
       }
     },
 
+    async getHistorial() {
+      this.error = '';
+      try {
+        const response = await axios.get(`${this.apiURL}/historial`);
+        this.data = response.data;
+        this.message = response.message;
+        return response;
+      } catch (err) {
+        this.error = err.response.data.message || err.message;
+        return err;
+      }
+    },
+
+    async getHistorialUsuario(id) {
+      this.error = '';
+      try {
+        const response = await axios.get(`${this.apiURL}/historial/usuario/${id}`);
+        this.data = response.data.data;
+        this.message = response.data.message;
+        return response;
+      } catch (err) {
+        this.error = err.response.data.message || err.message;
+        return err;
+      }
+    },
+
     async respaldo() {
       this.error = '';
       try {
