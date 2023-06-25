@@ -432,4 +432,13 @@ footer {
 .nav-tec .active {
   background-color: #e4771f;
 }
+
+div.card-header i.bi.fw-bold {
+  font-size: 2.5rem;
+}
+
+.bi{
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+}
 </style>

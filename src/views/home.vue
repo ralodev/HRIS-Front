@@ -84,10 +84,4 @@ export default {
 </script>
 
 <style>
-.bi {
-  line-height: 1;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  speak-as: none;
-}
 </style>
