@@ -40,7 +40,6 @@ export const useStore = defineStore('usuarios', {
     async datos(payload) {
         this.error = '';
       try {
-        //pass payload as a url parameter
         const response = await axios.get(`${this.apiURL}datos?nombre=${payload.nombre}&apellidos=${payload.apellidos}`);
         this.data = response.data.data;
         this.message = response.data.message;
@@ -50,6 +49,19 @@ export const useStore = defineStore('usuarios', {
         return err;
       }
     },
+
+    async resetRequest(email) {
+      this.error = '';
+    try {
+      const response = await axios.post(`${this.apiURL}publico/reset-request/${email}`);
+      this.data = response.data.data;
+      this.message = response.data.message;
+      return response;
+    } catch (err) {
+      this.error = err.response.data.message || err.message;
+      return err;
+    }
+  },
 
   },
 });

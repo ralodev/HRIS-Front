@@ -10,10 +10,10 @@ export const useStore = defineStore('admin', {
     data: ([]),
   }),
   actions: {
-    async getUsuario(email) {
+    async getUsuario(id) {
       this.error = '';
       try {
-        const response = await axios.get(`${this.apiURL}/usuarios/${email}`, null, {
+        const response = await axios.get(`${this.apiURL}/usuarios/id/${id}`, null, {
           headers: {
             Authorization: `Bearer ${this.token}`,
           },
@@ -49,7 +49,7 @@ export const useStore = defineStore('admin', {
       }
     },
 
-    async editarUsuario(email,newUsuario) {
+    async editarUsuario(email, newUsuario) {
       this.error = '';
       try {
         const response = await axios.put(`${this.apiURL}/actualizar/${email}`, newUsuario);
@@ -62,10 +62,10 @@ export const useStore = defineStore('admin', {
       }
     },
 
-    async bloquearUsuario(email) {
+    async bloquearUsuario(id) {
       this.error = '';
       try {
-        const response = await axios.put(`${this.apiURL}/bloquear/${email}`);
+        const response = await axios.put(`${this.apiURL}/bloquear/id/${id}`);
         this.data = response.data.data;
         this.message = response.data.message;
         return response;
@@ -75,10 +75,10 @@ export const useStore = defineStore('admin', {
       }
     },
 
-    async desbloquearUsuario(email) {
+    async desbloquearUsuario(id) {
       this.error = '';
       try {
-        const response = await axios.put(`${this.apiURL}/desbloquear/${email}`);
+        const response = await axios.put(`${this.apiURL}/desbloquear/id/${id}`);
         this.data = response.data.data;
         this.message = response.data.message;
         return response;
@@ -88,23 +88,23 @@ export const useStore = defineStore('admin', {
       }
     },
 
-    async eliminarUsuario(email) {
+    async eliminarUsuario(id) {
       this.error = '';
       try {
-        const response = await axios.delete(`${this.apiURL}/eliminar/${email}`);
+        const response = await axios.delete(`${this.apiURL}/eliminar/id/${id}`);
         this.data = response.data.data;
         this.message = response.data.message;
-        return response;
+        return response.status;
       } catch (err) {
         this.error = err.response.data.message || err.message;
         return err;
       }
     },
 
-    async restablecerContrasena(email) {
+    async restablecerContrasena(id) {
       this.error = '';
       try {
-        const response = await axios.put(`${this.apiURL}/restablecer/${email}`);
+        const response = await axios.put(`${this.apiURL}/restablecer/id/${id}`);
         this.data = response.data.data;
         this.message = response.data.message;
         return response;
@@ -122,18 +122,20 @@ export const useStore = defineStore('admin', {
           url: `${this.apiURL}/respaldo`,
           responseType: 'blob',  // Indica que la respuesta será un blob (archivo binario)
         }).then((response) => {
-
-        const url = window.URL.createObjectURL(new Blob([response.data]));
-        const link = document.createElement('a');
-        link.href = url;
-        const fileName = response.headers['content-disposition'].split('filename=')[1].trim().replaceAll('"', '');
-        link.setAttribute('download', fileName);
-        document.body.appendChild(link);
-        link.click();
-
-        this.data = response.data.data;
-        this.message = response.data.message;
-        return response;
+          if (response.status === 200) {
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            const fileName = response.headers['content-disposition'].split('filename=')[1].trim().replaceAll('"', '');
+            link.setAttribute('download', fileName);
+            document.body.appendChild(link);
+            link.click();
+          } else {
+            throw new Error('Error al descargar el respaldo');
+          }
+          this.data = response.data.data;
+          this.message = response.data.message;
+          return response;
         });
       } catch (err) {
         this.error = err.response.data.message || err.message;
