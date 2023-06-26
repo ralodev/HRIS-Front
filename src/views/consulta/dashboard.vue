@@ -1,61 +1,68 @@
 <template>
     <!-- Dashboard -->
-    <div class="container-lg p-4">
+    <div class="container-fluid p-4">
         <!-- Title -->
 
         <div class="grid">
             <!-- Boxes with count of employees by gender -->
-            <div class="col-6 md:col-4 sm:col-4">
-                <div class="card surface-section shadow-4 p-3 text-center">
+            <div class="col-12 md:col-4 sm:col-6">
+                <div class="card surface-section shadow-4 p-3 text-center h-100">
                     <div class="text-900 h4 font-medium text-center">Número de empleados</div>
                     <i class="bi bi-people-fill" style="
                         font-size: 50px;
                         color: #0079AF;
-                        margin: 0 auto;
+                        margin: auto auto;
+                        margin-bottom: 0;
                         display: block;
-                    "> 456</i>
+                    "> 403</i>
                 </div>
             </div>
-            <div class="col-6 md:col-4 sm:col-4">
-                <div class="card surface-section shadow-4 p-3 text-center">
+            <div class="col-12 md:col-4 sm:col-6">
+                <div class="card surface-section shadow-4 p-3 text-center h-100">
                     <div class="text-900 h4 font-medium text-center">Número de plazas</div>
-                    <i class="bi bi-briefcase-fill" style="
+                    <i class="vertical-align-bottom bi bi-briefcase-fill" style="
                         font-size: 50px;
                         color: #0079AF;
-                        margin: 0 auto;
+                        margin: auto auto;
+                        margin-bottom: 0;
                         display: block;
-                    "> 504</i>
+                    "> 418</i>
                 </div>
             </div>
-            <div class="col-6 md:col-4 sm:col-4 d-none d-md-block">
-                <div class="card surface-section shadow-4 p-3 text-center">
+            <div class="col-12 md:col-4 sm:col-12">
+                <div class="card surface-section shadow-4 p-3 text-center h-100">
                     <div class="text-900 h4 font-medium text-center">Número de usuarios</div>
                     <i class="bi bi-person-fill-check" style="
                         font-size: 50px;
                         color: #0079AF;
-                        margin: 0 auto;
+                        margin: auto auto;
+                        margin-bottom: 0;
                         display: block;
-                    "> 1</i>
+                    "> 10</i>
                 </div>
             </div>
-            <div class="col-12 md:col-5 lg:col-4">
+
+
+            <div class="col-12 md:col-6 lg:col-4">
                 <div class="card surface-section shadow-4 p-3 h-100">
-                    <div class="text-900 text-xl mb-3 font-medium text-center">Empleados por sexo &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                    <div class="text-900 text-xl mb-3 font-medium text-center">Empleados por sexo</div>
                     <PieChart :chartData="sexo" :options="options" :height='200' />
                 </div>
             </div>
-            <div class="col-12 md:col-5 lg:col-4">
-                <div class="card surface-section shadow-4 p-3 h-100">
-                    <div class="text-900 text-xl mb-3 font-medium text-center">Empleados por tiempo de dedicación</div>
-                    <DoughnutChart :chartData="edadSexo" :options="options" :height='200' />
-                </div>
-            </div>
-            <div class="col-12 md:col-5 lg:col-4">
+            <div class="col-12 md:col-6 lg:col-4">
                 <div class="card surface-section shadow-4 p-3 h-100">
                     <div class="text-900 text-xl mb-3 font-medium text-center">Empleados por tipo de nombramiento</div>
                     <DoughnutChart :chartData="docentesAdmin" :options="options" :height='200' />
                 </div>
             </div>
+            <div class="col-12 md:col-12 lg:col-4">
+                <div class="card surface-section shadow-4 p-3 h-100">
+                    <div class="text-900 text-xl mb-3 font-medium text-center">Empleados por tiempo de dedicación</div>
+                    <DoughnutChart :chartData="edadSexo" :options="options" :height='200' />
+                </div>
+            </div>
+
+
             <div class="col-12 md:col-8 lg:col-6">
                 <div class="card surface-section shadow-4 p-3">
                     <div class="text-900 text-xl mb-3 font-medium text-center">Empleados por nivel academico</div>
@@ -76,7 +83,9 @@
 import { defineComponent, ref, nextTick, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAlerts } from '@/components/useAlerts';
-import { useStore } from '@/stores/dashboardStore';
+import { useStore as useAdminStore } from '@/stores/dashboardStore';
+import { useStore as useConsultaStore } from '@/stores/dashboardStore';
+import { useStore as useEmpleadotore } from '@/stores/dashboardStore';
 import { BarChart, DoughnutChart, PieChart, LineChart } from 'vue-chart-3';
 import { Chart, registerables } from 'chart.js';
 import { XdataPersonal, XdataDocenteEstudios, XdataDocenteTiempo, XdataDocenteTiempoEstudiosTitulo, XdataDocenteTiempoEstudiosSinTitulo, XdataDocenteEdadSexo, XdataDocenteAntiguedadSexo, XcolumnsPersonal, XcolumnsDocenteEstudios, XcolumnsDocenteTiempo, XcolumnsDocenteTiempoEstudios, XcolumnsDocenteEdadSexo, XcolumnsDocenteAntiguedadSexo } from '@/assets/js/repData.js';
@@ -86,7 +95,7 @@ export default defineComponent({
   name: 'Home',
   components: { DoughnutChart, PieChart, BarChart, LineChart },
   setup() {
-    const store = useStore();
+    //const store = useStore();
     const data = ref([]);
     const alertas = useAlerts();
     const nivelAcademico = ref([]);
@@ -129,12 +138,12 @@ export default defineComponent({
           alertas.closeLoading();
           //alertas.showErrorAlert('Error', 'Ocurrió un error inesperado');
         }
-      }, 5000);
+      }, 3000);
       setNivelAcademico();
         setSexo();
         setPersonal();
         setEdadSexo();
-        setDocentesAdmin();
+        setDocentesAdmin();/*
       await store.getData().then(() => {
         //Set local copy of data
         data.value = store.data;
@@ -151,7 +160,7 @@ export default defineComponent({
         }
         alertas.closeLoading();
         done = true;
-      });
+      });*/
     };
 
     const setNivelAcademico = () => {
@@ -224,14 +233,8 @@ export default defineComponent({
               data: mujeres,
               backgroundColor: '#0079AF',
             },
-            {
-              label: 'Total',
-              data: data,
-              backgroundColor: '#123E6B',
-            },
           ],
         };
-        console.log('👹',personal.value);
     };
 
     const setEdadSexo = () => {
@@ -251,7 +254,7 @@ export default defineComponent({
           datasets: [
             {
               data: data,
-              backgroundColor: ['#77CEFF', '#0079AF'],
+              backgroundColor: ['#77CEFF', '#0079AF', '#123E6B', '#97B0C4'],
             },
           ],
         };

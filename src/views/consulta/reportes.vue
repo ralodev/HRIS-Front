@@ -13,7 +13,7 @@
         en pantallas grandes, gira tu dispositivo o cambia el tamaño de la ventana :)</div>
     </div>
     <!-- Reporte -->
-    <div class="container-lg p-4 d-none d-md-block" id="911Content" style="height:6658px;">
+    <div class="container-lg p-4 d-none d-md-block" id="911Content">
       <!-- Title -->
       <div class="d-block">
         <Button type="button" :label="exportando ? '' :'Descargar en PDF'" icon="pi pi-download" @click="exportar" class="float-end px-3" raised
@@ -51,7 +51,7 @@
           <table v-if="data.directivos" class="table table-to-export  table-bordered table-striped">
             <thead>
               <tr>
-                <th>Personal</th>
+                <th class="vertical-align-middle text-nowrap">Personal</th>
                 <th class="text-center vertical-align-middle px-4">Hombres</th>
                 <th class="text-center vertical-align-middle px-4">Mujeres</th>
                 <th class="text-center vertical-align-middle px-4">Total</th>
@@ -161,7 +161,7 @@
           <table v-if="data.doctorado" class="table table-to-export  table-bordered table-striped">
             <thead>
               <tr>
-                <th>Nivel de estudios</th>
+                <th class="vertical-align-middle text-nowrap">Nivel de estudios</th>
                 <th class="text-center vertical-align-middle px-4">Hombres</th>
                 <th class="text-center vertical-align-middle px-4">Mujeres</th>
                 <th class="text-center vertical-align-middle px-4">Total</th>
@@ -282,7 +282,7 @@
           <table v-if="data.doctorado" class="table table-to-export  table-bordered table-striped">
             <thead>
               <tr>
-                <th>Personal por tiempo de dedicación</th>
+                <th class="vertical-align-middle text-nowrap">Personal por tiempo de dedicación</th>
                 <th class="text-center vertical-align-middle px-4">Hombres</th>
                 <th class="text-center vertical-align-middle px-4">Mujeres</th>
                 <th class="text-center vertical-align-middle px-4">Total</th>
@@ -430,21 +430,21 @@
           <table v-if="data.doctorado" class="table table-to-export  table-bordered table-striped">
             <thead>
               <tr>
-                <th rowspan="2 vertical-align-middle">Nivel de estudio</th>
+                <th class="vertical-align-middle text-nowrap" rowspan="2">Nivel de estudio</th>
                 <th class="text-center vertical-align-middle px-4" colspan="3">Técnico Superior*</th>
                 <th class="text-center vertical-align-middle px-4" colspan="3">Licenciatura</th>
                 <th class="text-center vertical-align-middle px-4" colspan="3">Posgrado</th>
               </tr>
               <tr>
-                <th class="text-center vertical-align-middle px-4">Hombres</th>
-                <th class="text-center vertical-align-middle px-4">Mujeres</th>
-                <th class="text-center vertical-align-middle px-4">Total</th>
-                <th class="text-center vertical-align-middle px-4">Hombres</th>
-                <th class="text-center vertical-align-middle px-4">Mujeres</th>
-                <th class="text-center vertical-align-middle px-4">Total</th>
-                <th class="text-center vertical-align-middle px-4">Hombres</th>
-                <th class="text-center vertical-align-middle px-4">Mujeres</th>
-                <th class="text-center vertical-align-middle px-4">Total</th>
+                <th class="text-center vertical-align-middle px-2">Hombres</th>
+                <th class="text-center vertical-align-middle px-2">Mujeres</th>
+                <th class="text-center vertical-align-middle px-2">Total</th>
+                <th class="text-center vertical-align-middle px-2">Hombres</th>
+                <th class="text-center vertical-align-middle px-2">Mujeres</th>
+                <th class="text-center vertical-align-middle px-2">Total</th>
+                <th class="text-center vertical-align-middle px-2">Hombres</th>
+                <th class="text-center vertical-align-middle px-2">Mujeres</th>
+                <th class="text-center vertical-align-middle px-2">Total</th>
               </tr>
             </thead>
             <tbody>
@@ -804,7 +804,7 @@
           <table v-if="data.doctorado" class="table table-to-export  table-bordered table-striped">
             <thead>
               <tr>
-                <th>Tipo de contrato</th>
+                <th class="vertical-align-middle text-nowrap">Tipo de contrato</th>
                 <th class="text-center vertical-align-middle">Investigador</th>
                 <th class="text-center vertical-align-middle">Auxiliar de investigador**</th>
                 <th class="text-center vertical-align-middle">Docente investigador</th>
@@ -902,7 +902,7 @@
           <table v-if="data.doctorado" class="table table-to-export  table-bordered table-striped">
             <thead>
               <tr>
-                <th>Nivel de estudios</th>
+                <th class="vertical-align-middle">Nivel de estudios</th>
                 <th class="text-center vertical-align-middle">Investigador</th>
                 <th class="text-center vertical-align-middle">Auxiliar de investigador</th>
                 <th class="text-center vertical-align-middle">Docente investigador</th>
@@ -1045,7 +1045,7 @@
             </tbody>
           </table>
           <small>* Incluye técnioco superior universitario y profesiona asociado.</small>
-          <small>** No incliye servicio social y/o prácticas profesionales.</small>
+          <small>** No incluye servicio social y/o prácticas profesionales.</small>
         </div>
 
         <div class="py-3 text-center bg-primary-700 text-white shadow-4">
@@ -1057,13 +1057,13 @@
           <table v-if="data.doctorado" class="table table-to-export  table-bordered table-striped">
             <thead>
               <tr>
-                <th>Antigüedad</th>
+                <th class="text-nowrap vertical-align-middle">Antigüedad</th>
                 <th class="text-center vertical-align-middle">Investigador</th>
                 <th class="text-center vertical-align-middle">Auxiliar de investigador</th>
                 <th class="text-center vertical-align-middle">Docente investigador</th>
-                <th class="text-center vertical-align-middle">Hombres</th>
-                <th class="text-center vertical-align-middle">Mujeres</th>
-                <th class="text-center vertical-align-middle">Total</th>
+                <th class="text-center vertical-align-middle px-3">Hombres</th>
+                <th class="text-center vertical-align-middle px-3">Mujeres</th>
+                <th class="text-center vertical-align-middle px-3">Total</th>
                 <th class="text-center vertical-align-middle">Con discapacidad</th>
                 <th class="text-center vertical-align-middle">Hablantes de lenguas indígenas</th>
               </tr>
@@ -1136,7 +1136,7 @@
                 <td class="text-center vertical-align-middle">{{ data.inv_antiguedad_25_29.habla_lengua }}</td>
               </tr>
               <tr>
-                <td>De 30 años o más</td>
+                <td class="text-nowrap">De 30 años o más</td>
                 <td class="text-center vertical-align-middle">{{ data.inv_antiguedad_30_mas.investigador }}</td>
                 <td class="text-center vertical-align-middle">{{ data.inv_antiguedad_30_mas.auxiliar }}</td>
                 <td class="text-center vertical-align-middle">{{ data.inv_antiguedad_30_mas.docente_investigador }}</td>
@@ -1200,20 +1200,20 @@
             class="table table-to-export  table-to-export table-bordered table-striped table-sm table-hover">
             <thead>
               <tr>
-                <th>Grupos de edad</th>
+                <th class="vertical-align-middle text-nowrap">Grupos de edad</th>
                 <th class="text-center vertical-align-middle">Investigador</th>
-                <th class="text-center vertical-align-middle">Auxiliar de investigador</th>
+                <th class="text-center vertical-align-middle">Auxiliar de investigador*</th>
                 <th class="text-center vertical-align-middle">Docente investigador</th>
-                <th class="text-center vertical-align-middle">Hombres</th>
-                <th class="text-center vertical-align-middle">Mujeres</th>
-                <th class="text-center vertical-align-middle">Total</th>
+                <th class="text-center vertical-align-middle px-3">Hombres</th>
+                <th class="text-center vertical-align-middle px-3">Mujeres</th>
+                <th class="text-center vertical-align-middle px-3">Total</th>
                 <th class="text-center vertical-align-middle">Con discapacidad</th>
                 <th class="text-center vertical-align-middle">Hablantes de lenguas indígenas</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td>Menos de 20 años</td>
+                <td class="text-nowrap">Menos de 20 años</td>
                 <td class="text-center vertical-align-middle">{{ data.inv_edad_20_menos.investigador }}</td>
                 <td class="text-center vertical-align-middle">{{ data.inv_edad_20_menos.auxiliar }}</td>
                 <td class="text-center vertical-align-middle">{{ data.inv_edad_20_menos.docente_investigador }}</td>
@@ -1375,7 +1375,7 @@
               </tr>
             </tbody>
           </table>
-          <small class=" text-to-export">* No incliye servicio social y/o prácticas profesionales.</small>
+          <small class=" text-to-export">* No incluye servicio social y/o prácticas profesionales.</small>
         </div>
 
       </div>
@@ -1485,7 +1485,7 @@ export default defineComponent({
       exportando.value = true;
       let requestSuccess = true;
       alertas.showLoading('Cargando datos...');
-      store.getAll().then((r) => {
+      store.getUnique().then((r) => {
         if (r.status == 200){
         data.value = store.data;
 
