@@ -1,1 +1,0 @@
-import{E as e}from"./usuarioForm-813c99cd.js";import{_ as r,a as t,b as a,j as s}from"./index-818cca80.js";import"./adminStore-460c7ebb.js";const n={name:"empleados_editar",components:{EmpleadoForm:e}};function m(p,c,_,d,i,f){const o=t("empleado-form");return a(),s(o,{isEdit:!0})}const x=r(n,[["render",m]]);export{x as default};
