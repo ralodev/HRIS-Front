@@ -20,11 +20,16 @@ export const useStore = defineStore('consulta', () => {
             return err
         }
     }
-
     const getUnique = async () => {
-        const response = await axios.get(`${apiURL}consulta/unique`)
-        data.value = response.data.data
-        response.value = response
+        try {
+            const response = await axios.get(`${apiURL}consulta/unique`)
+            data.value = response.data.data
+            response.value = response
+            return response
+        } catch (err) {
+            console.log(err)
+            return err
+        }
     }
 
     const search = async (params) => {

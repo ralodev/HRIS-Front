@@ -91,7 +91,7 @@
         autoWidth: true,
         dom: 'trip',
         paging: true,
-        pagingType: 'simple_numbers',
+        pagingType: 'numbers',
         language: spanish,
         pageLength: 10,
         order: [[2, 'asc']],

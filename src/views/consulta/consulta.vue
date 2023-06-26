@@ -143,9 +143,10 @@ export default defineComponent({
           extend: 'excel',
           text: '<i class="bi bi-file-earmark-excel"></i> Excel',
           className: 'float-end border-round-xl mb-2',
-          exportOptions: {
-            columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-          },
+          fileName: 'Empleados',
+          messageTop: 'Datos exportados de la plataforma SGIP, fecha: '+ new Date().toLocaleDateString() +', hora: '+ new Date().toLocaleTimeString() +'.',
+          header: false,
+          title: null,
         },
         {
           extend: 'copy',

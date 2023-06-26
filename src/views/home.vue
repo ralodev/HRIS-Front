@@ -28,7 +28,7 @@
           </div>
 
           <div class="col-12 md:col-4 mb-4 px-5">
-            <RouterLink to="/puestos">
+            <RouterLink to="/consulta">
             <span class="p-3 shadow-2 mb-3 inline-block surface-card border-round-xl">
               <i class="pi pi-search text-4xl text-blue-500"></i>
             </span>
@@ -44,7 +44,7 @@
             <div class="text-900 text-xl mb-3 font-medium">Generar reportes</div>
           </div>
           <div class="col-12 md:col-4 md:mb-4 mb-0 px-3">
-            <RouterLink to="/estadisticas">
+            <RouterLink to="/dashboard">
             <span class="p-3 shadow-2 mb-3 inline-block surface-card border-round-xl">
               <i class="pi pi-chart-bar text-4xl text-blue-500"></i>
             </span>
@@ -52,7 +52,7 @@
             <div class="text-900 text-xl mb-3 font-medium">Ver estadísticas</div>
           </div>
           <div class="col-4 md:col-4 mb-4 px-5">
-            <RouterLink to="/departamentos">
+            <RouterLink to="/manual">
             <span class="p-3 shadow-2 mb-3 inline-block surface-card border-round-xl">
               <i class="pi pi-question-circle text-4xl text-blue-500"></i>
             </span>
@@ -67,19 +67,6 @@
 <script>
 
 export default {
-  name: 'Home',
-  props: {
-    nombre_usuario: {
-      type: String,
-      required: true
-    }
-  },
-  data() {
-    const nombre_usuario = this.nombre_usuario;
-    return {
-      nombre_usuario
-    }
-  },
 }
 </script>
 

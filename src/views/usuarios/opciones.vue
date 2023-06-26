@@ -20,7 +20,7 @@
                         <form @submit.prevent="cambiarContrasena">
                             <label>Contraseña actual</label>
                             <Password v-model="data.contrasenaActual" class="w-100 mb-3" :feedback="false" toggleMask
-                                @keyup="passChange" />
+                                @keyup="passChange" inputId="current"/>
 
 
                             <label>Escribe una nueva contraseña</label>
@@ -28,7 +28,7 @@
                                 :mediumRegex="'^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!#$%&*+-.?@_]).{6,20}$'"
                                 :strongRegex="'^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!#$%&*+-.?@_]).{8,20}$'"
                                 :weakLabel="'No cumple con los requisitos mínimos de seguridad'"
-                                :mediumLabel="'Ya casi tienes una contraseña segura'">
+                                :mediumLabel="'Ya casi tienes una contraseña segura'" inputId="new1">
                                 <template #header>
                                     <h6>Seguridad de la contraseña</h6>
                                 </template>
@@ -68,7 +68,7 @@
                             <label>Repite tu nueva contraseña</label>
                             <Password v-model="data.confirmarNueva"
                                 :class="[{ 'p-invalid': data.contrasenaNueva !== data.confirmarNueva }]" class="w-100 mb-3"
-                                :feedback="false" toggleMask @keyup="passChange" />
+                                :feedback="false" toggleMask @keyup="passChange" inputId="new2" />
                             <Button type="submit" id="subPass" label="Cambiar contraseña" icon="pi pi-check"
                                 class="float-end p-disabled" raised />
                         </form>
@@ -174,6 +174,9 @@ export default defineComponent({
                 input.setAttribute('maxlength', 20);
                 input.classList.add('w-100');
             });
+            document.getElementById('current').setAttribute('autocomplete', 'current-password');
+            document.getElementById('new1').setAttribute('autocomplete', 'new-password');
+            document.getElementById('new2').setAttribute('autocomplete', 'new-password');
         });
 
 
