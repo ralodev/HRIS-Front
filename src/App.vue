@@ -18,11 +18,13 @@
           <img alt="logo" src="./assets/icon_orig.png" height="50" />
         </template>
         <template #end>
-          <span class="py-2 user-info-container border-round-2xl hover:bg-gray-200" type="button" label="Toggle" @click="toggle" aria-haspopup="true" aria-controls="overlay_menu">
+          <span class="py-2 user-info-container border-round-2xl hover:bg-gray-200" type="button" label="Toggle"
+            @click="toggle" aria-haspopup="true" aria-controls="overlay_menu">
             <div class="ps-2 me-2 text-nowrap">
               <span class="user-info user-info-item fw-semibold text-end">{{ nombre_usuario }}</span>
             </div>
-            <Avatar class="me-2 bg-primary-600 hover:bg-orange-600 transition-colors transition-duration-500 text-0" shape="circle" :label="inicial_usuario" />
+            <Avatar class="me-2 bg-primary-600 hover:bg-orange-600 transition-colors transition-duration-500 text-0"
+              shape="circle" :label="inicial_usuario" />
           </span>
           <Menu ref="menuRef" class="text-nowrap" id="overlay_menu" :model="userMenu" :popup="true" />
           <Toast />
@@ -32,25 +34,28 @@
       <div v-if="!showNavbar" class="nav-tec">
         <ul>
           <li>
-            <RouterLink to="/" :class="{ active: route.path === '/' }"><i class="pi pi-home"></i> Inicio</RouterLink>
+            <RouterLink to="/" class="px-3" :class="{ active: route.path === '/' }"><i class="pi pi-home"></i> Inicio
+            </RouterLink>
           </li>
           <li>
             <RouterLink to="/inicio"><i class="pi pi-book"></i> Consultar expediente</RouterLink>
           </li>
           <li>
-            <RouterLink to="/registro"><i class="pi pi-user-plus"></i> Registrarme</RouterLink>
+            <RouterLink to="/registro" :class="{ active: route.path === '/registro' }"><i class="pi pi-user-plus"></i>
+              Registrarme</RouterLink>
           </li>
           <li v-if="isLoggedIn" style="float:right">
             <RouterLink to="/inicio" class="blink"><i class="pi pi-lock-open"></i> Ingresar (sesión activa)</RouterLink>
           </li>
           <li v-else style="float:right">
-            <RouterLink to="/login" :class="{ active: route.path === '/login' }"><i class="pi pi-lock"></i> Iniciar sesión</RouterLink>
+            <RouterLink to="/login" :class="{ active: route.path === '/login' }"><i class="pi pi-lock"></i> Iniciar sesión
+            </RouterLink>
           </li>
         </ul>
       </div>
 
 
-      <RouterView/>
+      <RouterView />
 
     </div>
 
@@ -77,80 +82,115 @@ export default {
     const appContainer = ref(null);
 
     const nombre_usuario = ref('');
+    const user_authLevel = ref(0);
     const inicial_usuario = ref('');
-    const rol_usuario = ref('');
+    const rol_usuario = ref(Cookies.get('rol'));
     const isLoggedIn = ref('');
 
-    router.beforeEach((to, from, next) => {
+    const show_auth1 = ref(false);
+    const show_auth2 = ref(false);
+    const show_auth3 = ref(false);
+    const show_auth4 = ref(false);
+
+    router.beforeEach((to) => {
       isLoggedIn.value = AuthStore.isLoggedIn();
+      showNavbar.value = to.matched.some(record => record.meta.requiresAuth) && isLoggedIn.value;
 
       if (isLoggedIn.value) {
-        let nombre = Cookies.get('nombre');
-        let apellidos = Cookies.get('apellidos').split(' ')[0];
-        let nombreCompleto = nombre + ' ' + apellidos;
+        if (nombre_usuario.value === '' || inicial_usuario.value === '' || rol_usuario.value === '' || user_authLevel.value === 0) {
+          let nombre = Cookies.get('nombre');
+          let apellidos = Cookies.get('apellidos').split(' ')[0];
+          let nombreCompleto = nombre + ' ' + apellidos;
+          rol_usuario.value = Cookies.get('rol');
 
-        if (nombreCompleto.length > 20) {
-          nombreCompleto = nombreCompleto.split(' ');
-          if (nombreCompleto[0].length + nombreCompleto[1].length > 20) {
-            nombreCompleto = nombreCompleto[0] + ' ' + nombreCompleto[1].charAt(0) + '.';
+          if (nombreCompleto.length > 20) {
+            nombreCompleto = nombreCompleto.split(' ');
+            if (nombreCompleto[0].length + nombreCompleto[1].length > 20) {
+              nombreCompleto = nombreCompleto[0] + ' ' + nombreCompleto[1].charAt(0) + '.';
+            }
           }
+
+          nombre_usuario.value = nombreCompleto;
+          inicial_usuario.value = nombre.charAt(0).toUpperCase();
+          user_authLevel.value = rol_usuario.value.includes('ADMIN') ? 4 : rol_usuario.value.includes('EMPLEADO_HR') ? 3 : rol_usuario.value.includes('ASISTENTE') ? 2 : 1;
         }
-
-        nombre_usuario.value = nombreCompleto;
-        inicial_usuario.value = Cookies.get('nombre').charAt(0);
-        rol_usuario.value = Cookies.get('rol');
-      }
-
-      showNavbar.value = to.matched.some(record => record.meta.requiresAuth) && isLoggedIn.value;
-      //Si está logueado y quiere ir a login, redirigir a inicio
-      if (to.path === '/login' && isLoggedIn.value) {
-        alerts.showToast('info', 'Ya has iniciado sesión', "bottom-end", 3000);
-        showNavbar.value = true;
-        router.push('/inicio');
-      }
-      //Si no está logueado y quiere ir a una ruta protegida, redirigir a login
-      if (to.matched.some(record => record.meta.requiresAuth && !isLoggedIn.value)) {
-        next({
-          path: '/login',
-          query: { redirect: to.fullPath },
-        });
-        alerts.showToast('error', 'Necesitas iniciar sesión', "bottom-end", 3000);
-        //showNavbar.value = false;
+        if (to.path === '/login') {
+          console.log('Ya has iniciado sesión');
+          alerts.showToast('info', 'Ya has iniciado sesión', "bottom-end", 3000);
+          showNavbar.value = true;
+          router.push('/inicio');
+        } else if (to.meta.requiresAuth == true && to.meta.authLevel > user_authLevel.value) {
+          alerts.showToast('error', 'No tienes permisos para acceder a esta página', "bottom-end", 3000);
+          return false;
+        }
+        else {
+          return true;
+        }
       } else {
-        next();
+        nombre_usuario.value = '';
+        user_authLevel.value = 0;
+        inicial_usuario.value = '';
+        rol_usuario.value = '';
+        //Si no está logueado y quiere ir a una ruta protegida, redirigir a login
+        if (to.matched.some(record => record.meta.requiresAuth)) {
+          alerts.showToast('error', 'Necesitas iniciar sesión', "bottom-end", 3000);
+          return { name: 'Login' }
+          //showNavbar.value = false;
+        } else {
+          return true;
+        }
       }
     });
 
-    const items = [
-      { label: 'Inicio', icon: 'pi pi-fw pi-home', to: '/inicio' },
-      {
-        label: 'Administrador',
-        icon: 'pi pi-spin pi-cog',
-        items: [
-          { label: 'Usuarios', icon: 'pi pi-fw pi-users', to: '/usuarios' },
-          { label: 'Respaldos', icon: 'pi pi-fw pi-cloud-download', to: '/respaldos' },
-        ],
-      },
-      {
-        label: 'Datos',
-        icon: 'pi pi-fw pi-database',
-        items: [
-          { label: 'Empleados', icon: 'pi pi-fw pi-users', to: '/empleados' },
-          { label: 'Plazas', icon: 'pi pi-fw pi-briefcase', to: '/plazas' },
-          { label: 'Departamentos', icon: 'pi pi-fw pi-building', to: '/departamentos' },
-          { separator: true },
-          { label: 'Búsqueda avanzada', icon: 'pi pi-fw pi-search', to: '/consulta' },
-        ],
-      },
-      {
-        label: 'Estadística',
-        icon: 'pi pi-fw pi-chart-bar',
-        items: [
-          { label: 'Dashboard', icon: 'pi pi-fw pi-chart-pie', to: '/dashboard' },
-          { label: 'Reportes', icon: 'pi pi-fw pi-book', to: '/reportes' },
-        ],
-      },
-    ];
+    router.afterEach((to) => {
+      if (isLoggedIn.value == true) {
+        show_auth1.value = ref(Cookies.get('rol').includes('EMPLEADO') && !Cookies.get('rol').includes('HR') && !Cookies.get('rol').includes('ADMIN'));
+        show_auth2.value = ref(Cookies.get('rol').includes('HR') || Cookies.get('rol').includes('ADMIN'));
+        show_auth3.value = ref(Cookies.get('rol').includes('EMPLEADO_HR') || Cookies.get('rol').includes('ADMIN'));
+        show_auth4.value = ref(Cookies.get('rol').includes('ADMIN'));
+        items.value = [
+          { label: 'Inicio', icon: 'pi pi-fw pi-home', to: '/inicio' },
+          {
+            label: 'Administrador',
+            icon: 'pi pi-spin pi-cog',
+            visible: show_auth4.value,
+            class: 'req_auth_4',
+            items: [
+              { label: 'Usuarios', icon: 'pi pi-fw pi-users', to: '/usuarios' },
+              { label: 'Respaldos', icon: 'pi pi-fw pi-cloud-download', to: '/respaldos' },
+            ],
+          },
+          {
+            label: 'Datos',
+            icon: 'pi pi-fw pi-database',
+            visible: show_auth2.value,
+            class: 'req_auth_2',
+            items: [
+              { label: 'Empleados', icon: 'pi pi-fw pi-users', to: '/empleados' },
+              { label: 'Plazas', icon: 'pi pi-fw pi-briefcase', to: '/plazas' },
+              { label: 'Departamentos', icon: 'pi pi-fw pi-building', to: '/departamentos' },
+              { separator: true },
+              {
+                label: 'Búsqueda avanzada', icon: 'pi pi-fw pi-search',
+                visible: show_auth3.value,
+                to: '/consulta'
+              },
+            ],
+          },
+          {
+            label: 'Estadística',
+            icon: 'pi pi-fw pi-chart-bar',
+            visible: show_auth3.value,
+            items: [
+              { label: 'Dashboard', icon: 'pi pi-fw pi-chart-pie', to: '/dashboard' },
+              { label: 'Reportes', icon: 'pi pi-fw pi-book', to: '/reportes' },
+            ],
+          },
+        ]
+      }
+    });
+
+    const items = ref();
 
     const userMenu = [
       {
@@ -199,6 +239,7 @@ export default {
       toggle,
       menuRef,
       appContainer,
+      user_authLevel,
     };
   },
 };
@@ -210,12 +251,15 @@ export default {
   padding: 0 0 !important;
 }
 
-.paginate_button.page-item, .paginate_button.page-item:hover, .paginate_button.page-item.active:focus, .paginate_button.page-item.active:active  {
+.paginate_button.page-item,
+.paginate_button.page-item:hover,
+.paginate_button.page-item.active:focus,
+.paginate_button.page-item.active:active {
   border: none !important;
   background: none !important;
 }
 
-.paginate_button.page-item.active:hover a:hover{
+.paginate_button.page-item.active:hover a:hover {
   cursor: default !important;
 }
 
@@ -276,6 +320,7 @@ div.dt-buttons.btn-group {
   position: relative;
   display: flex;
 }
+
 @media (min-width: 768px) {
   div.dt-buttons.btn-group {
     display: block;
@@ -377,7 +422,7 @@ footer {
   padding: 0;
   overflow: hidden;
   background-color: #1B396A;
-  max-width: 1600px;
+  max-width: 1400px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -437,7 +482,7 @@ div.card-header i.bi.fw-bold {
   font-size: 2.5rem;
 }
 
-.bi{
+.bi {
   -webkit-font-smoothing: antialiased !important;
   -moz-osx-font-smoothing: grayscale !important;
 }
