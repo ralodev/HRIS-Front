@@ -194,7 +194,7 @@ export default defineComponent({
       data,
       options,
       registrar: () => {
-        router.push({ name: 'registrarDepartamento' });
+        router.push({ name: 'departamentos_registrar' });
       },
       search,
       searchText,

@@ -17,14 +17,14 @@
         <div class="grid mb-2">
           <div class="col-12 lg:col-6 md:col-8">
             <div class="p-inputgroup">
-              <InputText placeholder="Buscar cambio por usuario" id="searchInput" @keyup.enter="search" v-model="searchText"
-                type="search" autocomplete="none" />
+              <InputText placeholder="Buscar cambio por usuario" id="searchInput" @keyup.enter="search"
+                v-model="searchText" type="search" autocomplete="none" />
               <Button icon="pi pi-search" severity="primary" @click="search" />
             </div>
           </div>
           <div class="col-12 lg:col-6 md:col-4">
-            <Button type="button" label="Volver a usuarios" icon="pi pi-undo" @click="usuarios" class="float-end me-2" severity="secondary"
-              raised />
+            <Button type="button" label="Volver a usuarios" icon="pi pi-undo" @click="usuarios" class="float-end me-2"
+              severity="secondary" raised />
           </div>
         </div>
         <!-- Table -->
@@ -101,7 +101,16 @@ export default defineComponent({
         data: 'descripcion', title: 'Descripción', class: 'min-desktop no-wrap text-nowrap email-col', width: '10%'
       },
       {
-        data: 'fecha', title: 'Fecha', class: 'all no-wrap text-nowrap email-col', width: '10%'
+        data: null, title: 'Fecha', class: 'all no-wrap text-nowrap email-col', width: '10%', render: function (data) {
+          let fecha = new Date(data.fecha);
+          let dia = fecha.getDate();
+          let mes = fecha.getMonth() + 1;
+          let año = fecha.getFullYear();
+          let horas = fecha.getHours();
+          let minutos = fecha.getMinutes();
+          return dia + '/' + mes + '/' + año + ' a las ' + horas + ':' + minutos+' hs';
+
+        },
       },
       {
         data: null, title: 'Usuario', class: 'min-tablet-l no-wrap text-nowrap email-col', width: '10%', render: function (data) {
@@ -111,7 +120,7 @@ export default defineComponent({
       {
         data: null, class: 'text-nowrap  acciones justify-content-center all ', width: '10%', title: 'Acciones', orderable: false, wrap: true, render: function (data) {
           let buttons =
-          "<a title='Ver usuario' name='"+data.usuario.id+"' class='details-btn me-1 px-3 p-button-sm p-button p-component p-button-icon-only p-button-primary p-button-raised text-decoration-none'><i class='pi pi-eye'></i></a> ";
+            "<a title='Ver usuario' name='" + data.usuario.id + "' class='details-btn me-1 px-3 p-button-sm p-button p-component p-button-icon-only p-button-primary p-button-raised text-decoration-none'><i class='pi pi-eye'></i></a> ";
           return buttons;
         },
       },

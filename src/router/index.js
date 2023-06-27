@@ -46,13 +46,32 @@ const router = createRouter({
       }
     },
     {
-      path: '/empleados/empleados_historial/:id',
+      path: '/empleados/historial/:id',
       name: 'empleados_historial',
       component: () => import('../views/empleados/empleados_historial.vue'),
       meta: {
         breadcrumb: 'Editar Empleado',
         requiresAuth: true,
         authLevel: 2
+      }
+    },
+    {
+      path: '/empleados/expediente/:id',
+      name: 'empleados_expediente',
+      component: () => import('../views/empleados/empleados_expediente.vue'),
+      meta: {
+        breadcrumb: 'Expediente',
+        requiresAuth: true,
+        authLevel: 1
+      }
+    },
+    {
+      path: '/empleados/expediente/pre',
+      name: 'empleados_expediente_pre',
+      component: () => import('../views/empleados/empleados_expediente_pre.vue'),
+      meta: {
+        requiresAuth: true,
+        authLevel: 1
       }
     },
     {
@@ -99,6 +118,16 @@ const router = createRouter({
       path: '/departamentos',
       name: 'departamentos',
       component: () => import('../views/departamentos/departamentos_lista.vue'),
+      meta: {
+        breadcrumb: 'Departamentos',
+        requiresAuth: true,
+        authLevel: 3
+      }
+    },
+    {
+      path: '/departamentos/registrar/',
+      name: 'departamentos_registrar',
+      component: () => import('../views/departamentos/departamentos_registrar.vue'),
       meta: {
         breadcrumb: 'Departamentos',
         requiresAuth: true,

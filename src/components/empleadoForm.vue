@@ -18,9 +18,12 @@
                     <div class="grid">
                         <div class="col-12">
                             <span class="fs-5 fw-bold">Datos personales</span>
-                            <Button icon="pi pi-history"
-                                class="float-end bg-gray-600 hover:bg-gray-300 hover:text-color border-none"
-                                @click="verHistorial" label="historial" size="small" severity="secondary" />
+                            <Button v-if="isEdit" icon="pi pi-history"
+                                class="float-end"
+                                @click="verHistorial" label="Historial" size="small" severity="secondary" />
+                            <Button v-if="isEdit" icon="pi pi-book"
+                                class="float-end me-2"
+                                @click="verExpediente" label="Expediente" size="small" severity="help" />
                         </div>
                         <!-- Input nombre-->
                         <div class="col-12 lg:col-6">
@@ -248,7 +251,7 @@ export default defineComponent({
                     });
                 }else {
                     alertas.closeLoading();
-                    /* Testing data
+
                     data.value = {
                         nombre: "RAUL LOPEZ CRUZ",
                         rfc: "LOCR960727HOC",
@@ -260,14 +263,14 @@ export default defineComponent({
                         correoInstitucional: "LOPEZ.CRUZ@CORREO.MAIL",
                         profesion: "PROFESOR",
                         numeroTarjeta: Number("69420"),
-                        departamento: {},
+                        departamento: null,
                         tipoMovimiento: "PREJUBILACION",
                         fechaIngreso: "",
                         estado: "ACTIVO",
                         fechaBaja: "",
                         comentarios: "ESTO ES UNA PRUEBA",
                     };
-                    */
+
                 }
             });
 
@@ -415,7 +418,7 @@ export default defineComponent({
                 error.value.estado = "";
             }
         }
-        const validate = () => {
+        const validate = async () => {
             //Set validated to true to display the errors if any
             validated.value = true;
             //Reset isValid to true
@@ -430,17 +433,24 @@ export default defineComponent({
             vNumeroTarjeta();
             vDepartamento();
             vTipoMovimiento();
-            vFechaIngreso();
             vEstado();
+            vFechaIngreso();
             //if there are no errors, isValid will be true, then submit the form
-            if (!isValid.value) {
-                showToast("error", "Verifique los campos marcados en rojo");
-                return;
+            if (isValid.value) {
+                return true;
+            } else {
+                return false;
             }
         };
         const submit = () => {
 
-            validate();
+            validate().then((response) => {
+                if (!response) {
+                    console.log(response);
+                    showToast("error", "Verifique los campos marcados en rojo");
+                    return;
+                }
+            });
 
             let payload = { ...data.value };
 
@@ -537,15 +547,20 @@ export default defineComponent({
                 }
             }).then((result) => {
                 if (result.value) {
-                    store.deleteEmpleado(data.value.id).then(() => {
-                        Swal.fire({
-                            icon: 'success',
-                            title: '¡Éxito!',
-                            text: 'El empleado ha sido eliminado de forma permanente',
-                        }).then(() => {
-                            router.push({ name: "empleados" });
-                        })
+                    empleadoStore.deleteEmpleado(data.value.id).then((response) => {
+                        if(response.status == 200 || response.status == 204){
+                            Swal.fire({
+                                icon: 'success',
+                                title: '¡Éxito!',
+                                text: 'El empleado ha sido eliminado de forma permanente',
+                            }).then(() => {
+                                router.push({ name: "empleados" });
+                            })
+                        } else {
+                            showErrorAlert("Error", response.response.data.mensaje, "error", "Aceptar");
+                        }
                     }).catch((error) => {
+                        console.log(error)
                         showToast("error", "Ocurrió un error al eliminar el empleado");
                     });
 
@@ -580,6 +595,7 @@ export default defineComponent({
             vFechaIngreso,
             vEstado,
             eliminar,
+            verExpediente: () => router.push({ name: "empleados_expediente", params: { id: data.value.id } }),
             goBack: () => router.go(-1),
             verHistorial: () => router.push({ name: "empleados_historial", params: { id: data.value.id } }),
         };

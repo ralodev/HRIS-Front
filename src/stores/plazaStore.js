@@ -74,5 +74,18 @@ export const useStore = defineStore('plazas', {
         return err;
       }
     },
+
+    async getHistorialByRfc(rfc) {
+      this.error = '';
+    try {
+      const response = await axios.get(`${this.apiURL}/historial/rfc/${rfc}`);
+      this.data = response.data.data;
+      this.message = response.data.message;
+      return response;
+    } catch (err) {
+      this.error = err.response.data.message || err.message;
+      return err;
+    }
+  },
   },
 });

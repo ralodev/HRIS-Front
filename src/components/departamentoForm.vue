@@ -19,9 +19,9 @@
                         <div class="col-12 md:col-offset-3 md:col-6">
                             <label for="curp" class="form-label">Nombre del departamento<b class="p-error">*</b></label>
                             <InputText v-model="data.nombre"
-                                placeholder="Direccion de correo electrónico, ej: nombre@ejemplo.com"
+                                placeholder="Nombre sin el prefijo 'Departamento'"
                                 :class="['w-full', { 'p-invalid': error.nombre && validated }]" id="nombre"
-                                autocomplete="off" @input="vCurp" />
+                                autocomplete="off" required />
                             <small v-if="validated" class="p-error">{{ error.nombre || '' }}</small>
                         </div>
                     </div>
@@ -42,7 +42,7 @@
         <div class="card mt-5 border-round-2xl overflow-hidden shadow-5">
             <Panel header="Tabla de empleados" toggleable>
                 <div class="container table-responsive">
-                    <table v-if="empleados.length > 0" class="table table-hover" id="empleados">
+                    <table v-if="empleados && empleados.length > 0" class="table table-hover" id="empleados">
                     <thead>
                         <tr>
                             <th></th>
@@ -139,7 +139,7 @@ export default defineComponent({
                 id.value = route.params.id;
                 store.getDepartamento(id.value).then(() => {
                     data.value = store.data;
-                    empleados.value = store.data.empleados;
+                    empleados.value = store.data.empleados ? store.data.empleados : [];
                     console.log(data.value);
                     console.log(empleados.value);
                     nextTick(() => {
@@ -207,26 +207,25 @@ export default defineComponent({
                 });
             } else {
                 //Ask for confirmation
-                showConfirmAlert('¿Estás seguro?', 'Se registrarán los datos del departamento', 'warning', 'Sí, registrar', 'No, cancelar').then((isConfirmed) => {
+                showConfirmAlert('¿Estás seguro?', 'Se registrara el departamento', 'warning', 'Sí, registrar', 'No, cancelar').then((isConfirmed) => {
                     //If the user confirms, try to add the employee
 
                     //transform data.value to JSON
 
                     if (isConfirmed) {
                         store
-                            .postDepartamento(payload)
-                            .then((response) => {
-                                if (response.status == 200) {
-                                    //If the employee is added, show a success alert and redirect to the employees list
+                        .postDepartamento(payload).then((response) => {
+                                console.log(response);
+                                if (response.status == 201) {
                                     showSuccessAlert('¡Éxito!', 'El departamento se ha registrado correctamente', 'success', 'Aceptar').then(() => {
-                                        router.push({ name: 'departamento' });
+                                        router.push({ name: 'departamentos' });
                                     });
                                 } else {
-                                    showErrorAlert('Error', response.response.data.mensaje, 'error', 'Aceptar');
+                                    showErrorAlert('Error', response.response.data.message, 'error', 'Aceptar');
                                 }
                             })
                             .catch((error) => {
-                                //If there is an error, show an error alert
+                                console.log(error);
                                 showToast('error', 'Ocurrió un error al registrar el departamento');
                             });
                     } else {
@@ -264,7 +263,7 @@ export default defineComponent({
             }).then((result) => {
                 if (result.value) {
                     store
-                        .deleteDepartamento(data.value.email)
+                        .deleteDepartamento(data.value.id)
                         .then(() => {
                             Swal.fire({
                                 icon: 'success',

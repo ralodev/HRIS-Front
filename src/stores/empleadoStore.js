@@ -34,6 +34,32 @@ export const useStore = defineStore('empleados', {
       }
     },
 
+    async getEmpleadoById(id) {
+      this.error = '';
+      try {
+        const response = await axios.get(`${this.apiURL}/id/${id}`);
+        this.data = response.data.data;
+        this.message = response.data.message;
+        return response;
+      } catch (err) {
+        this.error = err.response.data.message || err.message;
+        return err;
+      }
+    },
+
+    async getEmpleadoByEmail(email) {
+      this.error = '';
+      try {
+        const response = await axios.get(`${this.apiURL}/email/${email}`);
+        this.data = response.data.data;
+        this.message = response.data.message;
+        return response;
+      } catch (err) {
+        this.error = err.response.data.message || err.message;
+        return err;
+      }
+    },
+
     async postEmpleado(newEmpleado) {
       this.error = '';
       try {
@@ -63,7 +89,7 @@ export const useStore = defineStore('empleados', {
     async deleteEmpleado(id) {
       this.error = '';
       try {
-        const response = await axios.delete(`${this.apiURL}/${id}`);
+        const response = await axios.delete(`${this.apiURL}/id/${id}`);
         this.data = response.data.data;
         this.message = response.data.message;
         return response;

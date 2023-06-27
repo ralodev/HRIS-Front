@@ -38,8 +38,10 @@ export const useStore = defineStore('departamentos', {
         const response = await axios.post(`${this.apiURL}/`, newDepartamento);
         this.data = response.data.data;
         this.message = response.data.message;
+        return response;
       } catch (err) {
         this.error = err.response.data.message || err.message;
+        return err;
       }
     },
 
