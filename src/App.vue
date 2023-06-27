@@ -150,6 +150,7 @@ export default {
         show_auth4.value = ref(Cookies.get('rol').includes('ADMIN'));
         items.value = [
           { label: 'Inicio', icon: 'pi pi-fw pi-home', to: '/inicio' },
+          { label: 'Consultar expediente', icon: 'pi pi-fw pi-book', to: '/empleados/expediente/pre', visible:show_auth1.value },
           {
             label: 'Administrador',
             icon: 'pi pi-spin pi-cog',
@@ -332,7 +333,7 @@ div.dt-buttons.btn-group {
 }
 
 div.p-panel-content {
-  background-color: rgba(255, 255, 255, 0.9) !important;
+  background-color: rgba(255, 255, 255, 0.0) !important;
 }
 
 div.p-menubar {
@@ -349,12 +350,10 @@ ul.p-submenu-list {
 }
 
 div.card {
-  background-color: rgba(255, 255, 255, 0.6);
+  background-color: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(5px) !important;
   z-index: 2 !important;
 }
-
-
 
 .application-background {
   height: 100%;
