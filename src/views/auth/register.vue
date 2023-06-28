@@ -12,18 +12,24 @@
 
           <label for="email" class="block text-900 text-lg font-medium mb-2">Correo electrónico institucional</label>
           <div class="p-inputgroup">
-              <InputText placeholder="Introduce tu correo electrónico" id="searchInput" @keyup.enter="verifyEmail" v-model="data.email" autocomplete="email" required @keypress="found_to_null"/>
-              <Button class="transition-all transition-duration-500" icon="pi pi-search" :label="see?'Verificar':null" severity="primary" @click="verifyEmail" @mouseover="seeTrue" @mouseout="seeFalse"/>
+            <InputText placeholder="Introduce tu correo electrónico" id="searchInput" @keyup.enter="verifyEmail"
+              v-model="data.email" autocomplete="email" required @keypress="found_to_null" />
+            <Button class="transition-all transition-duration-500" icon="pi pi-search" :label="see ? 'Verificar' : null"
+              severity="primary" @click="verifyEmail" @mouseover="seeTrue" @mouseout="seeFalse" />
           </div>
 
-          <span class="block text-justify text-color mb-3">Introduce tu correo institucional y verifica que se encuentre en la base de datos.</span>
+          <span class="block text-justify text-color mb-3">Introduce tu correo institucional y verifica que se encuentre
+            en la base de datos.</span>
 
-          <span class="block text-justify text-danger mb-3" v-if="found==false">No hubo coincidencias. Si ese es tu correo institucional y eres trabajador del instituto, debes acudir al departamento de Recursos Humanos para actualizar el que se tiene en tu registro.</span>
+          <span class="block text-justify text-danger mb-3" v-if="found == false">No hubo coincidencias. Si ese es tu correo
+            institucional y eres trabajador del instituto, debes acudir al departamento de Recursos Humanos para
+            actualizar el que se tiene en tu registro.</span>
 
-          <span class="block text-justify text-success mb-3" v-if="found==true">Haz click en el botón de abajo para registrarte y en unos minutos recibirás un correo electrónico con instrucciones.</span>
+          <span class="block text-justify text-success mb-3" v-if="found == true">Haz click en el botón de abajo para
+            registrarte y en unos minutos recibirás un correo electrónico con instrucciones.</span>
 
-          <Button type="submit" :label="!loading?'Registrarme':null" :icon="found?'pi pi-check':'pi pi-times'"
-          :class="found?'bg-primary-700':'bg-gray-700 border-gray-700'"
+          <Button type="submit" :label="!loading ? 'Registrarme' : null" :icon="found ? 'pi pi-check' : 'pi pi-times'"
+            :class="found ? 'bg-primary-700' : 'bg-gray-700 border-gray-700'"
             class="w-full hover:shadow-3 hover:bg-primary-600" :loading="loading" :disabled="!found"></Button>
         </form>
       </div>
@@ -131,7 +137,7 @@ export default {
           found.value = null;
         } else {
           wrongCredentials.value = true;
-          alertas.showErrorToast("No se pudo registrar el usuario");
+          alertas.showErrorAlert('Error', r.response.data);
         }
       }).catch((e) => {
         alertas.closeLoading();
@@ -148,16 +154,11 @@ export default {
       }
       store.verificarCorreo(data.value.email).then((r) => {
         if (r.status === 200) {
-          if (r.data == "Existe") {
-            found.value = true;
-            alertas.showSuccessToast('Correo encontrado');
-          } else {
-            found.value = false;
-            alertas.showErrorToast('Correo no encontrado');
-          }
+          found.value = true;
+          alertas.showSuccessToast('Correo encontrado');
         } else {
-          found.value = null;
-          alertas.showErrorToast('No se pudo verificar el correo');
+          found.value = false;
+          alertas.showErrorToast('Correo no encontrado');
         }
       }).catch((e) => {
         found.value = null;

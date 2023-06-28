@@ -109,6 +109,14 @@ export default {
     const onSubmit = () => {
       loading.value = true;
 
+      let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      if (!emailRegex.test(data.value.email)) {
+        alertas.showErrorToast('El correo electrónico no es válido');
+        loading.value = false;
+        return;
+      }
+
       Swal.fire({
         title: 'Se requiere confirmación',
         text: 'Esta función puede realizarse una vez cada 30 minutos, por favor, verifique que la dirección de correo electrónico sea correcta.',

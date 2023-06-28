@@ -257,7 +257,7 @@ export default defineComponent({
                     router.push({ name: 'usuarios' });
                   });
                 } else {
-                  showErrorAlert('Error', response.response.data.mensaje, 'error', 'Aceptar');
+                  showErrorAlert('Error', response.response.data, 'error', 'Aceptar');
                 }
               })
               .catch((error) => {
@@ -279,13 +279,14 @@ export default defineComponent({
           if (isConfirmed) {
             store.registrarUsuario(payload)
               .then((response) => {
+                console.log(response);
                 if (response.status == 200) {
                   //If the employee is added, show a success alert and redirect to the employees list
                   showSuccessAlert('¡Registro exitoso!', 'El usuario recibirá un correo en unos minutos, revise su bandeja de entrada y su bandeja de spam', 'success', 'Aceptar').then(() => {
                     router.push({ name: 'usuarios' });
                   });
                 } else {
-                  showErrorAlert('Error', response.response.data.mensaje, 'error', 'Aceptar');
+                  showErrorAlert('Error', response.response.data, 'error', 'Aceptar');
                 }
               })
               .catch((error) => {
