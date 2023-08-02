@@ -28,6 +28,16 @@ export const optionsNivelAcademico = [
     { nombre: 'SECUNDARIA', value: 'SECUNDARIA' },
 ];
 
+export const optionsFuncion = [
+    { nombre: 'DIRECTIVO O JEFE DE DEPARTAMENTO'},
+    { nombre: 'DOCENTE'},
+    { nombre: 'DOCENTE INVESTIGADOR O DOCENTE AUXILIAR DE INVESTIGADOR'},
+    { nombre: 'INVESTIGADOR'},
+    { nombre: 'AUXILIAR DE INVESTIGADOR'},
+    { nombre: 'ADMINISTRATIVO'},
+    { nombre: 'OTROS (SERVICIOS GENERALES)'},
+];
+
 export const optionsEstado = [
     { nombre: 'ACTIVO' }, { nombre: 'INACTIVO' }, { nombre: 'BAJA' }
 ];
@@ -62,12 +72,9 @@ export const optionsAntiguedad = [
 ];
 
 export const optionsTipoMovimiento = [
-    { nombre: 'INICIAL' },
     { nombre: 'INTERINATO' },
-    { nombre: 'PROVISIONAL' },
     { nombre: 'BASE' },
     { nombre: 'PREJUBILACION' },
-    { nombre: 'CONFIANZA' },
 ];
 
 export const optionsNombramiento = [
