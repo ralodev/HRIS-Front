@@ -19,12 +19,12 @@
         </template>
         <template #end>
           <span class="py-2 user-info-container border-round-2xl hover:bg-gray-200" type="button" label="Toggle"
-            @click="toggle" aria-haspopup="true" aria-controls="overlay_menu">
+            @click="toggle" aria-haspopup="true" aria-controls="overlay_menu" @mouseenter="hovered" @mouseleave="unhovered">
             <div class="ps-2 me-2 text-nowrap">
               <span class="user-info user-info-item fw-semibold text-end">{{ nombre_usuario }}</span>
             </div>
-            <Avatar class="me-2 bg-primary-600 hover:bg-orange-600 transition-colors transition-duration-500 text-0"
-              shape="circle" :label="inicial_usuario" />
+            <Avatar class="me-2 bg-primary-600 transition-colors transition-duration-500 text-0"
+              shape="circle" id="avatar" :label="inicial_usuario" />
           </span>
           <Menu ref="menuRef" class="text-nowrap" id="overlay_menu" :model="userMenu" :popup="true" />
           <Toast />
@@ -36,9 +36,6 @@
           <li>
             <RouterLink to="/" class="px-3" :class="{ active: route.path === '/' }"><i class="pi pi-home"></i> Inicio
             </RouterLink>
-          </li>
-          <li>
-            <RouterLink to="/inicio"><i class="pi pi-book"></i> Consultar expediente</RouterLink>
           </li>
           <li>
             <RouterLink to="/registro" :class="{ active: route.path === '/registro' }"><i class="pi pi-user-plus"></i>
@@ -103,10 +100,12 @@ export default {
           let nombreCompleto = nombre + ' ' + apellidos;
           rol_usuario.value = Cookies.get('rol');
 
-          if (nombreCompleto.length > 20) {
+          if (nombreCompleto.length > 25) {
             nombreCompleto = nombreCompleto.split(' ');
-            if (nombreCompleto[0].length + nombreCompleto[1].length > 20) {
+            if (nombreCompleto[0].length + nombreCompleto[1].length > 25) {
               nombreCompleto = nombreCompleto[0] + ' ' + nombreCompleto[1].charAt(0) + '.';
+            } else {
+              nombreCompleto = nombreCompleto[0] + ' ' + nombreCompleto[1];
             }
           }
 
@@ -153,11 +152,12 @@ export default {
           { label: 'Consultar expediente', icon: 'pi pi-fw pi-book', to: '/empleados/expediente/pre', visible:show_auth1.value },
           {
             label: 'Administrador',
-            icon: 'pi pi-spin pi-cog',
+            icon: 'pi pi-fw pi-shield',
             visible: show_auth4.value,
             class: 'req_auth_4',
             items: [
               { label: 'Usuarios', icon: 'pi pi-fw pi-users', to: '/usuarios' },
+              { label: 'Configuración', icon: 'pi pi-fw pi-wrench', to: '/configuracion' },
               { label: 'Respaldos', icon: 'pi pi-fw pi-cloud-download', to: '/respaldos' },
             ],
           },
@@ -195,9 +195,14 @@ export default {
 
     const userMenu = [
       {
+        label: 'Preferencias',
+        icon: 'pi pi-fw pi-cog',
+        to: '/preferencias',
+      },
+      {
         label: 'Cambiar contraseña',
         icon: 'pi pi-fw pi-key',
-        to: '/opciones',
+        to: '/cambiar-contrasena',
       },
       {
         label: 'Cerrar sesión',
@@ -207,6 +212,11 @@ export default {
     ];
 
     function logout() {
+      var dummyTimeout = window.setTimeout(function() {}, 0);
+
+      while (dummyTimeout--) {
+          window.clearTimeout(dummyTimeout);
+      }
       AuthStore.logout();
       alerts.showLogoutSuccessToast();
       router.push('/');
@@ -214,9 +224,19 @@ export default {
 
     onMounted(() => {
       setTimeout(() => {
-        document.getElementById('app-content').classList.add('application-background')
+        setWallpaper()
       }, 1000)
     });
+
+    function setWallpaper(){
+            if (Cookies.get("wallpaper") == 'none'){
+                let bg_container = document.getElementById('app-content')
+                bg_container.style.backgroundImage = 'none'
+            } else {
+                let bg_container = document.getElementById('app-content')
+                bg_container.style.backgroundImage = 'url(' + Cookies.get("wallpaper") + ')'
+            }
+        }
 
     const menuRef = ref(null);
 
@@ -224,6 +244,18 @@ export default {
       if (menuRef.value) {
         menuRef.value.toggle(event);
       }
+    }
+
+    const hovered = () => {
+      let avatar = document.getElementById("avatar");
+      avatar.classList.add("bg-orange-600")
+      avatar.classList.remove("bg-primary-600")
+    }
+
+    const unhovered = () => {
+      let avatar = document.getElementById("avatar");
+      avatar.classList.remove("bg-orange-600")
+      avatar.classList.add("bg-primary-600")
     }
 
     return {
@@ -241,6 +273,8 @@ export default {
       menuRef,
       appContainer,
       user_authLevel,
+      hovered,
+      unhovered
     };
   },
 };
@@ -350,19 +384,14 @@ ul.p-submenu-list {
 }
 
 div.card {
-  background-color: rgba(255, 255, 255, 0.7);
+  background-color: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(5px) !important;
   z-index: 2 !important;
 }
 
-.application-background {
-  height: 100%;
-  width: 100%;
-  background-image: url('@/assets/svg/waves0.svg');
-  background-size: cover;
-  background-repeat: repeat-y;
-  background-position: 0 -700px;
-  background-color: #FFF;
+#app-content {
+  background-size: cover !important;
+  background-color: #ebebeb;
 }
 
 li .dtr-title {

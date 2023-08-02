@@ -103,9 +103,9 @@
         { data: 'estado', title: 'Estado' , className: 'never'},
         //Action column
         {
-          data: null, className: 'text-nowrap acciones all justify-content-center', width: '10%', title: 'Seleccionar', wrap: true, render: function () {
+          data: null, className: 'text-nowrap acciones all justify-content-center', width: '10%', title: 'Seleccionar', wrap: true, render: function (data) {
             let buttons =
-              '<a https="#" title="Seleccionar" class="action-select mx-auto p-button-sm p-button p-component p-button-icon-only p-button-success p-button-raised me-1"><i class="bi bi bi-check-lg"></i></a> ';
+              '<a https="#" title="Seleccionar" name="'+data.id+'" class="action-select mx-auto p-button-sm p-button p-component p-button-icon-only p-button-success p-button-raised me-1"><i class="bi bi bi-check-lg"></i></a> ';
             return buttons;
           },
         },
@@ -154,7 +154,7 @@
             butt.parentElement.parentElement.classList.add('surface-100');
           }
           butt.addEventListener('click', () => {
-            selectEmpleado(butt.closest('tr').cells[0].innerHTML);
+            selectEmpleado(butt.attributes.name.value);
           });
         });
       };

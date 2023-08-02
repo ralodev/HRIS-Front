@@ -160,9 +160,9 @@ export default defineComponent({
           alertas.showErrorAlert('Error', 'Ocurrió un error inesperado');
         }
       }, 5000);
-      await store.getPlazas().then(() => {
+      await store.getPlazas().then((response) => {
         //for testing purposes, append the data 5 times
-        data.value = store.data;
+        data.value = response.data;
         alertas.closeLoading();
         done = true;
       }).catch((error) => {

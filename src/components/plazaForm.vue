@@ -81,7 +81,7 @@
                         <!-- Input Horas nombramiento -->
                         <div class="col-12 lg:col-6">
                             <label for="horas" class="form-label">Horas de nombramiento<b class="p-error">*</b></label>
-                            <InputText v-model="data.numeroHorasNombramiento" placeholder="CURP (18 caracteres)"
+                            <InputText v-model="data.numeroHorasNombramiento" placeholder="Horas de nombramiento"
                                 :class="['w-full', { 'p-invalid': error.numeroHorasNombramiento && validated },]" id="horas"
                                 minlength="18" maxlength="50" @input="vNumeroHorasNombramiento" />
                             <small v-if="validated" class="p-error">{{ error.numeroHorasNombramiento || '' }}</small>
@@ -218,14 +218,14 @@ export default defineComponent({
         onMounted(() => {
             id.value = route.params.id;
             if (isEdit.value) {
-                plazaStore.getPlaza(id.value).then(() => {
-                    data.value = plazaStore.data;
+                plazaStore.getPlaza(id.value).then((response) => {
+                    data.value = response.data;
                     data.value.fechaInicio = data.value.fechaInicio ? convertirFechaString(data.value.fechaInicio) : null;
                     data.value.fechaFin = data.value.fechaFin ? convertirFechaString(data.value.fechaFin) : null;
                 });
             } else {
-                empleadoStore.getEmpleado(id.value).then(() => {
-                    data.value.empleado = empleadoStore.data;
+                empleadoStore.getEmpleado(id.value).then((response) => {
+                    data.value.empleado = response.data;
                 });
                 data.value = {
                     id: '',
@@ -257,75 +257,53 @@ export default defineComponent({
 
             showConfirmAlert("¿Estás seguro?", descripcion, "warning", aceptar_text, "No, cancelar").then((isConfirmed) => {
                 if (isEdit.value) {
-
                     if (!isConfirmed) {
                         showToast("info", "No se actualizaron los datos");
                         return;
                     }
-
                     plazaStore.putPlaza(newData, id.value).then((response) => {
-                        if (response.status == 400) {
-                            showErrorAlert("Error", "No se pudo actualizar la plaza");
+                        console.log(response);
+                        if (response.status == 200){
+                            Swal.fire({
+                                title: "¡Éxito!",
+                                text: "Plaza actualizada correctamente",
+                                icon: "success",
+                                confirmButtonColor: "#3085d6",
+                                confirmButtonText: "Aceptar",
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                   router.push({ name: "plazas" });
+                                }
+                            });
+                        } else {
+                            showErrorAlert("Error", response.response.data.message);
                             return;
                         }
-                        if (response.status == 404) {
-                            showErrorAlert("Error", "No se encontró la plaza");
-                            return;
-                        }
-                        if (response.status == 500) {
-                            showErrorAlert("Error", "Ocurrió un error al intentar actualizar la plaza");
-                            return;
-                        }
-                        if (response.status == 403 || response.status == 401) {
-                            showErrorAlert("Error", "No tienes permiso para realizar esta acción");
-                            return;
-                        }
-                        Swal.fire({
-                            title: "¡Éxito!",
-                            text: "Plaza actualizada correctamente",
-                            icon: "success",
-                            confirmButtonColor: "#3085d6",
-                            confirmButtonText: "Aceptar",
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                router.push({ name: "plazas" });
-                            }
-                        });
+                    }).catch((error) => {
+                        showErrorAlert("Error", error.response.data.message)
                     });
                 } else {
                     if (!isConfirmed) {
                         showToast("info", "No se ha creado la plaza");
                         return;
                     }
-
                     plazaStore.postPlaza(newData).then((response) => {
-                        if (response.status == 400) {
-                            showErrorAlert("Error", "No se pudo actualizar la plaza");
+                        if (response.status == 200){
+                            Swal.fire({
+                                title: "¡Éxito!",
+                                text: "Plaza creada correctamente",
+                                icon: "success",
+                                confirmButtonColor: "#3085d6",
+                                confirmButtonText: "Aceptar",
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                   router.push({ name: "plazas" });
+                                }
+                            });
+                        } else {
+                            showErrorAlert("Error", response.response.data.message);
                             return;
                         }
-                        if (response.status == 404) {
-                            showErrorAlert("Error", "No se encontró la plaza");
-                            return;
-                        }
-                        if (response.status == 500) {
-                            showErrorAlert("Error", "Ocurrió un error al intentar actualizar la plaza");
-                            return;
-                        }
-                        if (response.status == 403 || response.status == 401) {
-                            showErrorAlert("Error", "No tienes permiso para realizar esta acción");
-                            return;
-                        }
-                        Swal.fire({
-                            title: "¡Éxito!",
-                            text: "La plaza se ha creado correctamente",
-                            icon: "success",
-                            confirmButtonColor: "#3085d6",
-                            confirmButtonText: "Aceptar",
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                router.push({ name: "plazas" });
-                            }
-                        });
                     });
                 }
             });
