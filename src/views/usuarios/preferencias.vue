@@ -45,7 +45,7 @@
                                     <div v-if="wallpapers.length == 0" class="col-12">
                                         <div class="card border-round-2xl shadow-5">
                                             <div class="card-body p-0">
-                                                <img src="src/assets/svg/blank.svg" class="w-100 border-round-2xl" style="height: 150px; object-fit: cover;"/>
+                                                <img src="/blank.svg" class="w-100 border-round-2xl" style="height: 150px; object-fit: cover;"/>
                                             </div>
                                             <div class="card-footer p-2">
                                                 <div class="flex">
@@ -107,10 +107,10 @@ export default defineComponent({
         onMounted(() => {
 
             wallpapers.value = [
-                {url: 'src/assets/svg/blank.svg', name: 'Sin fondo', enabled: false},
-                {url: 'src/assets/svg/waves0.svg', name: 'Ondas', enabled: true},
-                {url: 'src/assets/svg/nubes.svg', name: 'Nubes', enabled: false},
-                {url: 'src/assets/svg/horizon.svg', name: 'Horizonte', enabled: false},
+                {url: '/blank.svg', name: 'Sin fondo', enabled: false},
+                {url: '/waves0.svg', name: 'Ondas', enabled: true},
+                {url: '/nubes.svg', name: 'Nubes', enabled: false},
+                {url: '/horizon.svg', name: 'Horizonte', enabled: false},
             ]
             let currentWallpaper = Cookies.get('wallpaper');
             wallpapers.value.forEach((wp) => {
