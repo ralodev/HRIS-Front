@@ -177,28 +177,25 @@ export default defineComponent({
             let payload = { ...data.value };
 
             if (isEdit.value) {
-                var email = data.value.email;
+                var id = data.value.id;
                 //Ask for confirmation
                 showConfirmAlert('¿Estás seguro?', 'Se actualizarán los datos del departamento', 'warning', 'Sí, actualizar', 'No, cancelar').then((isConfirmed) => {
                     //If the user confirms, try to update the employee
                     if (isConfirmed) {
-                        store.putDepartamento(payload, email)
+                        store.putDepartamento(payload, id)
                             .then((response) => {
                                 console.log(response);
                                 if (response.status == 200) {
                                     showSuccessAlert('¡Éxito!', 'El departamento se ha actualizado correctamente', 'success', 'Aceptar').then(() => {
-                                        showToast('info', 'Será redirigido a la lista de departamentos');
-                                        setTimeout(() => {
                                             router.push({ name: 'departamentos' });
-                                        }, 3000);
                                     });
                                 } else {
-                                    showErrorAlert('Error', response.response.data.mensaje, 'error', 'Aceptar');
+                                    showErrorAlert('Error', response.response.data, 'error', 'Aceptar');
                                 }
                             })
                             .catch((error) => {
-                                //If there is an error, show an error alert
-                                showToast('error', 'Ocurrió un error al actualizar el departamento');
+                                console.log('error',error)
+                                showErrorAlert('Error', error.response.data, 'error', 'Aceptar');
                             });
                     } else {
                         //If the user cancels, show a toast
