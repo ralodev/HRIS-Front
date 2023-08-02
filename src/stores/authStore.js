@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import { setAuthorizationHeader } from '@/assets/js/axiosConfig';
 
 export const useStore = defineStore('autenticar', {
     state: () => ({
@@ -21,11 +22,12 @@ export const useStore = defineStore('autenticar', {
                 });
                 this.data = response.data;
                 this.message = response.message;
-                Cookies.set('token', response.data.access_token, { expires: 1 / 3, sameSite: 'strict' });
+                Cookies.set('token', response.data.accessToken, { expires: 1 / 3, sameSite: 'strict' });
                 Cookies.set('nombre', response.data.nombre, { expires: 1 / 3, sameSite: 'strict' });
                 Cookies.set('apellidos', response.data.apellidos, { expires: 1 / 3, sameSite: 'strict' });
                 Cookies.set('rol', response.data.rol, { expires: 1 / 3, sameSite: 'strict' });
                 Cookies.set('email', response.data.email, { expires: 1 / 3, sameSite: 'strict' });
+                setAuthorizationHeader(response.data.accessToken);
                 return response;
             } catch (err) {
                 this.error = err.response.message || err.message;
