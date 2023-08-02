@@ -213,11 +213,11 @@ export default defineComponent({
       });
       email_cols.forEach((email_col) => {
         if (email_col.innerText == email) {
-          email_col.closest('tr').children[3].title = 'No puedes editar tu propio usuario';
+          email_col.closest('tr').children[3].title = 'No puedes bloquear tu propio usuario';
           let detail_button = email_col.closest('tr').children[3].children[0];
-          detail_button.classList.add('p-disabled');
-          detail_button.classList.add('p-button-secondary');
-          detail_button.classList.remove('p-button-primary');
+          // detail_button.classList.add('p-disabled');
+          // detail_button.classList.add('p-button-secondary');
+          // detail_button.classList.remove('p-button-primary');
           detail_button.nextElementSibling.classList.add('p-disabled');
           detail_button.nextElementSibling.classList.add('p-button-secondary');
           detail_button.nextElementSibling.classList.remove('p-button-danger');

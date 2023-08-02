@@ -13,7 +13,7 @@ export const useStore = defineStore('admin', {
     async getUsuario(id) {
       this.error = '';
       try {
-        const response = await axios.get(`${this.apiURL}/usuarios/id/${id}`, null, {
+        const response = await axios.get(`${this.apiURL}/usuarios/${id}`, null, {
           headers: {
             Authorization: `Bearer ${this.token}`,
           },
@@ -39,7 +39,7 @@ export const useStore = defineStore('admin', {
     async registrarUsuario(newUsuario) {
       this.error = '';
       try {
-        const response = await axios.post(`${this.apiURL}/registrar`, newUsuario);
+        const response = await axios.post(`${this.apiURL}/usuarios`, newUsuario);
         this.data = response.data.data;
         this.message = response.data.message;
         return response;
@@ -49,10 +49,10 @@ export const useStore = defineStore('admin', {
       }
     },
 
-    async editarUsuario(email, newUsuario) {
+    async editarUsuario(id, newUsuario) {
       this.error = '';
       try {
-        const response = await axios.put(`${this.apiURL}/actualizar/${email}`, newUsuario);
+        const response = await axios.put(`${this.apiURL}/usuarios/${id}`, newUsuario);
         this.data = response.data.data;
         this.message = response.data.message;
         return response;
@@ -65,7 +65,7 @@ export const useStore = defineStore('admin', {
     async bloquearUsuario(id) {
       this.error = '';
       try {
-        const response = await axios.put(`${this.apiURL}/bloquear/id/${id}`);
+        const response = await axios.post(`${this.apiURL}/usuarios/${id}/bloquear`);
         this.data = response.data.data;
         this.message = response.data.message;
         return response;
@@ -78,7 +78,7 @@ export const useStore = defineStore('admin', {
     async desbloquearUsuario(id) {
       this.error = '';
       try {
-        const response = await axios.put(`${this.apiURL}/desbloquear/id/${id}`);
+        const response = await axios.post(`${this.apiURL}/usuarios/${id}/desbloquear`);
         this.data = response.data.data;
         this.message = response.data.message;
         return response;
@@ -91,7 +91,7 @@ export const useStore = defineStore('admin', {
     async eliminarUsuario(id) {
       this.error = '';
       try {
-        const response = await axios.delete(`${this.apiURL}/eliminar/id/${id}`);
+        const response = await axios.delete(`${this.apiURL}/usuarios/${id}`);
         this.data = response.data.data;
         this.message = response.data.message;
         return response.status;
@@ -104,7 +104,7 @@ export const useStore = defineStore('admin', {
     async restablecerContrasena(id) {
       this.error = '';
       try {
-        const response = await axios.put(`${this.apiURL}/restablecer/id/${id}`);
+        const response = await axios.put(`${this.apiURL}/usuarios/${id}/restablecer`);
         this.data = response.data.data;
         this.message = response.data.message;
         return response;
