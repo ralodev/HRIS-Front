@@ -83,9 +83,6 @@
 import { defineComponent, ref, nextTick, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAlerts } from '@/components/useAlerts';
-import { useStore as useAdminStore } from '@/stores/dashboardStore';
-import { useStore as useConsultaStore } from '@/stores/dashboardStore';
-import { useStore as useEmpleadotore } from '@/stores/dashboardStore';
 import { BarChart, DoughnutChart, PieChart, LineChart } from 'vue-chart-3';
 import { Chart, registerables } from 'chart.js';
 import { XdataPersonal, XdataDocenteEstudios, XdataDocenteTiempo, XdataDocenteTiempoEstudiosTitulo, XdataDocenteTiempoEstudiosSinTitulo, XdataDocenteEdadSexo, XdataDocenteAntiguedadSexo, XcolumnsPersonal, XcolumnsDocenteEstudios, XcolumnsDocenteTiempo, XcolumnsDocenteTiempoEstudios, XcolumnsDocenteEdadSexo, XcolumnsDocenteAntiguedadSexo } from '@/assets/js/repData.js';

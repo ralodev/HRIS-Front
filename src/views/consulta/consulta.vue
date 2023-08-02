@@ -2,9 +2,9 @@
   <!-- Puestos -->
   <div class="container-fluid pt-4">
     <!-- Title -->
-    <Panel :collapsed="false" class="text-xl" header="Panel de búsqueda avanzada" toggleable>
+    <Panel :collapsed="false" class="text-xl card thicker-glass" header="Panel de búsqueda avanzada" toggleable>
 
-      <div class="grid text-sm" id="searchFields">
+      <div class="grid text-base mt-1" id="searchFields">
         <div class="col-6 md:col-4 lg:col-3 mb-3">
           <div class="p-float-label">
             <InputText type="text" label="Nombre" v-model="searchNombre" class="w-full" />
@@ -19,6 +19,20 @@
         </div>
         <div class="col-6 md:col-4 lg:col-3 mb-3">
           <div class="p-float-label">
+            <InputText type="text" label="Clave presupuestal" v-model="searchClavePresupuestal" class="w-full" />
+            <label for="searchClavePresupuestal">Clave presupuestal</label>
+          </div>
+        </div>
+
+        <div class="col-6 md:col-4 lg:col-3 mb-3">
+          <div class="p-float-label">
+            <Dropdown label="Sexo" v-model="searchSexo" :options="opcSexo" class="w-full"  optionValue="nombre"
+              optionLabel="nombre" showClear />
+            <label for="searchSexo">Sexo</label>
+          </div>
+        </div>
+        <div class="col-6 md:col-4 lg:col-3 mb-3">
+          <div class="p-float-label">
             <Dropdown label="Rango de edad" v-model="searchEdad" :options="opcEdad" optionValue="value"
               optionLabel="nombre" class="w-full" showClear />
             <label for="searchEdad">Rango de edad</label>
@@ -26,37 +40,43 @@
         </div>
         <div class="col-6 md:col-4 lg:col-3 mb-3">
           <div class="p-float-label">
-            <Dropdown label="Sexo" v-model="searchSexo" :options="opcSexo" class="w-full" showClear optionValue="nombre"
-              optionLabel="nombre" />
-            <label for="searchSexo">Sexo</label>
+            <Dropdown label="Estado" v-model="searchEstado" :options="opcEstado" class="w-full"
+              optionValue="nombre" optionLabel="nombre" showClear />
+            <label for="searchEstado">Estado</label>
+          </div>
+        </div>
+
+        <div class="col-6 md:col-4 lg:col-3 mb-3">
+          <div class="p-float-label">
+            <Dropdown label="Nivel académico" v-model="searchFuncion" :options="opcFuncion"
+              optionValue="nombre" optionLabel="nombre" class="w-full" filter showClear />
+            <label for="searchNivelAcademico">Función</label>
+          </div>
+        </div>
+        <div class="col-6 md:col-4 lg:col-3 mb-3">
+          <div class="p-float-label">
+            <Dropdown label="Nivel académico" v-model="searchCategoria" :options="opcCategoria"
+              optionValue="nombre" optionLabel="nombre" class="w-full" showClear/>
+            <label for="searchNivelAcademico">Categoría</label>
           </div>
         </div>
         <div class="col-6 md:col-4 lg:col-3 mb-3">
           <div class="p-float-label">
             <Dropdown label="Nivel académico" v-model="searchNivelAcademico" :options="opcNivelAcademico"
-              optionValue="value" optionLabel="nombre" class="w-full" showClear filter />
+              optionValue="nombre" optionLabel="nombre" class="w-full" filter showClear/>
             <label for="searchNivelAcademico">Nivel académico</label>
           </div>
         </div>
         <div class="col-6 md:col-4 lg:col-3 mb-3">
           <div class="p-float-label">
-            <InputText type="text" label="Clave presupuestal" v-model="searchClavePresupuestal" class="w-full" />
-            <label for="searchClavePresupuestal">Clave presupuestal</label>
+            <Dropdown label="Nivel académico" v-model="searchTipoMovimiento" :options="opcTipoMovimiento"
+              optionValue="nombre" optionLabel="nombre" class="w-full" showClear/>
+            <label for="searchNivelAcademico">Tipo de movimiento</label>
           </div>
         </div>
-        <div class="col-6 md:col-4 lg:col-3 mb-3">
-          <div class="p-float-label">
-            <InputText type="text" label="Plaza" v-model="searchPlaza" class="w-full" />
-            <label for="searchPlaza">Plaza</label>
-          </div>
-        </div>
-        <div class="col-6 md:col-4 lg:col-3 mb-3">
-          <div class="p-float-label">
-            <Dropdown label="Estado" v-model="searchEstado" :options="opcEstado" class="w-full" showClear
-              optionValue="nombre" optionLabel="nombre" />
-            <label for="searchEstado">Estado</label>
-          </div>
-        </div>
+
+
+
         <div class="col-12 py-0">
           <Button type="button" label="Limpiar" severity="secondary" icon="pi pi-times" class="float-end me-2"
             @click="clear" />
@@ -77,7 +97,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, nextTick, onMounted } from 'vue';
+import { defineComponent, ref, nextTick, onMounted, watch } from 'vue';
 import $ from 'jquery';
 import DataTable from 'datatables.net-vue3';
 import DataTablesCore from 'datatables.net';
@@ -99,7 +119,7 @@ import 'datatables.net-buttons/js/buttons.colVis.js';
 import 'datatables.net-buttons/js/buttons.flash.js';
 import 'datatables.net-buttons/js/buttons.print.js';
 import 'datatables.net-select';
-import { optionsSexo, optionsEdad, optionsNivelAcademico, optionsEstado } from '@/assets/js/options.js';
+import { optionsSexo, optionsEdad, optionsNivelAcademico, optionsEstado, optionsFuncion, optionsCategoria, optionsTipoMovimiento} from '@/assets/js/options.js';
 
 //pdfmake.vfs =  pdfFonts.pdfMake.vfs;
 DataTable.use(DataTablesCore, Buttons, /*pdfMake, JsZip, print,*/neutralise, Responsive);
@@ -115,16 +135,22 @@ export default defineComponent({
   setup() {
     const searchNombre = ref('');
     const searchRFC = ref('');
-    const searchEdad = ref('');
-    const searchSexo = ref('');
-    const searchNivelAcademico = ref('');
     const searchClavePresupuestal = ref('');
-    const searchPlaza = ref('');
-    const searchEstado = ref('');
+    const searchEdad = ref(null);
+    const searchSexo = ref(null);
+    const searchNivelAcademico = ref(null);
+    const searchPlaza = ref(null);
+    const searchEstado = ref(null);
+    const searchFuncion = ref(null);
+    const searchCategoria = ref(null);
+    const searchTipoMovimiento = ref(null);
     const opcEdad = ref(optionsEdad);
     const opcSexo = ref(optionsSexo);
     const opcNivelAcademico = ref(optionsNivelAcademico);
     const opcEstado = ref(optionsEstado);
+    const opcFuncion = ref (optionsFuncion);
+    const opcCategoria = ref (optionsCategoria);
+    const opcTipoMovimiento = ref (optionsTipoMovimiento);
     let dt;
     const table = ref();
     const store = useStore();
@@ -145,7 +171,7 @@ export default defineComponent({
           className: 'float-end border-round-xl mb-2',
           fileName: 'Empleados',
           messageTop: 'Datos exportados de la plataforma SGIP, fecha: '+ new Date().toLocaleDateString() +', hora: '+ new Date().toLocaleTimeString() +'.',
-          header: false,
+          //header: false,
           title: null,
         },
         {
@@ -242,41 +268,18 @@ export default defineComponent({
       });
     };
 
-    const editItem = (index) => {
-      router.push({ name: 'empleados_editar', params: { id: index } });
-    };
-
-    const deleteItem = (id) => {
-      alertas
-        .showConfirmAlert(
-          '¿Estas seguro de eliminar este registro?',
-          'Esta acción no se puede revertir',
-          'warning',
-          'Sí, eliminar',
-          'Cancelar'
-        )
-        .then((isConfirmed) => {
-          if (isConfirmed) {
-            store.deleteEmpleado(id).then(() => {
-              alertas.showSuccessAlert('Registro eliminado').then((isConfirmed) => {
-                getAll();
-              });
-            }).catch((error) => {
-              alertas.showErrorAlert('Error', error.response.data.message);
-            });
-          }
-        });
-    };
-
     const clear = () => {
       searchNombre.value = '';
       searchRFC.value = '';
-      searchEdad.value = '';
-      searchSexo.value = '';
-      searchEstado.value = '';
-      searchNivelAcademico.value = '';
       searchClavePresupuestal.value = '';
-      searchPlaza.value = '';
+      searchEdad.value = null;
+      searchSexo.value = null;
+      searchEstado.value = null;
+      searchNivelAcademico.value = null;
+      searchPlaza.value = null;
+      searchFuncion.value = null;
+      searchCategoria.value = null;
+      searchTipoMovimiento.value = null;
     };
 
     const search = () => {
@@ -284,20 +287,24 @@ export default defineComponent({
       let params = {
         nombre: searchNombre.value !== '' ? searchNombre.value : null,
         rfc: searchRFC.value !== '' ? searchRFC.value : null,
-        edadMinima: searchEdad.value !== null && searchEdad.value !== '' ? searchEdad.value[0] : null,
-        edadMaxima: searchEdad.value !== null && searchEdad.value !== '' ? searchEdad.value[1] : null,
+        clavePresupuestal: searchClavePresupuestal.value !== '' ? searchClavePresupuestal.value : null,
         sexo: searchSexo.value !== '' ? searchSexo.value : null,
         estado: searchEstado.value !== '' ? searchEstado.value : null,
+        funcion: searchFuncion.value !== '' ? searchFuncion.value : null,
+        categoria: searchCategoria.value !== '' ? searchCategoria.value : null,
         nivelAcademico: searchNivelAcademico.value !== '' ? searchNivelAcademico.value : null,
-        clavePresupuestal: searchClavePresupuestal.value !== '' ? searchClavePresupuestal.value : null,
-        plaza: searchPlaza.value !== '' ? searchPlaza.value : null,
+        tipoMovimiento: searchTipoMovimiento.value !== '' ? searchTipoMovimiento.value : null,
+        edadMinima: searchEdad.value !== null && searchEdad.value !== '' ? searchEdad.value[0] : null,
+        edadMaxima: searchEdad.value !== null && searchEdad.value !== '' ? searchEdad.value[1] : null,
       }
 
       store.search(params).then(() => {
         alertas.closeLoading();
         if (store.queryData == '' || store.queryData == null) {
           alertas.showInfoAlert('No se encontraron resultados');
+          data.value = [];
         } else {
+          console.log(store.queryData);
           temporalData.value = store.queryData;
           temporalData.value.forEach((element) => {
             element.discapacidades = element.discapacidades ? 'Si' : 'No';
@@ -332,6 +339,12 @@ export default defineComponent({
       searchNivelAcademico,
       searchClavePresupuestal,
       searchPlaza,
+      searchFuncion,
+      searchCategoria,
+      searchTipoMovimiento,
+      opcFuncion,
+      opcCategoria,
+      opcTipoMovimiento,
       opcEdad,
       opcSexo,
       opcEstado,

@@ -12,7 +12,7 @@ export const useStore = defineStore('consulta', () => {
     const getAll = async () => {
         try {
             const response = await axios.get(`${apiURL}consulta/all`)
-            data.value = response.data.data
+            data.value = response.data
             response.value = response
             return response
         } catch (err) {
@@ -23,7 +23,7 @@ export const useStore = defineStore('consulta', () => {
     const getUnique = async () => {
         try {
             const response = await axios.get(`${apiURL}consulta/unique`)
-            data.value = response.data.data
+            data.value = response.data
             response.value = response
             return response
         } catch (err) {
@@ -32,10 +32,17 @@ export const useStore = defineStore('consulta', () => {
         }
     }
 
-    const search = async (params) => {
-        const response = await axios.get(`${apiURL}plazas/search`, { params })
-        queryData.value = response.data.data
-        response.value = response
+    const search = async (filter) => {
+        try {
+            const response = await axios.post(`${apiURL}plazas/search`, filter);
+            queryData.value = response.data;
+            response.value = response;
+            return response;
+          } catch (error) {
+            // Handle any errors
+            console.error(error);
+            return error;
+          }
     }
 
     return {
