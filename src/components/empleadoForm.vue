@@ -239,8 +239,7 @@ export default defineComponent({
 
                 //If is edit, fetch data of the employee
                 if (isEdit.value) {
-                    id.value = route.params.id;
-                    empleadoStore.getEmpleado(id.value).then(() => {
+                    empleadoStore.getEmpleado(route.params.id).then(() => {
                         data.value = empleadoStore.data;
                         nextTick(() => {
                             alertas.closeLoading();
@@ -471,10 +470,8 @@ export default defineComponent({
                         empleadoStore.putEmpleado(payload, idPersona).then((response) => {
                             if (response.status == 200) {
                                 showSuccessAlert("¡Éxito!", "El empleado se ha actualizado correctamente", "success", "Aceptar").then(() => {
-                                    showToast("info", "Será redirigido a la lista de empleados");
-                                    setTimeout(() => {
+
                                         router.push({ name: "empleados" });
-                                    }, 3000);
                                 });
                             } else {
                                 showErrorAlert("Error", response.response.data.mensaje, "error", "Aceptar");

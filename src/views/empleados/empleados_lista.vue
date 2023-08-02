@@ -139,11 +139,11 @@
           width: '5%',
           title: 'Acciones',
           wrap: true,
-          render: function () {
+          render: function (data) {
             let buttons =
-              '<a title="Ver empleado" class="edit me-1 px-3 p-button-sm p-button p-component p-button-icon-only p-button-primary p-button-raised text-decoration-none"><i class="pi pi-eye"></i></a> ';
-            buttons +=
-              '<a title="Agregar plaza" class="acciones-plaza px-3 p-button-sm p-button p-component p-button-icon-only p-button-info p-button-raised text-decoration-none"><i class="pi pi-briefcase"></i></a>';
+              '<a title="Ver empleado" name="'+data.id+'" class="edit me-1 px-3 p-button-sm p-button p-component p-button-icon-only p-button-primary p-button-raised text-decoration-none"><i class="pi pi-pencil"></i></a> ';
+            //buttons +=
+            //  '<a title="Agregar plaza" name="'+data.id+'" class="acciones-plaza px-3 p-button-sm p-button p-component p-button-icon-only p-button-info p-button-raised text-decoration-none"><i class="pi pi-briefcase"></i></a>';
             return buttons;
           },
         },
@@ -185,7 +185,7 @@
         const statusRow = document.querySelectorAll('.estado');
         editButts.forEach((butt) => {
           butt.addEventListener('click', () => {
-            editItem(butt.closest('tr').cells[1].innerHTML);
+            editItem(butt.attributes.name.value);
           });
         });
         addButts.forEach((butt) => {
@@ -199,7 +199,7 @@
           }
 
           butt.addEventListener('click', () => {
-            router.push({ name: 'plazas_registrar', params: { id: butt.closest('tr').cells[1].innerHTML } });
+            router.push({ name: 'plazas_registrar', params: { id: butt.attributes.name.value } });
           });
         });
 

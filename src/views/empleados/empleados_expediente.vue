@@ -117,7 +117,8 @@ export default defineComponent({
         }
       }, 5000);
 
-      empleadoStore.getEmpleadoById(idEmpleado.value).then(() => {
+      empleadoStore.getEmpleadoById(idEmpleado.value).then((res) => {
+        if(res.status == 200){
         data.value = empleadoStore.data;
         data.value.fechaDeBaja = data.value.fechaBaja;
         data.value.motivoDeBaja = data.value.motivoBaja;
@@ -163,6 +164,10 @@ export default defineComponent({
           });
           console.log(dataHistorial.value);
         });
+
+      }else{
+        alertas.showErrorAlert('Error', res.response.data);
+      }
       })
 
       done = true;
@@ -195,18 +200,6 @@ export default defineComponent({
       getData();
       canGoBack.value = Cookies.get('rol') != '[ROLE_EMPLEADO]'
     });
-
-    const restaurarRespaldo = () => {
-      //ask for confirmation
-      alertas.showQuestionAlert('Restaurar', '¿Está seguro de que desea restaurar este respaldo?', 'Sí, restaurar', 'Cancelar').then((result) => {
-        if (result) {
-          //Wait for response
-          alertas.showLoading('Restaurando respaldo');
-          //Restaurar
-
-        }
-      });
-    };
 
     return {
       data,

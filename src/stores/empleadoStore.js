@@ -14,22 +14,20 @@ export const useStore = defineStore('empleados', {
       this.error = '';
       try {
         const response = await axios.get(`${this.apiURL}/`);
-        this.data = response.data.data;
-        this.message = response.data.message;
+        this.data = response.data;
+        this.message = response.data;
       } catch (err) {
         this.error = err.response.data.message || err.message;
       }
     },
 
-    async getEmpleado(tarjeta) {
+    async getEmpleado(id) {
       this.error = '';
       try {
-        const response = await axios.get(`${this.apiURL}/tarjeta/${tarjeta}`);
-        this.data = response.data.data;
-        this.message = response.data.message;
+        const response = await axios.get(`${this.apiURL}/id/${id}`);
+        this.data = response.data;
         return response;
       } catch (err) {
-        this.error = err.response.data.message || err.message;
         return err;
       }
     },
@@ -38,11 +36,9 @@ export const useStore = defineStore('empleados', {
       this.error = '';
       try {
         const response = await axios.get(`${this.apiURL}/id/${id}`);
-        this.data = response.data.data;
-        this.message = response.data.message;
+        this.data = response.data;
         return response;
       } catch (err) {
-        this.error = err.response.data.message || err.message;
         return err;
       }
     },
@@ -51,11 +47,9 @@ export const useStore = defineStore('empleados', {
       this.error = '';
       try {
         const response = await axios.get(`${this.apiURL}/email/${email}`);
-        this.data = response.data.data;
-        this.message = response.data.message;
+        this.data = response.data;
         return response;
       } catch (err) {
-        this.error = err.response.data.message || err.message;
         return err;
       }
     },
@@ -64,11 +58,9 @@ export const useStore = defineStore('empleados', {
       this.error = '';
       try {
         const response = await axios.post(`${this.apiURL}/`, newEmpleado);
-        this.data = response.data.data;
-        this.message = response.data.message;
+        this.data = response.data;
         return response;
       } catch (err) {
-        this.error = err.response.data.message || err.message;
         return err;
       }
     },
@@ -77,11 +69,9 @@ export const useStore = defineStore('empleados', {
       this.error = '';
       try {
         const response = await axios.put(`${this.apiURL}/id/${id}`, updatedEmpleado);
-        this.data = response.data.data;
-        this.message = response.data.message;
+        this.data = response.data;
         return response;
       } catch (err) {
-        this.error = err.response.data.message || err.message;
         return err;
       }
     },
@@ -90,11 +80,9 @@ export const useStore = defineStore('empleados', {
       this.error = '';
       try {
         const response = await axios.delete(`${this.apiURL}/id/${id}`);
-        this.data = response.data.data;
-        this.message = response.data.message;
+        this.data = response.data;
         return response;
       } catch (err) {
-        this.error = err.response.data.message || err.message;
         return err;
       }
     },
@@ -103,11 +91,9 @@ export const useStore = defineStore('empleados', {
       this.error = '';
       try {
         const response = await axios.get(`${this.apiURL}/historial/${id}`);
-        this.data = response.data.data;
-        this.message = response.data.message;
-      return response;
+        this.data = response.data;
+        return response;
       } catch (err) {
-        this.error = err.response.data.message || err.message;
         return err;
       }
     },
@@ -116,11 +102,9 @@ export const useStore = defineStore('empleados', {
       this.error = '';
       try {
         const response = await axios.post(`${this.apiURL}/historial/restaurar/${id}`);
-        this.data = response.data.data;
-        this.message = response.data.message;
+        this.data = response.data;
         return response;
       } catch (err) {
-        this.error = err.response.data.message || err.message;
         return err;
       }
     },

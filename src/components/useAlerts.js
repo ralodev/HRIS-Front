@@ -1,6 +1,13 @@
 import Swal from 'sweetalert2';
+import Cookies from 'js-cookie';
 
 export const useAlerts = () => {
+
+
+
+    function areAnimationsEnabled () {
+       return Cookies.get('animationsEnabled') === 'true';
+    }
 
     const showConfirmAlert = (title, text, icon, confirmButtonText, cancelButtonText) => {
         return Swal.fire({
@@ -13,6 +20,16 @@ export const useAlerts = () => {
             cancelButtonColor: '#d33',
             confirmButtonText: confirmButtonText,
             cancelButtonText: cancelButtonText,
+            showClass: {
+                backdrop: areAnimationsEnabled() ? 'swal2-backdrop-show':'swal2-noanimation',
+                popup: areAnimationsEnabled() ? 'swal2-show':'',
+                icon: areAnimationsEnabled() ? 'swal2-icon-show':'',
+            },
+            hideClass: {
+                popup: areAnimationsEnabled() ? 'swal2-hide':'',
+                icon: areAnimationsEnabled() ? 'swal2-icon-hide':'',
+                backdrop: areAnimationsEnabled() ? 'swal2-backdrop-hide':'',
+            }
         }).then((result) => {
             return result.isConfirmed;
         });
@@ -23,7 +40,38 @@ export const useAlerts = () => {
             title: title,
             text: text,
             icon: 'success',
-            confirmButtonText: 'OK'
+            confirmButtonText: 'OK',
+            showClass: {
+                backdrop: areAnimationsEnabled() ? 'swal2-backdrop-show':'swal2-noanimation',
+                popup: areAnimationsEnabled() ? 'swal2-show':'',
+                icon: areAnimationsEnabled() ? 'swal2-icon-show':'',
+            },
+            hideClass: {
+                popup: areAnimationsEnabled() ? 'swal2-hide':'',
+                icon: areAnimationsEnabled() ? 'swal2-icon-hide':'',
+                backdrop: areAnimationsEnabled() ? 'swal2-backdrop-hide':'',
+            }
+        }).then((result) => {
+            return result.isConfirmed;
+        })
+    }
+
+    const showWarningAlert = (title, text) => {
+        return Swal.fire({
+            title: title,
+            text: text,
+            icon: 'warning',
+            confirmButtonText: 'OK',
+            showClass: {
+                backdrop: areAnimationsEnabled() ? 'swal2-backdrop-show':'swal2-noanimation',
+                popup: areAnimationsEnabled() ? 'swal2-show':'',
+                icon: areAnimationsEnabled() ? 'swal2-icon-show':'',
+            },
+            hideClass: {
+                popup: areAnimationsEnabled() ? 'swal2-hide':'',
+                icon: areAnimationsEnabled() ? 'swal2-icon-hide':'',
+                backdrop: areAnimationsEnabled() ? 'swal2-backdrop-hide':'',
+            }
         }).then((result) => {
             return result.isConfirmed;
         })
@@ -34,7 +82,17 @@ export const useAlerts = () => {
             title: title,
             text: text,
             icon: 'error',
-            confirmButtonText: 'OK'
+            confirmButtonText: 'OK',
+            showClass: {
+                backdrop: areAnimationsEnabled() ? 'swal2-backdrop-show':'swal2-noanimation',
+                popup: areAnimationsEnabled() ? 'swal2-show':'',
+                icon: areAnimationsEnabled() ? 'swal2-icon-show':'',
+            },
+            hideClass: {
+                popup: areAnimationsEnabled() ? 'swal2-hide':'',
+                icon: areAnimationsEnabled() ? 'swal2-icon-hide':'',
+                backdrop: areAnimationsEnabled() ? 'swal2-backdrop-hide':'',
+            }
         }).then((result) => {
             return result.isConfirmed;
         })
@@ -45,7 +103,17 @@ export const useAlerts = () => {
             title: title,
             text: text,
             icon: 'info',
-            confirmButtonText: 'OK'
+            confirmButtonText: 'OK',
+            showClass: {
+                backdrop: areAnimationsEnabled() ? 'swal2-backdrop-show':'swal2-noanimation',
+                popup: areAnimationsEnabled() ? 'swal2-show':'',
+                icon: areAnimationsEnabled() ? 'swal2-icon-show':'',
+            },
+            hideClass: {
+                popup: areAnimationsEnabled() ? 'swal2-hide':'',
+                icon: areAnimationsEnabled() ? 'swal2-icon-hide':'',
+                backdrop: areAnimationsEnabled() ? 'swal2-backdrop-hide':'',
+            }
         }).then((result) => {
             return result.isConfirmed;
         })
@@ -60,7 +128,17 @@ export const useAlerts = () => {
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
             confirmButtonText: confirmButtonText,
-            cancelButtonText: cancelButtonText
+            cancelButtonText: cancelButtonText,
+            showClass: {
+                backdrop: areAnimationsEnabled() ? 'swal2-backdrop-show':'swal2-noanimation',
+                popup: areAnimationsEnabled() ? 'swal2-show':'',
+                icon: areAnimationsEnabled() ? 'swal2-icon-show':'',
+            },
+            hideClass: {
+                popup: areAnimationsEnabled() ? 'swal2-hide':'',
+                icon: areAnimationsEnabled() ? 'swal2-icon-hide':'',
+                backdrop: areAnimationsEnabled() ? 'swal2-backdrop-hide':'',
+            }
         }).then((result) => {
             return result.isConfirmed;
         })
@@ -70,6 +148,16 @@ export const useAlerts = () => {
         Swal.fire({
             title: title,
             allowOutsideClick: false,
+            showClass: {
+                backdrop: areAnimationsEnabled() ? 'swal2-backdrop-show':'swal2-noanimation',
+                popup: areAnimationsEnabled() ? 'swal2-show':'',
+                icon: areAnimationsEnabled() ? 'swal2-icon-show':'',
+            },
+            hideClass: {
+                popup: areAnimationsEnabled() ? 'swal2-hide':'',
+                icon: areAnimationsEnabled() ? 'swal2-icon-hide':'',
+                backdrop: areAnimationsEnabled() ? 'swal2-backdrop-hide':'',
+            },
             didOpen: () => {
                 Swal.showLoading()
             }
@@ -87,6 +175,16 @@ export const useAlerts = () => {
             showConfirmButton: false,
             timer: 2000,
             timerProgressBar: true,
+            showClass: {
+                backdrop: areAnimationsEnabled() ? 'swal2-backdrop-show':'swal2-noanimation',
+                popup: areAnimationsEnabled() ? 'swal2-show':'',
+                icon: areAnimationsEnabled() ? 'swal2-icon-show':'',
+            },
+            hideClass: {
+                popup: areAnimationsEnabled() ? 'swal2-hide':'',
+                icon: areAnimationsEnabled() ? 'swal2-icon-hide':'',
+                backdrop: areAnimationsEnabled() ? 'swal2-backdrop-hide':'',
+            },
             didOpen: (toast) => {
                 toast.addEventListener('mouseenter', Swal.stopTimer)
                 toast.addEventListener('mouseleave', Swal.resumeTimer)
@@ -106,6 +204,16 @@ export const useAlerts = () => {
             showConfirmButton: false,
             timer: 2000,
             timerProgressBar: true,
+            showClass: {
+                backdrop: areAnimationsEnabled() ? 'swal2-backdrop-show':'swal2-noanimation',
+                popup: areAnimationsEnabled() ? 'swal2-show':'',
+                icon: areAnimationsEnabled() ? 'swal2-icon-show':'',
+            },
+            hideClass: {
+                popup: areAnimationsEnabled() ? 'swal2-hide':'',
+                icon: areAnimationsEnabled() ? 'swal2-icon-hide':'',
+                backdrop: areAnimationsEnabled() ? 'swal2-backdrop-hide':'',
+            },
             didOpen: (toast) => {
                 toast.addEventListener('mouseenter', Swal.stopTimer)
                 toast.addEventListener('mouseleave', Swal.resumeTimer)
@@ -125,6 +233,16 @@ export const useAlerts = () => {
             showConfirmButton: false,
             timer: 2000,
             timerProgressBar: true,
+            showClass: {
+                backdrop: areAnimationsEnabled() ? 'swal2-backdrop-show':'swal2-noanimation',
+                popup: areAnimationsEnabled() ? 'swal2-show':'',
+                icon: areAnimationsEnabled() ? 'swal2-icon-show':'',
+            },
+            hideClass: {
+                popup: areAnimationsEnabled() ? 'swal2-hide':'',
+                icon: areAnimationsEnabled() ? 'swal2-icon-hide':'',
+                backdrop: areAnimationsEnabled() ? 'swal2-backdrop-hide':'',
+            },
             didOpen: (toast) => {
                 toast.addEventListener('mouseenter', Swal.stopTimer)
                 toast.addEventListener('mouseleave', Swal.resumeTimer)
@@ -144,6 +262,16 @@ export const useAlerts = () => {
             showConfirmButton: false,
             timer: 2000,
             timerProgressBar: true,
+            showClass: {
+                backdrop: areAnimationsEnabled() ? 'swal2-backdrop-show':'swal2-noanimation',
+                popup: areAnimationsEnabled() ? 'swal2-show':'',
+                icon: areAnimationsEnabled() ? 'swal2-icon-show':'',
+            },
+            hideClass: {
+                popup: areAnimationsEnabled() ? 'swal2-hide':'',
+                icon: areAnimationsEnabled() ? 'swal2-icon-hide':'',
+                backdrop: areAnimationsEnabled() ? 'swal2-backdrop-hide':'',
+            },
             didOpen: (toast) => {
                 toast.addEventListener('mouseenter', Swal.stopTimer)
                 toast.addEventListener('mouseleave', Swal.resumeTimer)
@@ -163,6 +291,16 @@ export const useAlerts = () => {
             showConfirmButton: false,
             timer: 2000,
             timerProgressBar: true,
+            showClass: {
+                backdrop: areAnimationsEnabled() ? 'swal2-backdrop-show':'swal2-noanimation',
+                popup: areAnimationsEnabled() ? 'swal2-show':'',
+                icon: areAnimationsEnabled() ? 'swal2-icon-show':'',
+            },
+            hideClass: {
+                popup: areAnimationsEnabled() ? 'swal2-hide':'',
+                icon: areAnimationsEnabled() ? 'swal2-icon-hide':'',
+                backdrop: areAnimationsEnabled() ? 'swal2-backdrop-hide':'',
+            },
             didOpen: (toast) => {
                 toast.addEventListener('mouseenter', Swal.stopTimer)
                 toast.addEventListener('mouseleave', Swal.resumeTimer)
@@ -191,6 +329,16 @@ export const useAlerts = () => {
             timer: miliseconds,
             timerProgressBar: true,
             grow: 'row',
+            showClass: {
+                backdrop: areAnimationsEnabled() ? 'swal2-backdrop-show':'swal2-noanimation',
+                popup: areAnimationsEnabled() ? 'swal2-show':'',
+                icon: areAnimationsEnabled() ? 'swal2-icon-show':'',
+            },
+            hideClass: {
+                popup: areAnimationsEnabled() ? 'swal2-hide':'',
+                icon: areAnimationsEnabled() ? 'swal2-icon-hide':'',
+                backdrop: areAnimationsEnabled() ? 'swal2-backdrop-hide':'',
+            },
             didOpen: (toast) => {
                 toast.addEventListener('mouseenter', Swal.stopTimer)
                 toast.addEventListener('mouseleave', Swal.resumeTimer)
@@ -210,6 +358,16 @@ export const useAlerts = () => {
             showConfirmButton: false,
             grow: false,
             timerProgressBar: true,
+            showClass: {
+                backdrop: areAnimationsEnabled() ? 'swal2-backdrop-show':'swal2-noanimation',
+                popup: areAnimationsEnabled() ? 'swal2-show':'',
+                icon: areAnimationsEnabled() ? 'swal2-icon-show':'',
+            },
+            hideClass: {
+                popup: areAnimationsEnabled() ? 'swal2-hide':'',
+                icon: areAnimationsEnabled() ? 'swal2-icon-hide':'',
+                backdrop: areAnimationsEnabled() ? 'swal2-backdrop-hide':'',
+            },
         })
 
         Toast.fire({
@@ -227,6 +385,16 @@ export const useAlerts = () => {
             showConfirmButton: false,
             grow: 'false',
             timerProgressBar: true,
+            showClass: {
+                backdrop: areAnimationsEnabled() ? 'swal2-backdrop-show':'swal2-noanimation',
+                popup: areAnimationsEnabled() ? 'swal2-show':'',
+                icon: areAnimationsEnabled() ? 'swal2-icon-show':'',
+            },
+            hideClass: {
+                popup: areAnimationsEnabled() ? 'swal2-hide':'',
+                icon: areAnimationsEnabled() ? 'swal2-icon-hide':'',
+                backdrop: areAnimationsEnabled() ? 'swal2-backdrop-hide':'',
+            },
         })
 
         Toast.fire({
@@ -255,6 +423,7 @@ export const useAlerts = () => {
         showLoadingToast,
         loadingToast_EB,
         showSuccessToast,
-        showErrorToast
+        showErrorToast,
+        showWarningAlert
     }
 }

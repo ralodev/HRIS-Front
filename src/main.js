@@ -57,6 +57,7 @@ import Panel from 'primevue/panel';
 import Galleria from 'primevue/galleria';
 import Divider from 'primevue/divider';
 import Password from 'primevue/password';
+import InputSwitch from 'primevue/inputswitch';
 
 const app = createApp(App)
 
@@ -93,6 +94,7 @@ app.component('Panel', Panel);
 app.component('Galleria', Galleria);
 app.component('Divider', Divider);
 app.component('Password', Password);
+app.component('InputSwitch', InputSwitch);
 
 app.use(PrimeVue, {
     ripple: true,
