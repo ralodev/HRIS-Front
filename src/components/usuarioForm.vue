@@ -16,14 +16,14 @@
             <div class="col-12">
               <Button v-if="isEdit" :icon="data.locked ? 'pi pi-lock-open' : 'pi pi-lock'" class="float-end border-none me-2"
                 @click="lock_unlock" :label="data.locked ? 'Desbloquear' : 'Bloquear'"
-                v-tooltip.top="'Un usuario bloqueado no puede acceder a la plataforma ni a sus funciones'"
-                :class="data.locked ? 'bg-green-700' : 'bg-red-700'" />
+                v-tooltip.top="data.locked ? 'Desbloquear al usuario permitirá que pueda iniciar sesión en el sistema':'Bloquear al usuario evitará que pueda iniciar sesión en el sistema, pero no eliminará sus datos'"
+                :class="editingSelf == true ? 'bg-gray-700 border-none' : data.locked ? 'bg-green-700' : 'bg-red-700'" :disabled="editingSelf == true" />
             </div>
             <!-- Input correo -->
             <div class="col-12 md:col-offset-3 md:col-6">
               <label for="curp" class="form-label">Correo electrónico<b class="p-error">*</b></label>
               <InputText v-model="data.email" autocomplete="none" placeholder="Direccion de correo electrónico"
-                :class="['w-full', { 'p-invalid': error.email && validated }]" />
+                :class="['w-full', { 'p-invalid': error.email && validated }]" :disabled="isEdit" />
               <small v-if="validated" class="p-error">{{ error.email || '' }}</small>
             </div>
             <!-- Input nombre-->
@@ -45,7 +45,7 @@
               <label for="genero" class="form-label">Rol<b class="text-danger">*</b></label>
               <Dropdown v-model="data.rol" :options="roles" optionLabel="nombre" optionValue="value"
                 placeholder="Elija el rol cuidadosamente" :class="['w-full', { 'p-invalid': error.rol && validated }]"
-                showClear />
+                showClear :disabled="editingSelf" />
               <small v-if="validated" class="p-error">{{ error.rol || '' }}</small>
             </div>
             <!-- Descripción del Rol -->
@@ -127,7 +127,7 @@
           <small><b class="text-danger">*</b> Campos obligatorios</small>
         </div>
         <div class="card-footer d-flex">
-          <Button v-if="isEdit" icon="pi pi-trash" class="me-2" label="Eliminar" @click="eliminar" severity="danger" />
+          <Button v-if="isEdit" icon="pi pi-trash" class="me-2" label="Eliminar" @click="eliminar" severity="danger" :disabled="editingSelf == true" :class="editingSelf == true ? 'bg-gray-700 border-none' : 'bg-red-700'"/>
           <Button icon="pi pi-check" id="submitButton" class="me-2 ms-auto" label="Guardar" @click="submit" />
           <Button icon="pi pi-times" class="ms-2 float-end" severity="secondary" label="Cancelar" @click="cancelar" />
         </div>
@@ -144,6 +144,7 @@ import { useRoute } from 'vue-router';
 import { useRouter } from 'vue-router';
 import { useAlerts } from '@/components/useAlerts';
 import InputText from 'primevue/inputtext';
+import cookies from 'js-cookie';
 
 export default defineComponent({
   name: 'UsuarioForm',
@@ -168,6 +169,7 @@ export default defineComponent({
     const id = ref(null);
     const isLocked = ref(false);
     const alertas = useAlerts();
+    const editingSelf = ref(false);
     const { showToast, showSuccessAlert, showConfirmAlert, showErrorAlert, showLoading, closeLoading } = useAlerts();
     const roles = [
       { nombre: 'ADMINISTRADOR', value: 'ROLE_ADMIN' },
@@ -183,6 +185,7 @@ export default defineComponent({
         data.value = store.data;
         validated.value = true;
         isLocked.value = data.value.locked;
+        editingSelf.value = data.value.email == cookies.get('email');
         validate();
         closeLoading();
       });
@@ -232,24 +235,23 @@ export default defineComponent({
       } else {
         error.value.rol = '';
       }
-      //if there are no errors, isValid will be true, then submit the form
-      if (!isValid.value) {
+      return isValid.value;
+    };
+    const submit = () => {
+      if (validate() == false)
+      {
         showToast('error', 'Verifique los campos marcados en rojo');
         return;
       }
-    };
-    const submit = () => {
-      validate();
-
       let payload = { ...data.value };
 
       if (isEdit.value) {
-        var email = data.value.email;
+        var id = data.value.id;
         //Ask for confirmation
         showConfirmAlert('¿Estás seguro?', 'Se actualizarán los datos del usuario', 'warning', 'Sí, actualizar', 'No, cancelar').then((isConfirmed) => {
           //If the user confirms, try to update the employee
           if (isConfirmed) {
-            store.editarUsuario(email, payload)
+            store.editarUsuario(id, payload)
               .then((response) => {
                 console.log(response);
                 if (response.status == 200) {
@@ -393,6 +395,7 @@ export default defineComponent({
       roles,
       isLocked,
       lock_unlock,
+      editingSelf,
       goBack: () => router.go(-1),
     };
   },
