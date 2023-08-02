@@ -11,13 +11,11 @@
         <form id="login" @submit.prevent="onSubmit" class="px-5">
           <label for="email1" class="block text-900 fs-5 font-medium mb-2">Correo electrónico</label>
           <InputText id="email1" v-model="data.email" type="text" class="w-full mb-3 " autocomplete="email" required
-          :class="{'border-red-600 border-2 border-round-lg': wrongCredentials}"
-          />
+            :class="{ 'border-red-600 border-2 border-round-lg': wrongCredentials }" />
 
           <label for="password1" class="block text-900 fs-5 font-medium mb-2">Contraseña</label>
-          <Password id="password1" v-model="data.password" class="w-full mb-3" autocomplete="current-password" required :feedback="false" toggleMask
-          :class="{'border-red-600 border-2 border-round-lg': wrongCredentials}"
-          />
+          <Password id="password1" v-model="data.password" class="w-full mb-3" autocomplete="current-password" required
+            :feedback="false" toggleMask :class="{ 'border-red-600 border-2 border-round-lg': wrongCredentials }" />
 
           <div class="flex align-items-center justify-content-between mb-6">
             <div class="flex align-items-center">
@@ -30,10 +28,11 @@
                 mi
                 contraseña</a>
             </RouterLink>
-            </div>
-            <span class="text-center block font-medium text-red-600 mb-1" v-if="wrongCredentials">Credenciales incorrectas</span>
+          </div>
+          <span class="text-center block font-medium text-red-600 mb-1" v-if="wrongCredentials">Credenciales
+            incorrectas</span>
 
-          <Button type="submit" :label="!loading?'Iniciar sesión':null" icon="pi pi-user"
+          <Button type="submit" :label="!loading ? 'Iniciar sesión' : null" icon="pi pi-user"
             class="w-full hover:shadow-3 bg-primary-700 hover:bg-primary-600" :loading="loading"></Button>
         </form>
       </div>
@@ -94,7 +93,6 @@ import { ref, onMounted, computed } from 'vue';
 import { useStore } from '@/stores/authStore';
 import { useRouter } from 'vue-router';
 import { useAlerts } from '@/components/useAlerts';
-import { setAuthorizationHeader } from '@/assets/js/axiosConfig';
 import Cookies from 'js-cookie';
 
 export default {
@@ -135,21 +133,53 @@ export default {
         localStorage.removeItem('username');
       }
       setTimeout(() => {
-
-      store.login(data.value).then((r) => {
-        loading.value = false;
-        if (r.status === 200) {
-          router.push({ path: '/inicio' });
-          setAuthorizationHeader(r.data.access_token);
-          alertas.closeLoading();
-        } else {
-          wrongCredentials.value = true;
-          alertas.showLoginErrorToast();
-        }
-      }).catch((e) => {
-        alertas.closeLoading();
-        alertas.showErrorAlert(e);
-      });
+        store.login(data.value).then((r) => {
+          loading.value = false;
+          console.log(r);
+          if (r.status === 200) {
+            setTimeout(() => {
+              alertas.showWarningAlert("Sesión expirada", "Tu sesión ha expirado. Inicia sesión de nuevo.").then(() => {
+                store.logout();
+                router.push('/');
+              });
+            }, 4*60*60*1000);
+            router.push({ path: '/inicio' });
+            alertas.closeLoading();
+          } else if (r.response.status === 403) {
+            wrongCredentials.value = true;
+            alertas.showWarningAlert("Plataforma no disponible", "La plataforma no está disponible en este momento. Intenta de nuevo más tarde.");
+          } else if (r.response.status === 400) {
+            wrongCredentials.value = true;
+            alertas.showErrorAlert("Cuenta inválida", "No has confirmado tu correo electrónico o tu cuenta ha sido bloqueada.");
+          } else if (r.response.status === 401) {
+            wrongCredentials.value = true;
+            alertas.showErrorToast("Credenciales incorrectas.");
+          } else if (r.response.status === 423) {
+            wrongCredentials.value = true;
+            alertas.showErrorAlert("Demasiados intentos", r.response.data);
+          } else {
+            wrongCredentials.value = true;
+            alertas.showErrorAlert("Ocurrió un error inesperado. Intenta de nuevo más tarde.");
+          }
+        }).catch((r) => {
+          console.log(r);
+          if (r.status === 403) {
+            wrongCredentials.value = true;
+            alertas.showWarningAlert("La plataforma no está disponible en este momento.");
+          } else if (r.status === 400) {
+            wrongCredentials.value = true;
+            alertas.showErrorToast("No has confirmado tu correo electrónico o tu cuenta ha sido bloqueada.");
+          } else if (r.status === 401) {
+            wrongCredentials.value = true;
+            alertas.showErrorToast("Credenciales incorrectas.");
+          } else if (r.status === 423) {
+            wrongCredentials.value = true;
+            alertas.showErrorAlert("Cuenta bloqueada", r.response.data);
+          } else {
+            wrongCredentials.value = true;
+            alertas.showErrorAlert("Ocurrió un error inesperado.");
+          }
+        });
       }, 1000);
     }
 
@@ -174,4 +204,5 @@ export default {
 .v-center {
   margin: auto;
 
-}</style>
+}
+</style>

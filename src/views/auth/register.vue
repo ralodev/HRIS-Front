@@ -13,9 +13,9 @@
           <label for="email" class="block text-900 text-lg font-medium mb-2">Correo electrónico institucional</label>
           <div class="p-inputgroup">
             <InputText placeholder="Introduce tu correo electrónico" id="searchInput" @keyup.enter="verifyEmail"
-              v-model="data.email" autocomplete="email" required @keypress="found_to_null" />
+              v-model="data.email" autocomplete="email" required @keypress="found_to_null" :disabled="registrationDisabled.valueOf"/>
             <Button class="transition-all transition-duration-500" icon="pi pi-search" :label="see ? 'Verificar' : null"
-              severity="primary" @click="verifyEmail" @mouseover="seeTrue" @mouseout="seeFalse" />
+              severity="primary" @click="verifyEmail" @mouseover="seeTrue" @mouseout="seeFalse" :disabled="registrationDisabled.valueOf"/>
           </div>
 
           <span class="block text-justify text-color mb-3">Introduce tu correo institucional y verifica que se encuentre
@@ -88,21 +88,23 @@
 <script>
 import { ref, onMounted, computed } from 'vue';
 import { useStore } from '@/stores/usuarioStore';
+import { useStore as useConfigStore } from '@/stores/configStore';
 import { useRouter } from 'vue-router';
 import { useAlerts } from '@/components/useAlerts';
-import { setAuthorizationHeader } from '@/assets/js/axiosConfig';
 import Cookies from 'js-cookie';
 
 export default {
   name: 'Login',
   setup() {
     const store = useStore();
+    const configStore = useConfigStore();
     const router = useRouter();
     const alertas = useAlerts();
     const loading = ref(false);
     const wrongCredentials = ref(false);
     const see = ref(false);
     const found = ref(null);
+    const registrationDisabled = ref(false);
 
     const data = ref({
       email: '',
@@ -112,6 +114,19 @@ export default {
     });
 
     onMounted(() => {
+      configStore.getRegistrationStatus().then((r) => {
+        console.log(r);
+        if (r.response.status === 200) {
+           registrationDisabled.valueOf = false;
+          } else {
+          registrationDisabled.valueOf = true;
+          alertas.showErrorAlert('Registro deshabilitado', 'El administrador ha deshabilitado el registro de usuarios');
+        }
+      }).catch((e) => {
+        registrationDisabled.valueOf = true;
+        alertas.showErrorAlert('Registro deshabilitado', 'El administrador ha deshabilitado el registro de usuarios');
+      });
+      console.log(registrationDisabled);
       document.querySelector('input').focus();
     });
 
@@ -122,7 +137,7 @@ export default {
       //Regex para validar el correo con el dominio @itoaxaca.edu.mx o @oaxaca.tecnm.mx
       const regex = new RegExp('^[a-zA-Z0-9._%+-]+@(itoaxaca.edu.mx|oaxaca.tecnm.mx)$');
       if (!regex.test(data.value.email)) {
-        alertas.showWarningToast('Correo no válido');
+        alertas.showErrorAlert('Correo no válido');
         loading.value = false;
         return;
       }
@@ -146,13 +161,13 @@ export default {
     }
 
     const verifyEmail = () => {
-      const regex = new RegExp('^[a-zA-Z0-9._%+-]+@(itoaxaca.edu.mx|oaxaca.tecnm.mx)$');
+      const regex = new RegExp('^[a-zA-Z0-9._%+-]+@(itoaxaca.edu.mx|oaxaca.tecnm.mx|gmail.com)$');
       if (!regex.test(data.value.email)) {
         alertas.showErrorToast('Correo no válido');
         loading.value = false;
         return;
       }
-      store.verificarCorreo(data.value.email).then((r) => {
+      store.consultarCorreo(data.value.email).then((r) => {
         if (r.status === 200) {
           found.value = true;
           alertas.showSuccessToast('Correo encontrado');
@@ -174,6 +189,7 @@ export default {
       see,
       verifyEmail,
       found,
+      registrationDisabled,
       found_to_null() {
         found.value = null;
       },
