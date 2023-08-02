@@ -225,6 +225,16 @@ const router = createRouter({
       }
     },
     {
+      path: '/configuracion',
+      name: 'configuracion',
+      component: () => import('../views/admin/config.vue'),
+      meta: {
+        breadcrumb: 'Respaldos',
+        requiresAuth: true,
+        authLevel: 4
+      }
+    },
+    {
       path: '/:pathMatch(.*)*',
       name: 'not-found',
       component: () => import('../views/404.vue'),
@@ -271,13 +281,32 @@ const router = createRouter({
       }
     },
     {
-      path: '/opciones',
-      name: 'opciones',
-      component: () => import('../views/usuarios/opciones.vue'),
+      path: '/preferencias',
+      name: 'preferencias',
+      component: () => import('../views/usuarios/preferencias.vue'),
       meta: {
         breadcrumb: 'Opciones',
         requiresAuth: true,
         authLevel: 1
+      }
+    },
+    {
+      path: '/cambiar-contrasena',
+      name: 'cambiar-contrasena',
+      component: () => import('../views/usuarios/cambiar_contrasena.vue'),
+      meta: {
+        breadcrumb: 'Cambiar contraseña',
+        requiresAuth: true,
+        authLevel: 1
+      }
+    },
+    {
+      path: '/verificar',
+      name: 'verificar',
+      component: () => import('../views/auth/verify.vue'),
+      meta: {
+        breadcrumb: 'Verificar',
+        requiresAuth: false
       }
     }
   ]
