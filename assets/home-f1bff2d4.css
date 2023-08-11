@@ -1,0 +1,1 @@
+.slideup{overflow:hidden;max-height:1000px;transition:max-height 5s ease-out}.slideup.closed{max-height:0;padding:0;border:none;transition:max-height 5s ease-in}
