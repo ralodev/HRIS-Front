@@ -1,0 +1,1 @@
+import{D as o}from"./departamentoForm-05144a8f.js";import{_ as t,a as r,b as a,j as n}from"./index-89966047.js";import"./departamentoStore-3a3f036f.js";const s={name:"departamentos_editar",components:{DepartamentoForm:o}};function m(p,c,_,d,f,i){const e=r("departamento-form");return a(),n(e,{isEdit:!1})}const x=t(s,[["render",m]]);export{x as default};
