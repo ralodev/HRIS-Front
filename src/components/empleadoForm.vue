@@ -545,7 +545,8 @@ export default defineComponent({
             }).then((result) => {
                 if (result.value) {
                     empleadoStore.deleteEmpleado(data.value.id).then((response) => {
-                        if(response.status == 200 || response.status == 204){
+                        console.log('asd',response)
+                        if(response.status == 200){
                             Swal.fire({
                                 icon: 'success',
                                 title: '¡Éxito!',
@@ -554,7 +555,7 @@ export default defineComponent({
                                 router.push({ name: "empleados" });
                             })
                         } else {
-                            showErrorAlert("Error", response.response.data.mensaje, "error", "Aceptar");
+                            showErrorAlert("Error", response.response.data);
                         }
                     }).catch((error) => {
                         console.log(error)

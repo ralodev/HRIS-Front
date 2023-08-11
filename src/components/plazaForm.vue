@@ -638,14 +638,19 @@ export default defineComponent({
                 }
             }).then((result) => {
                 if (result.value) {
-                    plazaStore.deletePlaza(data.value.id).then(() => {
-                        Swal.fire({
-                            icon: 'success',
-                            title: '¡Éxito!',
-                            text: 'La plaza ha sido eliminada de forma permanente',
-                        }).then(() => {
-                            router.push({ name: "plazas" });
-                        })
+                    plazaStore.deletePlaza(data.value.id).then((res) => {
+                        console.log(res)
+                        if(res.status == 200 || res.status == 204){
+                            Swal.fire({
+                                icon: 'success',
+                                title: '¡Éxito!',
+                                text: 'La plaza ha sido eliminada de forma permanente',
+                            }).then(() => {
+                                router.push({ name: "plazas" });
+                            })
+                        }else{
+                            showErrorAlert("Error",res.response.data)
+                        }
                     }).catch((error) => {
                         showToast("error", "Ocurrió un error al eliminar la plaza");
                     });

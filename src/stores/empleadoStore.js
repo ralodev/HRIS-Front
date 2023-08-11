@@ -16,6 +16,7 @@ export const useStore = defineStore('empleados', {
         const response = await axios.get(`${this.apiURL}/`);
         this.data = response.data;
         this.message = response.data;
+        return response;
       } catch (err) {
         this.error = err.response.data.message || err.message;
       }

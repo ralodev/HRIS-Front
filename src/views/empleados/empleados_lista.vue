@@ -155,15 +155,21 @@
         setTimeout(() => {
           if (!done) {
             alertas.closeLoading();
-            alertas.showErrorAlert('Error', 'Ocurrió un error inesperado');
+            alertas.showWarningAlert('Oops!', 'El servidor está tardando demasiado en responder');
           }
+          setTimeout(() => {
+            if (!done) {
+              alertas.closeWarning();
+              alertas.showErrorAlert('Error', 'No se pudo conectar con el servidor');
+            }
+          }, 10000);
         }, 5000);
-        await store
-          .getEmpleados()
-          .then(() => {
-            data.value = store.data;
-            alertas.closeLoading();
-            done = true;
+        await store.getEmpleados().then((res) => {
+            if (res.status == 200){
+              data.value = store.data;
+            } else {
+              alertas.showErrorAlert('Error', 'Ocurrió un error inesperado');
+            }
           })
           .catch((error) => {
             if (error.code === 'ERR_NETWORK') {
@@ -171,6 +177,8 @@
             } else {
               alertas.showErrorAlert('Error', 'Ocurrió un error inesperado');
             }
+          }).finally(() => {
+            alertas.closeLoading();
             done = true;
           });
       };

@@ -19,12 +19,13 @@
         </template>
         <template #end>
           <span class="py-2 user-info-container border-round-2xl hover:bg-gray-200" type="button" label="Toggle"
-            @click="toggle" aria-haspopup="true" aria-controls="overlay_menu" @mouseenter="hovered" @mouseleave="unhovered">
+            @click="toggle" aria-haspopup="true" aria-controls="overlay_menu" @mouseenter="hovered"
+            @mouseleave="unhovered">
             <div class="ps-2 me-2 text-nowrap">
               <span class="user-info user-info-item fw-semibold text-end">{{ nombre_usuario }}</span>
             </div>
-            <Avatar class="me-2 bg-primary-600 transition-colors transition-duration-500 text-0"
-              shape="circle" id="avatar" :label="inicial_usuario" />
+            <Avatar class="me-2 bg-primary-600 transition-colors transition-duration-500 text-0" shape="circle"
+              id="avatar" :label="inicial_usuario" />
           </span>
           <Menu ref="menuRef" class="text-nowrap" id="overlay_menu" :model="userMenu" :popup="true" />
           <Toast />
@@ -94,35 +95,32 @@ export default {
       showNavbar.value = to.matched.some(record => record.meta.requiresAuth) && isLoggedIn.value;
 
       if (isLoggedIn.value) {
-        if (nombre_usuario.value === '' || inicial_usuario.value === '' || rol_usuario.value === '' || user_authLevel.value === 0) {
-          let nombre = Cookies.get('nombre');
-          let apellidos = Cookies.get('apellidos').split(' ')[0];
-          let nombreCompleto = nombre + ' ' + apellidos;
+        if (!nombre_usuario.value || !inicial_usuario.value || !rol_usuario.value || user_authLevel.value === 0) {
+          const nombre = Cookies.get('nombre');
+          const apellidos = Cookies.get('apellidos').split(' ')[0];
+          let nombreCompleto = `${nombre} ${apellidos}`;
           rol_usuario.value = Cookies.get('rol');
 
           if (nombreCompleto.length > 25) {
-            nombreCompleto = nombreCompleto.split(' ');
-            if (nombreCompleto[0].length + nombreCompleto[1].length > 25) {
-              nombreCompleto = nombreCompleto[0] + ' ' + nombreCompleto[1].charAt(0) + '.';
-            } else {
-              nombreCompleto = nombreCompleto[0] + ' ' + nombreCompleto[1];
-            }
+            const [nombreParte1, nombreParte2] = nombreCompleto.split(' ');
+            nombreCompleto = `${nombreParte1} ${nombreParte2.length + nombreParte1.length > 25 ? nombreParte2.charAt(0) + '.' : nombreParte2}`;
           }
 
           nombre_usuario.value = nombreCompleto;
           inicial_usuario.value = nombre.charAt(0).toUpperCase();
           user_authLevel.value = rol_usuario.value.includes('ADMIN') ? 4 : rol_usuario.value.includes('EMPLEADO_HR') ? 3 : rol_usuario.value.includes('ASISTENTE') ? 2 : 1;
         }
+
         if (to.path === '/login') {
           console.log('Ya has iniciado sesión');
           alerts.showToast('info', 'Ya has iniciado sesión', "bottom-end", 3000);
           showNavbar.value = true;
           router.push('/inicio');
-        } else if (to.meta.requiresAuth == true && to.meta.authLevel > user_authLevel.value) {
+          return false;
+        } else if (to.meta.requiresAuth && to.meta.authLevel > user_authLevel.value) {
           alerts.showToast('error', 'No tienes permisos para acceder a esta página', "bottom-end", 3000);
           return false;
-        }
-        else {
+        } else {
           return true;
         }
       } else {
@@ -130,11 +128,10 @@ export default {
         user_authLevel.value = 0;
         inicial_usuario.value = '';
         rol_usuario.value = '';
-        //Si no está logueado y quiere ir a una ruta protegida, redirigir a login
+
         if (to.matched.some(record => record.meta.requiresAuth)) {
           alerts.showToast('error', 'Necesitas iniciar sesión', "bottom-end", 3000);
-          return { name: 'Login' }
-          //showNavbar.value = false;
+          return { name: 'Login' };
         } else {
           return true;
         }
@@ -142,14 +139,21 @@ export default {
     });
 
     router.afterEach((to) => {
-      if (isLoggedIn.value == true) {
-        show_auth1.value = ref(Cookies.get('rol').includes('EMPLEADO') && !Cookies.get('rol').includes('HR') && !Cookies.get('rol').includes('ADMIN'));
-        show_auth2.value = ref(Cookies.get('rol').includes('HR') || Cookies.get('rol').includes('ADMIN'));
-        show_auth3.value = ref(Cookies.get('rol').includes('EMPLEADO_HR') || Cookies.get('rol').includes('ADMIN'));
-        show_auth4.value = ref(Cookies.get('rol').includes('ADMIN'));
+      if (isLoggedIn.value) {
+        const userRole = Cookies.get('rol');
+        const isAdmin = userRole.includes('ADMIN');
+        const isHrOrAdmin = userRole.includes('HR') || isAdmin;
+        const isEmployeeHrOrAdmin = userRole.includes('EMPLEADO_HR') || isAdmin;
+        const isEmployeeNotHrOrAdmin = userRole.includes('EMPLEADO') && !isHrOrAdmin;
+
+        show_auth1.value = ref(isEmployeeNotHrOrAdmin);
+        show_auth2.value = ref(isHrOrAdmin);
+        show_auth3.value = ref(isEmployeeHrOrAdmin);
+        show_auth4.value = ref(isAdmin);
+
         items.value = [
           { label: 'Inicio', icon: 'pi pi-fw pi-home', to: '/inicio' },
-          { label: 'Consultar expediente', icon: 'pi pi-fw pi-book', to: '/empleados/expediente/pre', visible:show_auth1.value },
+          { label: 'Consultar expediente', icon: 'pi pi-fw pi-book', to: '/empleados/expediente/pre', visible: show_auth1.value },
           {
             label: 'Administrador',
             icon: 'pi pi-fw pi-shield',
@@ -158,7 +162,7 @@ export default {
             items: [
               { label: 'Usuarios', icon: 'pi pi-fw pi-users', to: '/usuarios' },
               { label: 'Configuración', icon: 'pi pi-fw pi-wrench', to: '/configuracion' },
-              { label: 'Respaldos', icon: 'pi pi-fw pi-cloud-download', to: '/respaldos' },
+              { label: 'Respaldos', visible:false, icon: 'pi pi-fw pi-cloud-download', to: '/respaldos' },
             ],
           },
           {
@@ -169,7 +173,7 @@ export default {
             items: [
               { label: 'Empleados', icon: 'pi pi-fw pi-users', to: '/empleados' },
               { label: 'Plazas', icon: 'pi pi-fw pi-briefcase', to: '/plazas' },
-              { label: 'Departamentos', icon: 'pi pi-fw pi-building', to: '/departamentos' },
+              { label: 'Departamentos', visible:show_auth3.value, icon: 'pi pi-fw pi-building', to: '/departamentos' },
               { separator: true },
               {
                 label: 'Búsqueda avanzada', icon: 'pi pi-fw pi-search',
@@ -183,13 +187,19 @@ export default {
             icon: 'pi pi-fw pi-chart-bar',
             visible: show_auth3.value,
             items: [
-              { label: 'Dashboard', icon: 'pi pi-fw pi-chart-pie', to: '/dashboard' },
+              { label: 'Dashboard', visible:false, icon: 'pi pi-fw pi-chart-pie', to: '/dashboard' },
               { label: 'Reportes', icon: 'pi pi-fw pi-book', to: '/reportes' },
+              {
+                label: 'Búsqueda avanzada', icon: 'pi pi-fw pi-search',
+                visible: show_auth3.value,
+                to: '/consulta'
+              },
             ],
           },
-        ]
+        ];
       }
     });
+
 
     const items = ref();
 
@@ -212,10 +222,9 @@ export default {
     ];
 
     function logout() {
-      var dummyTimeout = window.setTimeout(function() {}, 0);
-
+      var dummyTimeout = window.setTimeout(function () { }, 0);
       while (dummyTimeout--) {
-          window.clearTimeout(dummyTimeout);
+        window.clearTimeout(dummyTimeout);
       }
       AuthStore.logout();
       alerts.showLogoutSuccessToast();
@@ -228,15 +237,15 @@ export default {
       }, 1000)
     });
 
-    function setWallpaper(){
-            if (Cookies.get("wallpaper") == 'none'){
-                let bg_container = document.getElementById('app-content')
-                bg_container.style.backgroundImage = 'none'
-            } else {
-                let bg_container = document.getElementById('app-content')
-                bg_container.style.backgroundImage = 'url(' + Cookies.get("wallpaper") + ')'
-            }
-        }
+    function setWallpaper() {
+      if (Cookies.get("wallpaper") == 'none') {
+        let bg_container = document.getElementById('app-content')
+        bg_container.style.backgroundImage = 'none'
+      } else {
+        let bg_container = document.getElementById('app-content')
+        bg_container.style.backgroundImage = 'url(' + Cookies.get("wallpaper") + ')'
+      }
+    }
 
     const menuRef = ref(null);
 
@@ -473,6 +482,10 @@ footer {
 }
 
 .nav-tec li a.blink i {
+  animation: trembling 3s ease-in-out infinite;
+}
+
+.trembling-animation {
   animation: trembling 3s ease-in-out infinite;
 }
 

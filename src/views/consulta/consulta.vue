@@ -31,11 +31,28 @@
             <label for="searchSexo">Sexo</label>
           </div>
         </div>
-        <div class="col-6 md:col-4 lg:col-3 mb-3">
+        <div class="col-6 md:col-4 lg:col-3 mb-3 border-round border-left-1 border-bottom-1 border-400">
           <div class="p-float-label">
-            <Dropdown label="Rango de edad" v-model="searchEdad" :options="opcEdad" optionValue="value"
-              optionLabel="nombre" class="w-full" showClear />
-            <label for="searchEdad">Rango de edad</label>
+            <InputText v-model="searchEdadMin" type="number" label="Edad mínima" class="w-full" />
+            <label>Edad mínima</label>
+          </div>
+        </div>
+        <div class="col-6 md:col-4 lg:col-3 mb-3 border-round border-right-1  border-bottom-1 border-400">
+          <div class="p-float-label">
+            <InputText v-model="searchEdadMax" type="number" label="Edad máxima" class="w-full" />
+            <label>Edad máxima</label>
+          </div>
+        </div>
+        <div class="col-6 md:col-4 lg:col-3 mb-3 border-round border-left-1 border-bottom-1 border-400">
+          <div class="p-float-label">
+            <InputText v-model="searchAntiguedadMin" type="number" class="w-full" />
+            <label>Antigüedad mínima</label>
+          </div>
+        </div>
+        <div class="col-6 md:col-4 lg:col-3 mb-3 border-round border-right-1  border-bottom-1 border-400">
+          <div class="p-float-label">
+            <InputText v-model="searchAntiguedadMax" type="number" class="w-full" />
+            <label>Antigüedad máxima</label>
           </div>
         </div>
         <div class="col-6 md:col-4 lg:col-3 mb-3">
@@ -137,6 +154,10 @@ export default defineComponent({
     const searchRFC = ref('');
     const searchClavePresupuestal = ref('');
     const searchEdad = ref(null);
+    const searchEdadMin = ref(null);
+    const searchEdadMax = ref(null);
+    const searchAntiguedadMin = ref(null);
+    const searchAntiguedadMax = ref(null);
     const searchSexo = ref(null);
     const searchNivelAcademico = ref(null);
     const searchPlaza = ref(null);
@@ -161,7 +182,11 @@ export default defineComponent({
     const options = {
       dom: 'lBrtip',
       responsive: false,
-      select: false,
+      select: {
+        style: 'os',
+        blurable: true,
+        info: false,
+      },
       autoWidth: true,
       paging: true,
       buttons: [
@@ -235,7 +260,7 @@ export default defineComponent({
       { data: 'correoInstitucional', title: 'Correo' },
       { data: 'clavePresupuestal', title: 'Clave presupuestal' },
       { data: 'tipoPlaza', title: 'Tipo de plaza' },
-      { data: 'fechaBaja', title: 'Fecha de baja' },
+      //{ data: 'fechaBaja', title: 'Fecha de baja' },
       { data: 'comentarios', title: 'Notas' },
 
     ];
@@ -272,7 +297,10 @@ export default defineComponent({
       searchNombre.value = '';
       searchRFC.value = '';
       searchClavePresupuestal.value = '';
-      searchEdad.value = null;
+      searchEdadMin.value = null;
+      searchEdadMax.value = null;
+      searchAntiguedadMin.value = null;
+      searchAntiguedadMax.value = null;
       searchSexo.value = null;
       searchEstado.value = null;
       searchNivelAcademico.value = null;
@@ -294,8 +322,10 @@ export default defineComponent({
         categoria: searchCategoria.value !== '' ? searchCategoria.value : null,
         nivelAcademico: searchNivelAcademico.value !== '' ? searchNivelAcademico.value : null,
         tipoMovimiento: searchTipoMovimiento.value !== '' ? searchTipoMovimiento.value : null,
-        edadMinima: searchEdad.value !== null && searchEdad.value !== '' ? searchEdad.value[0] : null,
-        edadMaxima: searchEdad.value !== null && searchEdad.value !== '' ? searchEdad.value[1] : null,
+        edadMinima: searchEdadMin.value !== null && searchEdadMin.value !== '' ? searchEdadMin.value : null,
+        edadMaxima: searchEdadMax.value !== null && searchEdadMax.value !== '' ? searchEdadMax.value : null,
+        antiguedadMinima: searchAntiguedadMin.value !== null && searchAntiguedadMin.value !== '' ? searchAntiguedadMin.value : null,
+        antiguedadMaxima: searchAntiguedadMax.value !== null && searchAntiguedadMax.value !== '' ? searchAntiguedadMax.value : null,
       }
 
       store.search(params).then(() => {
@@ -334,6 +364,10 @@ export default defineComponent({
       searchNombre,
       searchRFC,
       searchEdad,
+      searchEdadMin,
+      searchEdadMax,
+      searchAntiguedadMin,
+      searchAntiguedadMax,
       searchSexo,
       searchEstado,
       searchNivelAcademico,

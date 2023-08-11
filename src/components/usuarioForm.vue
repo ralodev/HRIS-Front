@@ -105,6 +105,24 @@
               <span class="block text-red-700 font-medium"><i class="pi pi-times-circle"></i> Generar y descargar
                 respaldos de la Base de datos</span>
             </div>
+            <div class="col-12" v-if="data.rol == 'ROLE_PLANEACION'">
+              <strong class="text-color">Permisos del rol:</strong>
+              <span class="block text-green-700 font-medium"><i class="pi pi-times-circle"></i> Consultar y modificar
+                información de empleados (incluyendo historial)</span>
+              <span class="block text-green-700 font-medium"><i class="pi pi-times-circle"></i> Consultar y modificar
+                información de plazas</span>
+              <span class="block text-green-700 font-medium"><i class="pi pi-times-circle"></i> Consultar y modificar
+                información de departamentos</span>
+              <span class="block text-red-700 font-medium"><i class="pi pi-circle-circle"></i> Realizar consultas avanzadas
+                y exportar los resultados</span>
+              <span class="block text-red-700 font-medium"><i class="pi pi-circle-circle"></i> Generar y exportar
+                reportes</span>
+              <span class="block text-red-700 font-medium"><i class="pi pi-times-circle"></i> Acceder al dashboard</span>
+              <span class="block text-red-700 font-medium"><i class="pi pi-times-circle"></i> Registrar, eliminar,
+                bloquear y desbloquear usuarios</span>
+              <span class="block text-red-700 font-medium"><i class="pi pi-times-circle"></i> Generar y descargar
+                respaldos de la Base de datos</span>
+            </div>
             <div class="col-12" v-if="data.rol == 'ROLE_EMPLEADO'">
               <strong class="text-color">Permisos del rol:</strong>
               <span class="block text-green-700 font-medium"><i class="pi pi-check-circle"></i> Consultar su propia
@@ -175,6 +193,7 @@ export default defineComponent({
       { nombre: 'ADMINISTRADOR', value: 'ROLE_ADMIN' },
       { nombre: 'EMPLEADO DE RECURSOS HUMANOS', value: 'ROLE_EMPLEADO_HR' },
       { nombre: 'ASISTENTE DE RECURSOS HUMANOS', value: 'ROLE_ASISTENTE_HR' },
+      { nombre: 'EMPLEADO DE PLANEACIÓN', value: 'ROLE_PLANEACION' },
       { nombre: 'EMPLEADO GENERAL', value: 'ROLE_EMPLEADO' },
     ];
 

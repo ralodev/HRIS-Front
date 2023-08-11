@@ -155,22 +155,35 @@ export default defineComponent({
       var done = false;
       alertas.showLoading('Cargando datos');
       setTimeout(() => {
-        if (!done) {
+          if (!done) {
+            alertas.closeLoading();
+            alertas.showWarningAlert('Oops!', 'El servidor está tardando demasiado en responder');
+          }
+          setTimeout(() => {
+            if (!done) {
+              alertas.closeLoading();
+              alertas.showErrorAlert('Error', 'No se pudo conectar con el servidor');
+            }
+          }, 10000);
+        }, 5000);
+      await store.getPlazas().then((response) => {
+        if (response.status == 200){
+          data.value = response.data;
+          alertas.closeLoading();
+          done = true;
+        } else {
           alertas.closeLoading();
           alertas.showErrorAlert('Error', 'Ocurrió un error inesperado');
+          done = true;
         }
-      }, 5000);
-      await store.getPlazas().then((response) => {
-        //for testing purposes, append the data 5 times
-        data.value = response.data;
-        alertas.closeLoading();
-        done = true;
       }).catch((error) => {
         if (error.code === "ERR_NETWORK") {
           alertas.showErrorAlert('Error', 'No se pudo conectar con el servidor');
         } else {
           alertas.showErrorAlert('Error', 'Ocurrió un error inesperado');
         }
+        done = true;
+      }).finally(() => {
         done = true;
       });
     };

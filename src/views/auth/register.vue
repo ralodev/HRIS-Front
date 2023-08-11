@@ -13,9 +13,9 @@
           <label for="email" class="block text-900 text-lg font-medium mb-2">Correo electrónico institucional</label>
           <div class="p-inputgroup">
             <InputText placeholder="Introduce tu correo electrónico" id="searchInput" @keyup.enter="verifyEmail"
-              v-model="data.email" autocomplete="email" required @keypress="found_to_null" :disabled="registrationDisabled.valueOf"/>
+              v-model="data.email" autocomplete="email" required @keypress="found_to_null" :disabled="registration.enabled"/>
             <Button class="transition-all transition-duration-500" icon="pi pi-search" :label="see ? 'Verificar' : null"
-              severity="primary" @click="verifyEmail" @mouseover="seeTrue" @mouseout="seeFalse" :disabled="registrationDisabled.valueOf"/>
+              severity="primary" @click="verifyEmail" @mouseover="seeTrue" @mouseout="seeFalse" :disabled="registration.enabled"/>
           </div>
 
           <span class="block text-justify text-color mb-3">Introduce tu correo institucional y verifica que se encuentre
@@ -104,7 +104,7 @@ export default {
     const wrongCredentials = ref(false);
     const see = ref(false);
     const found = ref(null);
-    const registrationDisabled = ref(false);
+    const registration = ref({});
 
     const data = ref({
       email: '',
@@ -116,18 +116,19 @@ export default {
     onMounted(() => {
       configStore.getRegistrationStatus().then((r) => {
         console.log(r);
-        if (r.response.status === 200) {
-           registrationDisabled.valueOf = false;
+        if (r.status === 200) {
+           registration.value.enabled = false;
+           console.log(r.data)
           } else {
-          registrationDisabled.valueOf = true;
+          registration.value.enabled = true;
           alertas.showErrorAlert('Registro deshabilitado', 'El administrador ha deshabilitado el registro de usuarios');
         }
       }).catch((e) => {
-        registrationDisabled.valueOf = true;
+        registration.value.enabled = true;
         alertas.showErrorAlert('Registro deshabilitado', 'El administrador ha deshabilitado el registro de usuarios');
+      }).finally(() => {
+        console.log("Registro deshabilitado: " + registration.value.enabled);
       });
-      console.log(registrationDisabled);
-      document.querySelector('input').focus();
     });
 
     const onSubmit = () => {
@@ -189,7 +190,7 @@ export default {
       see,
       verifyEmail,
       found,
-      registrationDisabled,
+      registration,
       found_to_null() {
         found.value = null;
       },
@@ -198,8 +199,7 @@ export default {
       },
       seeFalse() {
         see.value = false;
-      },
-
+      }
     }
   }
 }

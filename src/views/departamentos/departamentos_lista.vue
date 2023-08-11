@@ -132,20 +132,26 @@ export default defineComponent({
       setTimeout(() => {
         if (!done) {
           alertas.closeLoading();
-          alertas.showErrorAlert('Error', 'Ocurrió un error inesperado');
+          alertas.showWarningAlert('Oops!', 'El servidor está tardando demasiado en responder');
         }
+        setTimeout(() => {
+          if (!done) {
+            alertas.closeWarning();
+            alertas.showErrorAlert('Error', 'No se pudo conectar con el servidor');
+          }
+        }, 10000);
       }, 5000);
       await store.getDepartamentos().then(() => {
         data.value = store.data;
-        alertas.closeLoading();
-        done = true;
       }).catch((error) => {
         if (error.code === "ERR_NETWORK") {
           alertas.showErrorAlert('Error', 'No se pudo conectar con el servidor');
         } else {
           alertas.showErrorAlert('Error', 'Ocurrió un error inesperado');
         }
+      }).finally(() => {
         done = true;
+        alertas.closeLoading();
       });
     };
 
