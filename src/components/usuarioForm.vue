@@ -61,8 +61,6 @@
                 avanzadas y exportar los resultados</span>
               <span class="block text-green-700 font-medium"><i class="pi pi-check-circle"></i> Generar y exportar
                 reportes</span>
-              <span class="block text-green-700 font-medium"><i class="pi pi-check-circle"></i> Acceder al
-                dashboard</span>
               <span class="block text-green-700 font-medium"><i class="pi pi-check-circle"></i> Registrar, eliminar,
                 bloquear y desbloquear usuarios</span>
               <span class="block text-green-700 font-medium"><i class="pi pi-check-circle"></i> Generar y descargar
@@ -80,8 +78,6 @@
                 avanzadas y exportar los resultados</span>
               <span class="block text-green-700 font-medium"><i class="pi pi-check-circle"></i> Generar y exportar
                 reportes</span>
-              <span class="block text-green-700 font-medium"><i class="pi pi-check-circle"></i> Acceder al
-                dashboard</span>
               <span class="block text-red-700 font-medium"><i class="pi pi-times-circle"></i> Registrar, eliminar,
                 bloquear y desbloquear usuarios</span>
               <span class="block text-red-700 font-medium"><i class="pi pi-times-circle"></i> Generar y descargar
@@ -93,13 +89,12 @@
                 información de empleados (incluyendo historial)</span>
               <span class="block text-green-700 font-medium"><i class="pi pi-check-circle"></i> Consultar y modificar
                 información de plazas</span>
-              <span class="block text-green-700 font-medium"><i class="pi pi-check-circle"></i> Consultar y modificar
+              <span class="block text-red-700 font-medium"><i class="pi pi-times-circle"></i> Consultar y modificar
                 información de departamentos</span>
               <span class="block text-red-700 font-medium"><i class="pi pi-times-circle"></i> Realizar consultas avanzadas
                 y exportar los resultados</span>
               <span class="block text-red-700 font-medium"><i class="pi pi-times-circle"></i> Generar y exportar
                 reportes</span>
-              <span class="block text-red-700 font-medium"><i class="pi pi-times-circle"></i> Acceder al dashboard</span>
               <span class="block text-red-700 font-medium"><i class="pi pi-times-circle"></i> Registrar, eliminar,
                 bloquear y desbloquear usuarios</span>
               <span class="block text-red-700 font-medium"><i class="pi pi-times-circle"></i> Generar y descargar
@@ -107,17 +102,16 @@
             </div>
             <div class="col-12" v-if="data.rol == 'ROLE_PLANEACION'">
               <strong class="text-color">Permisos del rol:</strong>
-              <span class="block text-green-700 font-medium"><i class="pi pi-times-circle"></i> Consultar y modificar
+              <span class="block text-red-700 font-medium"><i class="pi pi-times-circle"></i> Modificar
                 información de empleados (incluyendo historial)</span>
-              <span class="block text-green-700 font-medium"><i class="pi pi-times-circle"></i> Consultar y modificar
+              <span class="block text-red-700 font-medium"><i class="pi pi-times-circle"></i> Modificar
                 información de plazas</span>
-              <span class="block text-green-700 font-medium"><i class="pi pi-times-circle"></i> Consultar y modificar
+              <span class="block text-red-700 font-medium"><i class="pi pi-times-circle"></i> Modificar
                 información de departamentos</span>
-              <span class="block text-red-700 font-medium"><i class="pi pi-circle-circle"></i> Realizar consultas avanzadas
+              <span class="block text-green-700 font-medium"><i class="pi pi-check-circle"></i> Realizar consultas avanzadas
                 y exportar los resultados</span>
-              <span class="block text-red-700 font-medium"><i class="pi pi-circle-circle"></i> Generar y exportar
+              <span class="block text-green-700 font-medium"><i class="pi pi-check-circle"></i> Generar y exportar
                 reportes</span>
-              <span class="block text-red-700 font-medium"><i class="pi pi-times-circle"></i> Acceder al dashboard</span>
               <span class="block text-red-700 font-medium"><i class="pi pi-times-circle"></i> Registrar, eliminar,
                 bloquear y desbloquear usuarios</span>
               <span class="block text-red-700 font-medium"><i class="pi pi-times-circle"></i> Generar y descargar
@@ -135,7 +129,6 @@
                 y exportar los resultados</span>
               <span class="block text-red-700 font-medium"><i class="pi pi-times-circle"></i> Generar y exportar
                 reportes</span>
-              <span class="block text-red-700 font-medium"><i class="pi pi-times-circle"></i> Acceder al dashboard</span>
               <span class="block text-red-700 font-medium"><i class="pi pi-times-circle"></i> Registrar, eliminar,
                 bloquear y desbloquear usuarios</span>
               <span class="block text-red-700 font-medium"><i class="pi pi-times-circle"></i> Generar y descargar

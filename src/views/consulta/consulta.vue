@@ -245,6 +245,7 @@ export default defineComponent({
       },
       { data: 'sexo', title: 'Sexo' },
       { data: 'edad', title: 'Edad' },
+      { data: 'fechaNacimiento', title: 'Fecha de nacimiento'},
       { data: 'lenguas', title: 'Hablante de lenguas' },
       { data: 'discapacidades', title: 'Tiene discapacidades' },
       { data: 'profesion', title: 'Profesión' },
@@ -269,11 +270,17 @@ export default defineComponent({
       var done = false;
       alertas.showLoading('Cargando datos');
       setTimeout(() => {
-        if (!done) {
-          alertas.closeLoading();
-          alertas.showErrorAlert('Error', 'Ocurrió un error inesperado');
-        }
-      }, 5000);
+          if (!done) {
+            alertas.closeLoading();
+            alertas.showWarningAlert('Oops!', 'El servidor está tardando demasiado en responder');
+          }
+          setTimeout(() => {
+            if (!done) {
+              alertas.closeLoading();
+              alertas.showErrorAlert('Error', 'No se pudo conectar con el servidor');
+            }
+          }, 10000);
+        }, 5000);
       await store.getAll().then(() => {
         data.value = store.data;
         data.value.forEach((element) => {
@@ -289,6 +296,9 @@ export default defineComponent({
         } else {
           alertas.showErrorAlert('Error', 'Ocurrió un error inesperado');
         }
+        done = true;
+      }).finally(() => {
+        alertas.closeLoading();
         done = true;
       });
     };

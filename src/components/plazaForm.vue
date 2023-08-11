@@ -276,11 +276,11 @@ export default defineComponent({
                                 }
                             });
                         } else {
-                            showErrorAlert("Error", response.response.data.message);
+                            showErrorAlert("Error", response.response.data);
                             return;
                         }
                     }).catch((error) => {
-                        showErrorAlert("Error", error.response.data.message)
+                        showErrorAlert("Error", error.response.data)
                     });
                 } else {
                     if (!isConfirmed) {
@@ -288,7 +288,7 @@ export default defineComponent({
                         return;
                     }
                     plazaStore.postPlaza(newData).then((response) => {
-                        if (response.status == 200){
+                        if (response.status == 201){
                             Swal.fire({
                                 title: "¡Éxito!",
                                 text: "Plaza creada correctamente",
@@ -301,7 +301,7 @@ export default defineComponent({
                                 }
                             });
                         } else {
-                            showErrorAlert("Error", response.response.data.message);
+                            showErrorAlert("Error", response.response.data);
                             return;
                         }
                     });

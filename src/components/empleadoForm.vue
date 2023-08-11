@@ -470,11 +470,10 @@ export default defineComponent({
                         empleadoStore.putEmpleado(payload, idPersona).then((response) => {
                             if (response.status == 200) {
                                 showSuccessAlert("¡Éxito!", "El empleado se ha actualizado correctamente", "success", "Aceptar").then(() => {
-
                                         router.push({ name: "empleados" });
                                 });
                             } else {
-                                showErrorAlert("Error", response.response.data.mensaje, "error", "Aceptar");
+                                showErrorAlert("Error", response.response.data);
                             }
                         }).catch((error) => {
                             //If there is an error, show an error alert
@@ -496,13 +495,12 @@ export default defineComponent({
 
                     if (isConfirmed) {
                         empleadoStore.postEmpleado(payload).then((response) => {
-                            if (response.status == 200) {
-                                //If the employee is added, show a success alert and redirect to the employees list
+                            if (response.status == 201) {
                                 showSuccessAlert("¡Éxito!", "El empleado se ha registrado correctamente", "success", "Aceptar").then(() => {
                                     router.push({ name: "empleados" });
                                 });
                             } else {
-                                showErrorAlert("Error", response.response.data.mensaje, "error", "Aceptar");
+                                showErrorAlert("Error", response.response.data);
                             }
                         }).catch((error) => {
                             //If there is an error, show an error alert
@@ -545,7 +543,6 @@ export default defineComponent({
             }).then((result) => {
                 if (result.value) {
                     empleadoStore.deleteEmpleado(data.value.id).then((response) => {
-                        console.log('asd',response)
                         if(response.status == 200){
                             Swal.fire({
                                 icon: 'success',
@@ -561,7 +558,6 @@ export default defineComponent({
                         console.log(error)
                         showToast("error", "Ocurrió un error al eliminar el empleado");
                     });
-
                 }
             })
 

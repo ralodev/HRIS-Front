@@ -88,6 +88,7 @@ export default {
     const show_auth1 = ref(false);
     const show_auth2 = ref(false);
     const show_auth3 = ref(false);
+    const show_auth3_1 = ref(false);
     const show_auth4 = ref(false);
 
     router.beforeEach((to) => {
@@ -108,7 +109,7 @@ export default {
 
           nombre_usuario.value = nombreCompleto;
           inicial_usuario.value = nombre.charAt(0).toUpperCase();
-          user_authLevel.value = rol_usuario.value.includes('ADMIN') ? 4 : rol_usuario.value.includes('EMPLEADO_HR') ? 3 : rol_usuario.value.includes('ASISTENTE') ? 2 : 1;
+          user_authLevel.value = rol_usuario.value.includes('ADMIN') ? 4 : rol_usuario.value.includes('EMPLEADO_HR') || rol_usuario.value.includes('PLANEACION') ? 3 : rol_usuario.value.includes('ASISTENTE') ? 2 : 1;
         }
 
         if (to.path === '/login') {
@@ -143,7 +144,8 @@ export default {
         const userRole = Cookies.get('rol');
         const isAdmin = userRole.includes('ADMIN');
         const isHrOrAdmin = userRole.includes('HR') || isAdmin;
-        const isEmployeeHrOrAdmin = userRole.includes('EMPLEADO_HR') || isAdmin;
+        const isPlaneacion = userRole.includes('PLANEACION');
+        const isEmployeeHrOrAdmin = userRole.includes('EMPLEADO_HR') || isAdmin || isPlaneacion;
         const isEmployeeNotHrOrAdmin = userRole.includes('EMPLEADO') && !isHrOrAdmin;
 
         show_auth1.value = ref(isEmployeeNotHrOrAdmin);
@@ -191,7 +193,6 @@ export default {
               { label: 'Reportes', icon: 'pi pi-fw pi-book', to: '/reportes' },
               {
                 label: 'Búsqueda avanzada', icon: 'pi pi-fw pi-search',
-                visible: show_auth3.value,
                 to: '/consulta'
               },
             ],

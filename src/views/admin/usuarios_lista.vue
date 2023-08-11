@@ -121,7 +121,7 @@ export default defineComponent({
       },
       {
         data: 'rol', title: 'Rol', width: '10%', class: 'min-tablet-l', render: function (data) {
-          let num = data == 'ROLE_ADMIN' ? 1 : data == 'ROLE_EMPLEADO_HR' ? 2 : data == 'ROLE_ASISTENTE_HR' ? 3 : 4
+          let num = data == 'ROLE_ADMIN' ? 1 : data == 'ROLE_EMPLEADO_HR' ? 2 : data == 'ROLE_PLANEACION' ? 3 : data == 'ROLE_ASISTENTE_HR' ? 4 : 5
           let rol = data.replaceAll("_", " ").replaceAll("ROLE", "");
           return "<span class='d-none'>" + num + "</span>" + rol;
         }
