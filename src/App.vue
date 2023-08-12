@@ -5,10 +5,7 @@
 
       <div v-if="!showNavbar" class="nav-tec">
         <ul>
-          <li></li>
-          <li v-if="showInstallPWA" style="float:right"><a class="small inline cursor-pointer" v-tooltip="'Obtén la aplicación de escritorio'" @click="installPWA">
-          <i class="pi pi-star hover:pi-star-fill transition-all"></i>
-          </a></li>
+          <li><a href=""></a></li>
         </ul>
       </div>
 
@@ -93,8 +90,6 @@ export default {
     const show_auth3 = ref(false);
     const show_auth3_1 = ref(false);
     const show_auth4 = ref(false);
-
-    const installPrompt = ref(null);
 
     router.beforeEach((to) => {
       isLoggedIn.value = AuthStore.isLoggedIn();
@@ -241,13 +236,6 @@ export default {
       setTimeout(() => {
         setWallpaper()
       }, 1000)
-
-      window.addEventListener('beforeinstallprompt',(event) => {
-        event.preventDefault();
-        installPrompt.value = event;
-      });
-
-      //todo do something
     });
 
     function setWallpaper() {
@@ -280,20 +268,6 @@ export default {
       avatar.classList.add("bg-primary-600")
     }
 
-    const installPWA = () => {
-      console.log('installPWA');
-      console.log('installPrompt', installPrompt.value);
-      installPrompt.value.prompt();
-
-      installPrompt.value.userChoice.then((choiceResult) => {
-        if (choiceResult.outcome === 'accepted') {
-          console.log('User accepted the install prompt');
-        } else {
-          console.log('User dismissed the install prompt');
-        }
-      });
-    }
-
     return {
       isLoggedIn,
       nombre_usuario,
@@ -310,11 +284,7 @@ export default {
       appContainer,
       user_authLevel,
       hovered,
-      unhovered,
-      installPWA,
-      showInstallPWA(){
-        return !window.matchMedia('(display-mode: standalone)').matches //&& window.matchMedia('(display-mode: browser)').matches;
-      }
+      unhovered
     };
   },
 };

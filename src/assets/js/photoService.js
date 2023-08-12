@@ -23,7 +23,7 @@ export const PhotoService = {
                     title: '2023 AÑO DE FRANCISCO VILLA'
                 },
                 {
-                    itemImageSrc: '/slider.jpg',
+                    itemImageSrc: 'http://www.itoaxaca.edu.mx/themes/tecoaxaca/assets/images/banners/Slider%209%20aniv.jpg',
                     alt: 'http://www.oaxaca.tecnm.mx/',
                     title: '9 ANIVERSARIO DE EXCELENCIA EN EDUCACIÓN TECNOLÓGICA'
                 }
