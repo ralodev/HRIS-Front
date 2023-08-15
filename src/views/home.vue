@@ -7,8 +7,8 @@
         <div class="text-900 text-color font-medium text-2xl">¡Bievenido!</div>
         <div class="text-900 text-color font-medium text-2xl mb-3">Sistema de Gestión de Información de Personal</div>
       </div>
-      <div class="grid pt-3">
-        <div v-if="isAdmin" class="col-12 md:col-4 md:mb-4 mb-0 px-3">
+      <div class="grid pt-3 px-3">
+        <div v-if="isAdmin" class="col-12 xl:col-2 lg:col-3 md:col-4 md:mb-4 mb-0 px-3">
           <RouterLink to="/usuarios">
             <span
             class="p-3 mb-3 border-2 border-300 inline-block text-color surface-100 border-round-xl
@@ -16,10 +16,10 @@
             <i class="pi pi-shield text-4xl "></i>
           </span>
           </RouterLink>
-          <div class="text-900 text-xl mb-3 font-medium">Editar usuarios</div>
+          <div class="text-900 text-xl mb-3 font-medium">Usuarios</div>
         </div>
 
-        <div v-if="isAdmin" class="col-12 md:col-4 md:mb-4 mb-0 px-3">
+        <div v-if="isAdmin" class="col-12 xl:col-2 lg:col-3 md:col-4 md:mb-4 mb-0 px-3">
           <RouterLink to="/configuracion">
             <span
               class="p-3 mb-3 border-2 border-300 inline-block text-color surface-100 border-round-xl
@@ -27,10 +27,10 @@
               <i class="pi pi-wrench text-4xl "></i>
             </span>
           </RouterLink>
-          <div class="text-900 text-xl mb-3 font-medium">Configuración del sistema</div>
+          <div class="text-900 text-xl mb-3 font-medium">Configuración</div>
         </div>
 
-        <div v-if="isHR || isAdmin || isAsistente" class="col-12 md:col-4 md:mb-4 mb-0 px-3">
+        <div v-if="isHR || isAdmin || isAsistente" class="col-12 xl:col-2 lg:col-3 md:col-4 md:mb-4 mb-0 px-3">
           <RouterLink to="/plazas">
             <span
               class="p-3 mb-3 border-2 border-300 inline-block text-color surface-100 border-round-xl
@@ -38,10 +38,10 @@
               <i class="pi pi-briefcase text-4xl "></i>
             </span>
           </RouterLink>
-          <div class="text-900 text-xl mb-3 font-medium">Editar plazas</div>
+          <div class="text-900 text-xl mb-3 font-medium">Plazas</div>
         </div>
 
-        <div v-if="isHR || isAdmin || isAsistente" class="col-12 md:col-4 md:mb-4 mb-0 px-3">
+        <div v-if="isHR || isAdmin || isAsistente" class="col-12 xl:col-2 lg:col-3 md:col-4 md:mb-4 mb-0 px-3">
           <RouterLink to="/empleados">
             <span
               class="p-3 mb-3 border-2 border-300 inline-block text-color surface-100 border-round-xl
@@ -49,10 +49,10 @@
               <i class="pi pi-users text-4xl "></i>
             </span>
           </RouterLink>
-          <div class="text-900 text-xl mb-3 font-medium">Editar empleados</div>
+          <div class="text-900 text-xl mb-3 font-medium">Empleados</div>
         </div>
 
-        <div v-if="isHR || isAdmin " class="col-12 md:col-4 md:mb-4 mb-0 px-3">
+        <div v-if="isHR || isAdmin " class="col-12 xl:col-2 lg:col-3 md:col-4 md:mb-4 mb-0 px-3">
           <RouterLink to="/departamentos">
             <span
               class="p-3 mb-3 border-2 border-300 inline-block text-color surface-100 border-round-xl
@@ -60,10 +60,10 @@
               <i class="pi pi-building text-4xl "></i>
             </span>
           </RouterLink>
-          <div class="text-900 text-xl mb-3 font-medium">Editar departamentos</div>
+          <div class="text-900 text-xl mb-3 font-medium">Departamentos</div>
         </div>
 
-        <div v-if="isHR || isAdmin || isPlaneacion" class="col-12 md:col-4 md:mb-4 mb-0 px-3">
+        <div v-if="isHR || isAdmin || isPlaneacion" class="col-12 xl:col-2 lg:col-3 md:col-4 md:mb-4 mb-0 px-3">
           <RouterLink to="/consulta">
             <span
               class="p-3 mb-3 border-2 border-300 inline-block text-color surface-100 border-round-xl
@@ -74,7 +74,7 @@
           <div class="text-900 text-xl mb-3 font-medium">Búsqueda avanzada</div>
         </div>
 
-        <div v-if="isHR || isAdmin || isPlaneacion" class="col-12 md:col-4 md:mb-4 mb-0 px-3">
+        <div v-if="isHR || isAdmin || isPlaneacion" class="col-12 xl:col-2 lg:col-3 md:col-4 md:mb-4 mb-0 px-3">
           <RouterLink to="/reportes">
             <span
               class="p-3 mb-3 border-2 border-300 inline-block text-color surface-100 border-round-xl
@@ -82,10 +82,10 @@
               <i class="pi pi-file-pdf text-4xl "></i>
             </span>
           </RouterLink>
-          <div class="text-900 text-xl mb-3 font-medium">Generar reportes</div>
+          <div class="text-900 text-xl mb-3 font-medium">Reportes</div>
         </div>
 
-        <div v-if="isEmployee" class="col-12 md:col-4 md:mb-4 mb-0 px-3">
+        <div class="col-12 xl:col-2 lg:col-3 md:col-4 md:mb-4 mb-0 px-3">
           <RouterLink to="/empleados/expediente/pre">
             <span
               class="p-3 mb-3 border-2 border-300 inline-block text-color surface-100 border-round-xl
@@ -93,10 +93,10 @@
               <i class="pi pi-book text-4xl "></i>
             </span>
           </RouterLink>
-          <div class="text-900 text-xl mb-3 font-medium">Consultar expediente</div>
+          <div class="text-900 text-xl mb-3 font-medium">Expediente</div>
         </div>
 
-        <div class="col-12 md:col-4 md:mb-4 mb-0 px-3">
+        <div class="col-12 xl:col-2 lg:col-3 md:col-4 md:mb-4 mb-0 px-3">
           <RouterLink to="/preferencias">
             <span
               class="p-3 mb-3 border-2 border-300 inline-block text-color surface-100 border-round-xl
@@ -107,7 +107,7 @@
           <div class="text-900 text-xl mb-3 font-medium">Preferencias</div>
         </div>
 
-        <div class="col-12 md:col-4 md:mb-4 mb-0 px-3">
+        <div class="col-12 xl:col-2 lg:col-3 md:col-4 md:mb-4 mb-0 px-3">
           <RouterLink to="/cambiar-contrasena">
             <span
               class="p-3 mb-3 border-2 border-300 inline-block text-color surface-100 border-round-xl
@@ -118,7 +118,7 @@
           <div class="text-900 text-xl mb-3 font-medium">Cambiar contraseña</div>
         </div>
 
-        <div class="col-12 md:col-4 md:mb-4 mb-0 px-3">
+        <div class="col-12 xl:col-2 lg:col-3 md:col-4 md:mb-4 mb-0 px-3">
           <a href="/misc/manual.pdf" target="_blank">
             <span
               class="p-3 mb-3 border-2 border-300 inline-block text-color surface-100 border-round-xl
@@ -129,7 +129,7 @@
           <div class="text-900 text-xl mb-3 font-medium">Manual de usuario</div>
         </div>
 
-        <div class="col-12 md:col-4 md:mb-4 mb-0 px-3">
+        <div class="col-12 xl:col-2 lg:col-3 md:col-4 md:mb-4 mb-0 px-3">
           <span
             class="p-3 mb-3 border-2 border-300 inline-block text-color surface-100 border-round-xl
             hover:surface-card hover:shadow-5 hover:text-blue-500 hover:border-0 transition-all transition-duration-500 cursor-pointer"
