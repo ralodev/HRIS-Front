@@ -276,11 +276,13 @@ export default defineComponent({
                                 }
                             });
                         } else {
-                            showErrorAlert("Error", response.response.data);
+                            let message = response.response.data != null && typeof response.response.data == "string" ? response.response.data : response.response.data.message;
+                            showErrorAlert("Error", message);
                             return;
                         }
                     }).catch((error) => {
-                        showErrorAlert("Error", error.response.data)
+                        let message = error.response.data != null && typeof error.response.data == "string" ? error.response.data : error.response.data.message;
+                        showErrorAlert("Error", message)
                     });
                 } else {
                     if (!isConfirmed) {
@@ -301,9 +303,13 @@ export default defineComponent({
                                 }
                             });
                         } else {
-                            showErrorAlert("Error", response.response.data);
+                            let message = response.response.data != null && typeof response.response.data == "string" ? response.response.data : response.response.data.message;
+                            showErrorAlert("Error", message);
                             return;
                         }
+                    }).catch((error) => {
+                        let message = error.response.data != null && typeof error.response.data == "string" ? error.response.data : error.response.data.message;
+                        showErrorAlert("Error", message)
                     });
                 }
             });

@@ -119,13 +119,13 @@
         </div>
 
         <div class="col-12 md:col-4 md:mb-4 mb-0 px-3">
-          <RouterLink to="/manual">
+          <a href="/misc/manual.pdf" target="_blank">
             <span
               class="p-3 mb-3 border-2 border-300 inline-block text-color surface-100 border-round-xl
             hover:surface-card hover:shadow-5 hover:text-blue-500 hover:border-0 transition-all transition-duration-500">
               <i class="pi pi-question-circle text-4xl text-blue"></i>
             </span>
-          </RouterLink>
+          </a>
           <div class="text-900 text-xl mb-3 font-medium">Manual de usuario</div>
         </div>
 

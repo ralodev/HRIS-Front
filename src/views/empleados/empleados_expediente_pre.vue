@@ -43,13 +43,14 @@ export default defineComponent({
     const getData = async () => {
       let email = Cookies.get('email');
       setTimeout(() => {
-
         empleadoStore.getEmpleadoByEmail(email).then(() => {
           data.value = empleadoStore.data;
 
           if (data.value.id == null) {
             alertas.showErrorAlert('Error', 'No pudimos encontrarte en la base de datos, probablemente sea un problema con tu correo electrónico, por favor acude a la oficina de recursos humanos.');
-            return;
+            setTimeout(() => {
+              router.push({ name: 'home' });
+            }, 2000);
           } else {
             alertas.showSuccessToast('Te encontramos! redirigiendo...');
             setTimeout(() => {

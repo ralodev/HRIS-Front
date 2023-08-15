@@ -121,7 +121,7 @@ export default defineComponent({
         data: null, class: 'text-nowrap  acciones justify-content-center all ', width: '10%', title: 'Acciones', orderable: false, wrap: true, render: function (data) {
           let buttons =
             "<a title='Ver usuario' name='" + data.usuario.id + "' class='details-btn me-1 px-3 p-button-sm p-button p-component p-button-icon-only p-button-primary p-button-raised text-decoration-none'><i class='pi pi-eye'></i></a> ";
-          return buttons;
+          return data.usuario.email == "Sistema" ? "" : buttons;
         },
       },
     ];
@@ -137,6 +137,13 @@ export default defineComponent({
       }, 5000);
       await store.getHistorial().then(() => {
         data.value = store.data;
+
+        data.value.forEach((element) => {
+          if (element.usuario.email === "18161160@itoaxaca.edu.mx") {
+            element.usuario.email = "Sistema";
+          }
+        });
+
         console.log(data.value);
         alertas.closeLoading();
         done = true;

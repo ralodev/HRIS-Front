@@ -168,11 +168,10 @@ export default defineComponent({
       }else{
         alertas.showErrorAlert('Error', res.response.data);
       }
-      })
-
-      done = true;
-      alertas.closeLoading();
-
+      }).finally(() => {
+        done = true;
+        alertas.closeLoading();
+      });
     };
 
     const obtenerTiempoServicio = (fechaInicio, fechaFin) => {

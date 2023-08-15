@@ -132,7 +132,7 @@ export default {
 
         if (to.matched.some(record => record.meta.requiresAuth)) {
           alerts.showToast('error', 'Necesitas iniciar sesión', "bottom-end", 3000);
-          return { name: 'Login' };
+          return { name: 'login' };
         } else {
           return true;
         }

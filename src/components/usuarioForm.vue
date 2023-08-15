@@ -49,93 +49,75 @@
               <small v-if="validated" class="p-error">{{ error.rol || '' }}</small>
             </div>
             <!-- Descripción del Rol -->
+            <section class="col-12">
+              <small><b class="text-danger">*</b> Campos obligatorios</small>
+            </section>
             <div class="col-12" v-if="data.rol == 'ROLE_ADMIN'">
               <strong class="text-color">Permisos del rol:</strong>
-              <span class="block text-green-700 font-medium"><i class="pi pi-check-circle"></i> Consultar y modificar
-                información de empleados (incluyendo historial)</span>
-              <span class="block text-green-700 font-medium"><i class="pi pi-check-circle"></i> Consultar y modificar
-                información de plazas</span>
-              <span class="block text-green-700 font-medium"><i class="pi pi-check-circle"></i> Consultar y modificar
-                información de departamentos</span>
-              <span class="block text-green-700 font-medium"><i class="pi pi-check-circle"></i> Realizar consultas
-                avanzadas y exportar los resultados</span>
-              <span class="block text-green-700 font-medium"><i class="pi pi-check-circle"></i> Generar y exportar
-                reportes</span>
-              <span class="block text-green-700 font-medium"><i class="pi pi-check-circle"></i> Registrar, eliminar,
-                bloquear y desbloquear usuarios</span>
-              <span class="block text-green-700 font-medium"><i class="pi pi-check-circle"></i> Generar y descargar
-                respaldos de la Base de datos</span>
+              <span class="block text-green-700 font-medium"><i class="pi pi-check-circle"></i> Modificar configuraciones de la plataforma</span>
+              <span class="block text-green-700 font-medium"><i class="pi pi-check-circle"></i> Crear, Eliminar y Modificar  Usuarios</span>
+              <span class="block text-green-700 font-medium"><i class="pi pi-check-circle"></i> Crear, Eliminar y Modificar  Empleados</span>
+              <span class="block text-green-700 font-medium"><i class="pi pi-check-circle"></i> Crear, Eliminar y Modificar  Plazas</span>
+              <span class="block text-green-700 font-medium"><i class="pi pi-check-circle"></i> Crear, Eliminar y Modificar  Departamentos</span>
+              <span class="block text-green-700 font-medium"><i class="pi pi-check-circle"></i> Realizar consultas avanzadas</span>
+              <span class="block text-green-700 font-medium"><i class="pi pi-check-circle"></i> Generar reportes</span>
+              <span class="block text-green-700 font-medium"><i class="pi pi-check-circle"></i> Consultar expedientes de Empleados</span>
+              <span class="block text-green-700 font-medium"><i class="pi pi-check-circle"></i> Editar preferencias</span>
+              <span class="block text-green-700 font-medium"><i class="pi pi-check-circle"></i> Cambiar contraseña</span>
             </div>
             <div class="col-12" v-if="data.rol == 'ROLE_EMPLEADO_HR'">
               <strong class="text-color">Permisos del rol:</strong>
-              <span class="block text-green-700 font-medium"><i class="pi pi-check-circle"></i> Consultar y modificar
-                información de empleados (incluyendo historial)</span>
-              <span class="block text-green-700 font-medium"><i class="pi pi-check-circle"></i> Consultar y modificar
-                información de plazas</span>
-              <span class="block text-green-700 font-medium"><i class="pi pi-check-circle"></i> Consultar y modificar
-                información de departamentos</span>
-              <span class="block text-green-700 font-medium"><i class="pi pi-check-circle"></i> Realizar consultas
-                avanzadas y exportar los resultados</span>
-              <span class="block text-green-700 font-medium"><i class="pi pi-check-circle"></i> Generar y exportar
-                reportes</span>
-              <span class="block text-red-700 font-medium"><i class="pi pi-times-circle"></i> Registrar, eliminar,
-                bloquear y desbloquear usuarios</span>
-              <span class="block text-red-700 font-medium"><i class="pi pi-times-circle"></i> Generar y descargar
-                respaldos de la Base de datos</span>
+              <span class="block text-red-700 font-medium"><i class="pi pi-times-circle"></i> Modificar configuraciones de la plataforma</span>
+              <span class="block text-red-700 font-medium"><i class="pi pi-times-circle"></i> Crear, Eliminar y Modificar  Usuarios</span>
+              <span class="block text-green-700 font-medium"><i class="pi pi-check-circle"></i> Crear, Eliminar y Modificar  Empleados</span>
+              <span class="block text-green-700 font-medium"><i class="pi pi-check-circle"></i> Crear, Eliminar y Modificar  Plazas</span>
+              <span class="block text-green-700 font-medium"><i class="pi pi-check-circle"></i> Crear, Eliminar y Modificar  Departamentos</span>
+              <span class="block text-green-700 font-medium"><i class="pi pi-check-circle"></i> Realizar consultas avanzadas</span>
+              <span class="block text-green-700 font-medium"><i class="pi pi-check-circle"></i> Generar reportes</span>
+              <span class="block text-green-700 font-medium"><i class="pi pi-check-circle"></i> Consultar expedientes de Empleados</span>
+              <span class="block text-green-700 font-medium"><i class="pi pi-check-circle"></i> Editar preferencias</span>
+              <span class="block text-green-700 font-medium"><i class="pi pi-check-circle"></i> Cambiar contraseña</span>
             </div>
             <div class="col-12" v-if="data.rol == 'ROLE_ASISTENTE_HR'">
               <strong class="text-color">Permisos del rol:</strong>
-              <span class="block text-green-700 font-medium"><i class="pi pi-check-circle"></i> Consultar y modificar
-                información de empleados (incluyendo historial)</span>
-              <span class="block text-green-700 font-medium"><i class="pi pi-check-circle"></i> Consultar y modificar
-                información de plazas</span>
-              <span class="block text-red-700 font-medium"><i class="pi pi-times-circle"></i> Consultar y modificar
-                información de departamentos</span>
-              <span class="block text-red-700 font-medium"><i class="pi pi-times-circle"></i> Realizar consultas avanzadas
-                y exportar los resultados</span>
-              <span class="block text-red-700 font-medium"><i class="pi pi-times-circle"></i> Generar y exportar
-                reportes</span>
-              <span class="block text-red-700 font-medium"><i class="pi pi-times-circle"></i> Registrar, eliminar,
-                bloquear y desbloquear usuarios</span>
-              <span class="block text-red-700 font-medium"><i class="pi pi-times-circle"></i> Generar y descargar
-                respaldos de la Base de datos</span>
+              <span class="block text-red-700 font-medium"><i class="pi pi-times-circle"></i> Modificar configuraciones de la plataforma</span>
+              <span class="block text-red-700 font-medium"><i class="pi pi-times-circle"></i> Crear, Eliminar y Modificar  Usuarios</span>
+              <span class="block text-yellow-700 font-medium"><i class="pi pi-check-circle"></i> Crear, <span class="line-through text-red-700">Eliminar</span> y Modificar Empleados</span>
+              <span class="block text-yellow-700 font-medium"><i class="pi pi-check-circle"></i> Crear, <span class="line-through text-red-700">Eliminar</span> y Modificar Plazas</span>
+              <span class="block text-yellow-700 font-medium"><i class="pi pi-check-circle"></i> Crear, <span class="line-through text-red-700">Eliminar</span> y Modificar Departamentos</span>
+              <span class="block text-green-700 font-medium"><i class="pi pi-check-circle"></i> Realizar consultas avanzadas</span>
+              <span class="block text-green-700 font-medium"><i class="pi pi-check-circle"></i> Generar reportes</span>
+              <span class="block text-green-700 font-medium"><i class="pi pi-check-circle"></i> Consultar expedientes de Empleados</span>
+              <span class="block text-green-700 font-medium"><i class="pi pi-check-circle"></i> Editar preferencias</span>
+              <span class="block text-green-700 font-medium"><i class="pi pi-check-circle"></i> Cambiar contraseña</span>
             </div>
             <div class="col-12" v-if="data.rol == 'ROLE_PLANEACION'">
               <strong class="text-color">Permisos del rol:</strong>
-              <span class="block text-red-700 font-medium"><i class="pi pi-times-circle"></i> Modificar
-                información de empleados (incluyendo historial)</span>
-              <span class="block text-red-700 font-medium"><i class="pi pi-times-circle"></i> Modificar
-                información de plazas</span>
-              <span class="block text-red-700 font-medium"><i class="pi pi-times-circle"></i> Modificar
-                información de departamentos</span>
-              <span class="block text-green-700 font-medium"><i class="pi pi-check-circle"></i> Realizar consultas avanzadas
-                y exportar los resultados</span>
-              <span class="block text-green-700 font-medium"><i class="pi pi-check-circle"></i> Generar y exportar
-                reportes</span>
-              <span class="block text-red-700 font-medium"><i class="pi pi-times-circle"></i> Registrar, eliminar,
-                bloquear y desbloquear usuarios</span>
-              <span class="block text-red-700 font-medium"><i class="pi pi-times-circle"></i> Generar y descargar
-                respaldos de la Base de datos</span>
+              <span class="block text-red-700 font-medium"><i class="pi pi-times-circle"></i> Modificar configuraciones de la plataforma</span>
+              <span class="block text-red-700 font-medium"><i class="pi pi-times-circle"></i> Crear, Eliminar y Modificar  Usuarios</span>
+              <span class="block text-red-700 font-medium"><i class="pi pi-times-circle"></i> Crear, Eliminar y Modificar  Empleados</span>
+              <span class="block text-red-700 font-medium"><i class="pi pi-times-circle"></i> Crear, Eliminar y Modificar  Plazas</span>
+              <span class="block text-red-700 font-medium"><i class="pi pi-times-circle"></i> Crear, Eliminar y Modificar  Departamentos</span>
+              <span class="block text-green-700 font-medium"><i class="pi pi-check-circle"></i> Realizar consultas avanzadas</span>
+              <span class="block text-green-700 font-medium"><i class="pi pi-check-circle"></i> Generar reportes</span>
+              <span class="block text-red-700 font-medium"><i class="pi pi-times-circle"></i> Consultar expedientes de Empleados</span>
+              <span class="block text-green-700 font-medium"><i class="pi pi-check-circle"></i> Editar preferencias</span>
+              <span class="block text-green-700 font-medium"><i class="pi pi-check-circle"></i> Cambiar contraseña</span>
             </div>
             <div class="col-12" v-if="data.rol == 'ROLE_EMPLEADO'">
               <strong class="text-color">Permisos del rol:</strong>
-              <span class="block text-green-700 font-medium"><i class="pi pi-check-circle"></i> Consultar su propia
-                información (inf. personal, plazas y expediente)</span>
-              <span class="block text-red-700 font-medium"><i class="pi pi-times-circle"></i> Consultar y modificar
-                información de plazas</span>
-              <span class="block text-red-700 font-medium"><i class="pi pi-times-circle"></i> Consultar y modificar
-                información de departamentos</span>
-              <span class="block text-red-700 font-medium"><i class="pi pi-times-circle"></i> Realizar consultas avanzadas
-                y exportar los resultados</span>
-              <span class="block text-red-700 font-medium"><i class="pi pi-times-circle"></i> Generar y exportar
-                reportes</span>
-              <span class="block text-red-700 font-medium"><i class="pi pi-times-circle"></i> Registrar, eliminar,
-                bloquear y desbloquear usuarios</span>
-              <span class="block text-red-700 font-medium"><i class="pi pi-times-circle"></i> Generar y descargar
-                respaldos de la Base de datos</span>
+              <span class="block text-red-700 font-medium"><i class="pi pi-times-circle"></i> Modificar configuraciones de la plataforma</span>
+              <span class="block text-red-700 font-medium"><i class="pi pi-times-circle"></i> Crear, Eliminar y Modificar  Usuarios</span>
+              <span class="block text-red-700 font-medium"><i class="pi pi-times-circle"></i> Crear, Eliminar y Modificar  Empleados</span>
+              <span class="block text-red-700 font-medium"><i class="pi pi-times-circle"></i> Crear, Eliminar y Modificar  Plazas</span>
+              <span class="block text-red-700 font-medium"><i class="pi pi-times-circle"></i> Crear, Eliminar y Modificar  Departamentos</span>
+              <span class="block text-red-700 font-medium"><i class="pi pi-times-circle"></i> Realizar consultas avanzadas</span>
+              <span class="block text-red-700 font-medium"><i class="pi pi-times-circle"></i> Generar reportes</span>
+              <span class="block text-green-700 font-medium"><i class="pi pi-check-circle"></i> Consultar expediente (propio)</span>
+              <span class="block text-green-700 font-medium"><i class="pi pi-check-circle"></i> Editar preferencias</span>
+              <span class="block text-green-700 font-medium"><i class="pi pi-check-circle"></i> Cambiar contraseña</span>
             </div>
           </div>
-          <small><b class="text-danger">*</b> Campos obligatorios</small>
         </div>
         <div class="card-footer d-flex">
           <Button v-if="isEdit" icon="pi pi-trash" class="me-2" label="Eliminar" @click="eliminar" severity="danger" :disabled="editingSelf == true" :class="editingSelf == true ? 'bg-gray-700 border-none' : 'bg-red-700'"/>
@@ -144,6 +126,208 @@
         </div>
       </form>
     </div>
+
+    <div class="card mt-5 border-round-2xl overflow-hidden shadow-5">
+            <Panel header="Tabla de roles y permisos" toggleable collapsed>
+                <div class="container table-responsive">
+                    <table class="table table-hover table-sm table-bordered" id="empleados">
+                    <thead>
+                        <tr class="text-center vertical-align-middle">
+                            <th colspan="2"></th>
+                            <th colspan="5">Rol de usuario</th>
+                        </tr>
+                        <tr class="text-center vertical-align-middle">
+                            <th colspan="2">Función</th>
+                            <th scope="col">Administrador</th>
+                            <th scope="col">Empleado de RH</th>
+                            <th scope="col">Auxiliar de RH</th>
+                            <th scope="col">Empleado de Planeación</th>
+                            <th scope="col">Empleado General</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-center vertical-align-middle table-group-divider">
+                        <tr>
+                          <th scope="row" colspan="2">Configuración de la plataforma</th>
+                          <td class="text-green-700"><i class="pi pi-check-circle"></i></td>
+                          <td class="text-300"><i class="pi pi-minus"></i></td>
+                          <td class="text-300"><i class="pi pi-minus"></i></td>
+                          <td class="text-300"><i class="pi pi-minus"></i></td>
+                          <td class="text-300"><i class="pi pi-minus"></i></td>
+                        </tr>
+
+
+                        <tr>
+                          <th scope="row" rowspan="4">Usuarios</th>
+                        </tr>
+                        <tr>
+                          <td class="text-left">Crear</td>
+                          <td class="text-green-700"><i class="pi pi-check-circle"></i></td>
+                          <td class="text-300"><i class="pi pi-minus"></i></td>
+                          <td class="text-300"><i class="pi pi-minus"></i></td>
+                          <td class="text-300"><i class="pi pi-minus"></i></td>
+                          <td class="text-300"><i class="pi pi-minus"></i></td>
+                        </tr>
+                        <tr>
+                          <td class="text-left">Modificar</td>
+                          <td class="text-green-700"><i class="pi pi-check-circle"></i></td>
+                          <td class="text-300"><i class="pi pi-minus"></i></td>
+                          <td class="text-300"><i class="pi pi-minus"></i></td>
+                          <td class="text-300"><i class="pi pi-minus"></i></td>
+                          <td class="text-300"><i class="pi pi-minus"></i></td>
+                        </tr>
+                        <tr>
+                          <td class="text-left">Eliminar</td>
+                          <td class="text-green-700"><i class="pi pi-check-circle"></i></td>
+                          <td class="text-300"><i class="pi pi-minus"></i></td>
+                          <td class="text-300"><i class="pi pi-minus"></i></td>
+                          <td class="text-300"><i class="pi pi-minus"></i></td>
+                          <td class="text-300"><i class="pi pi-minus"></i></td>
+                        </tr>
+
+
+                        <tr>
+                          <th scope="row" rowspan="4">Empleados</th>
+                        </tr>
+                        <tr>
+                          <td class="text-left">Crear</td>
+                          <td class="text-green-700"><i class="pi pi-check-circle"></i></td>
+                          <td class="text-green-700"><i class="pi pi-check-circle"></i></td>
+                          <td class="text-green-700"><i class="pi pi-check-circle"></i></td>
+                          <td class="text-300"><i class="pi pi-minus"></i></td>
+                          <td class="text-300"><i class="pi pi-minus"></i></td>
+                        </tr>
+                        <tr>
+                          <td class="text-left">Modificar</td>
+                          <td class="text-green-700"><i class="pi pi-check-circle"></i></td>
+                          <td class="text-green-700"><i class="pi pi-check-circle"></i></td>
+                          <td class="text-green-700"><i class="pi pi-check-circle"></i></td>
+                          <td class="text-300"><i class="pi pi-minus"></i></td>
+                          <td class="text-300"><i class="pi pi-minus"></i></td>
+                        </tr>
+                        <tr>
+                          <td class="text-left">Eliminar</td>
+                          <td class="text-green-700"><i class="pi pi-check-circle"></i></td>
+                          <td class="text-green-700"><i class="pi pi-check-circle"></i></td>
+                          <td class="text-300"><i class="pi pi-minus"></i></td>
+                          <td class="text-300"><i class="pi pi-minus"></i></td>
+                          <td class="text-300"><i class="pi pi-minus"></i></td>
+                        </tr>
+
+
+                        <tr>
+                          <th scope="row" rowspan="4">Plazas</th>
+                        </tr>
+                        <tr>
+                          <td class="text-left">Crear</td>
+                          <td class="text-green-700"><i class="pi pi-check-circle"></i></td>
+                          <td class="text-green-700"><i class="pi pi-check-circle"></i></td>
+                          <td class="text-green-700"><i class="pi pi-check-circle"></i></td>
+                          <td class="text-300"><i class="pi pi-minus"></i></td>
+                          <td class="text-300"><i class="pi pi-minus"></i></td>
+                        </tr>
+                        <tr>
+                          <td class="text-left">Modificar</td>
+                          <td class="text-green-700"><i class="pi pi-check-circle"></i></td>
+                          <td class="text-green-700"><i class="pi pi-check-circle"></i></td>
+                          <td class="text-green-700"><i class="pi pi-check-circle"></i></td>
+                          <td class="text-300"><i class="pi pi-minus"></i></td>
+                          <td class="text-300"><i class="pi pi-minus"></i></td>
+                        </tr>
+                        <tr>
+                          <td class="text-left">Eliminar</td>
+                          <td class="text-green-700"><i class="pi pi-check-circle"></i></td>
+                          <td class="text-green-700"><i class="pi pi-check-circle"></i></td>
+                          <td class="text-300"><i class="pi pi-minus"></i></td>
+                          <td class="text-300"><i class="pi pi-minus"></i></td>
+                          <td class="text-300"><i class="pi pi-minus"></i></td>
+                        </tr>
+
+
+                        <tr>
+                          <th scope="row" rowspan="4">Departamentos</th>
+                        </tr>
+                        <tr>
+                          <td class="text-left">Crear</td>
+                          <td class="text-green-700"><i class="pi pi-check-circle"></i></td>
+                          <td class="text-green-700"><i class="pi pi-check-circle"></i></td>
+                          <td class="text-300"><i class="pi pi-minus"></i></td>
+                          <td class="text-300"><i class="pi pi-minus"></i></td>
+                          <td class="text-300"><i class="pi pi-minus"></i></td>
+                        </tr>
+                        <tr>
+                          <td class="text-left">Modificar</td>
+                          <td class="text-green-700"><i class="pi pi-check-circle"></i></td>
+                          <td class="text-green-700"><i class="pi pi-check-circle"></i></td>
+                          <td class="text-300"><i class="pi pi-minus"></i></td>
+                          <td class="text-300"><i class="pi pi-minus"></i></td>
+                          <td class="text-300"><i class="pi pi-minus"></i></td>
+                        </tr>
+                        <tr>
+                          <td class="text-left">Eliminar</td>
+                          <td class="text-green-700"><i class="pi pi-check-circle"></i></td>
+                          <td class="text-green-700"><i class="pi pi-check-circle"></i></td>
+                          <td class="text-300"><i class="pi pi-minus"></i></td>
+                          <td class="text-300"><i class="pi pi-minus"></i></td>
+                          <td class="text-300"><i class="pi pi-minus"></i></td>
+                        </tr>
+
+
+                        <tr>
+                          <th scope="row" colspan="2">Consulta avanzada</th>
+                          <td class="text-green-700"><i class="pi pi-check-circle"></i></td>
+                          <td class="text-green-700"><i class="pi pi-check-circle"></i></td>
+                          <td class="text-300"><i class="pi pi-minus"></i></td>
+                          <td class="text-green-700"><i class="pi pi-check-circle"></i></td>
+                          <td class="text-300"><i class="pi pi-minus"></i></td>
+                        </tr>
+
+                        <tr>
+                          <th scope="row" colspan="2">Reportes</th>
+                          <td class="text-green-700"><i class="pi pi-check-circle"></i></td>
+                          <td class="text-green-700"><i class="pi pi-check-circle"></i></td>
+                          <td class="text-300"><i class="pi pi-minus"></i></td>
+                          <td class="text-green-700"><i class="pi pi-check-circle"></i></td>
+                          <td class="text-300"><i class="pi pi-minus"></i></td>
+                        </tr>
+
+                        <tr>
+                          <th scope="row" colspan="2">Preferencias</th>
+                          <td class="text-green-700"><i class="pi pi-check-circle"></i></td>
+                          <td class="text-green-700"><i class="pi pi-check-circle"></i></td>
+                          <td class="text-green-700"><i class="pi pi-check-circle"></i></td>
+                          <td class="text-green-700"><i class="pi pi-check-circle"></i></td>
+                          <td class="text-green-700"><i class="pi pi-check-circle"></i></td>
+                        </tr>
+
+                        <tr>
+                          <th scope="row" colspan="2">Cambiar contraseña</th>
+                          <td class="text-green-700"><i class="pi pi-check-circle"></i></td>
+                          <td class="text-green-700"><i class="pi pi-check-circle"></i></td>
+                          <td class="text-green-700"><i class="pi pi-check-circle"></i></td>
+                          <td class="text-green-700"><i class="pi pi-check-circle"></i></td>
+                          <td class="text-green-700"><i class="pi pi-check-circle"></i></td>
+                        </tr>
+
+                        <tr>
+                          <th scope="row" colspan="2">Consultar expedientes</th>
+                          <td class="text-green-700"><i class="pi pi-check-circle"></i></td>
+                          <td class="text-green-700"><i class="pi pi-check-circle"></i></td>
+                          <td class="text-green-700"><i class="pi pi-check-circle"></i></td>
+                          <td class="text-300"><i class="pi pi-minus"></i></td>
+                          <td class="text-yellow-700"><i class="pi pi-check-circle"></i></td>
+                        </tr>
+                    </tbody>
+                </table>
+                </div>
+
+                <a class="btn btn-light" href="/misc/roles.pdf" target="_blank" download>
+                  <i class="bi bi-download"></i>
+                  Descargar tabla
+                </a>
+
+            </Panel>
+        </div>
+
   </div>
 </template>
 

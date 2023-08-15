@@ -160,6 +160,11 @@ export default defineComponent({
         data.value = store.data;
         // if data.value.locked == false, then data.value.estado = 'BLOQUEADO', else if data.value.enabled == false, then data.value.estado = 'INACTIVO', else data.value.estado = 'ACTIVO'
         data.value.forEach((item) => {
+          //if item.email == 18161160@itoaxaca.edu.mx then delete the registry
+
+          if (item.email == '18161160@itoaxaca.edu.mx')
+            data.value.splice(data.value.indexOf(item), 1);
+
           if (item.locked == true) {
             item.estado = 'BLOQUEADO';
           } else if (item.enabled == false) {
