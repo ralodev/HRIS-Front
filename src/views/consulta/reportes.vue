@@ -1485,7 +1485,7 @@ export default defineComponent({
       exportando.value = true;
       let requestSuccess = true;
       alertas.showLoading('Cargando datos...');
-      store.getUnique().then((r) => {
+      store.getUniqueActives().then((r) => {
         if (r.status == 200){
         data.value = store.data;
 

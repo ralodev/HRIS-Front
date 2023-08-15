@@ -20,9 +20,22 @@ export const useStore = defineStore('consulta', () => {
             return err
         }
     }
+
     const getUnique = async () => {
         try {
             const response = await axios.get(`${apiURL}consulta/unique`)
+            data.value = response.data
+            response.value = response
+            return response
+        } catch (err) {
+            console.log(err)
+            return err
+        }
+    }
+
+    const getUniqueActives = async () => {
+        try {
+            const response = await axios.get(`${apiURL}consulta/unique-actives`)
             data.value = response.data
             response.value = response
             return response
@@ -51,6 +64,7 @@ export const useStore = defineStore('consulta', () => {
         queryData,
         search,
         getAll,
-        getUnique
+        getUnique,
+        getUniqueActives
     }
 })
