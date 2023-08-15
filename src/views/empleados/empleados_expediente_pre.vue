@@ -43,19 +43,18 @@ export default defineComponent({
     const getData = async () => {
       let email = Cookies.get('email');
       setTimeout(() => {
-        empleadoStore.getEmpleadoByEmail(email).then(() => {
-          data.value = empleadoStore.data;
+        empleadoStore.getEmpleadoByEmail(email).then((res) => {
+          data.value = res.data;
 
-          if (data.value.id == null) {
-            alertas.showErrorAlert('Error', 'No pudimos encontrarte en la base de datos, probablemente sea un problema con tu correo electrónico, por favor acude a la oficina de recursos humanos.');
+          if (res.status != 200) {
+            alertas.showErrorAlert('Error', 'No pudimos encontrar datos vinculados a tu correo electrónico, si crees que es un error, por favor acude a la oficina de recursos humanos.');
             setTimeout(() => {
-              router.push({ name: 'home' });
+              router.push({ name: 'inicio' });
             }, 2000);
           } else {
-            alertas.showSuccessToast('Te encontramos! redirigiendo...');
             setTimeout(() => {
-              router.push({ name: 'empleados_expediente', params: { id: data.value.id } });
-            }, 2000);
+              router.push({ name: 'empleados_expediente', params: { id: res.value.id } });
+            }, 500);
           }
         })
       }, 300);
