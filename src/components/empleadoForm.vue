@@ -251,7 +251,7 @@ export default defineComponent({
                 }else {
                     alertas.closeLoading();
 
-                    data.value = {
+                    data.value = {/*
                         nombre: "RAUL LOPEZ CRUZ",
                         rfc: "LOCR960727HOC",
                         curp: "LOCR960727HOCPRL03",
@@ -267,7 +267,7 @@ export default defineComponent({
                         fechaIngreso: "",
                         estado: "ACTIVO",
                         fechaBaja: "",
-                        comentarios: "ESTO ES UNA PRUEBA",
+                        comentarios: "ESTO ES UNA PRUEBA",*/
                     };
 
                 }

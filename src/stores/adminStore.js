@@ -31,6 +31,7 @@ export const useStore = defineStore('admin', {
         const response = await axios.get(`${this.apiURL}/usuarios`);
         this.data = response.data;
         this.message = response.message;
+        return response;
       } catch (err) {
         this.error = err.response.message || err.message;
       }

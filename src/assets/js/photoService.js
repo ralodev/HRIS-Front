@@ -18,7 +18,7 @@ export const PhotoService = {
                     title: 'CONVOCATORIA DE PROYECTO PROMOCIONAL 2023'
                 },*/
                 {
-                    itemImageSrc: 'https://www.oaxaca.tecnm.mx/themes/tecoaxaca/assets/images/banners/slider%20VILLA.jpg',
+                    itemImageSrc: 'http://www.oaxaca.tecnm.mx/themes/tecoaxaca/assets/images/banners/slider%20VILLA.jpg',
                     alt: 'http://www.oaxaca.tecnm.mx/',
                     title: '2023 AÑO DE FRANCISCO VILLA'
                 },

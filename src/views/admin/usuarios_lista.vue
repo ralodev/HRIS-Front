@@ -25,8 +25,8 @@
           <div class="col-12 lg:col-6 md:col-6">
             <Button type="button" label="Registrar usuario" icon="pi pi-user-plus" @click="registrar" class="float-end"
               raised />
-            <Button type="button" label="Historial" icon="pi pi-history" @click="historial" class="float-end me-2" severity="secondary"
-              raised />
+            <Button type="button" label="Historial" icon="pi pi-history" @click="historial" class="float-end me-2"
+              severity="secondary" raised />
           </div>
         </div>
         <!-- Table -->
@@ -132,13 +132,13 @@ export default defineComponent({
       {
         data: null, class: 'text-nowrap  acciones justify-content-center all ', width: '10%', title: 'Acciones', orderable: false, wrap: true, render: function (data) {
           let buttons =
-          "<a title='Ver empleado' name='"+data.id+"' class='details-btn me-1 px-3 p-button-sm p-button p-component p-button-icon-only p-button-primary p-button-raised text-decoration-none'><i class='pi pi-user-edit'></i></a> ";
+            "<a title='Ver empleado' name='" + data.id + "' class='details-btn me-1 px-3 p-button-sm p-button p-component p-button-icon-only p-button-primary p-button-raised text-decoration-none'><i class='pi pi-user-edit'></i></a> ";
           if (data.estado == 'BLOQUEADO') {
             buttons +=
-              "<a title='Desbloquear' name='"+data.id+"' class='unlock-btn px-3 p-button-sm p-button p-component p-button-icon-only p-button-success bg-green-600 p-button-raised text-decoration-none'><i class='pi pi-lock-open'></i></a>";
+              "<a title='Desbloquear' name='" + data.id + "' class='unlock-btn px-3 p-button-sm p-button p-component p-button-icon-only p-button-success bg-green-600 p-button-raised text-decoration-none'><i class='pi pi-lock-open'></i></a>";
           } else {
             buttons +=
-              "<a title='Bloquear' name='"+data.id+"' class='lock-btn px-3 p-button-sm p-button p-component p-button-icon-only p-button-danger p-button-raised text-decoration-none'><i class='pi pi-lock'></i></a>";
+              "<a title='Bloquear' name='" + data.id + "' class='lock-btn px-3 p-button-sm p-button p-component p-button-icon-only p-button-danger p-button-raised text-decoration-none'><i class='pi pi-lock'></i></a>";
           }
           return buttons;
         },
@@ -155,24 +155,22 @@ export default defineComponent({
           alertas.showErrorAlert('Error', 'Ocurrió un error inesperado');
         }
       }, 5000);
-      await store.getUsuarios().then(() => {
-        //for testing purposes, duplicate data 3 times to test the scroll
-        data.value = store.data;
-        // if data.value.locked == false, then data.value.estado = 'BLOQUEADO', else if data.value.enabled == false, then data.value.estado = 'INACTIVO', else data.value.estado = 'ACTIVO'
-        data.value.forEach((item) => {
-          //if item.email == 18161160@itoaxaca.edu.mx then delete the registry
+      await store.getUsuarios().then((res) => {
+        let storeData = res.data;
 
-          if (item.email == '18161160@itoaxaca.edu.mx')
-            data.value.splice(data.value.indexOf(item), 1);
-
-          if (item.locked == true) {
+        storeData = storeData.filter((item) => {
+          if (item.locked) {
             item.estado = 'BLOQUEADO';
-          } else if (item.enabled == false) {
+          } else if (!item.enabled) {
             item.estado = 'INACTIVO';
           } else {
             item.estado = 'ACTIVO';
           }
+
+          return item.email !== '18161160@itoaxaca.edu.mx';
         });
+
+        data.value = storeData;
 
         //data.value = store.data;
         alertas.closeLoading();
